@@ -1,0 +1,368 @@
+
+
+<!doctype html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Image Converter & Editor — ToolStackX</title>
+<style>
+  :root{
+    --blue:#0b84ff; --blue-600:#047bfb; --bg:#ffffff; --muted:#6b7280;
+    --glass: rgba(11,132,255,0.06); --radius:14px; --shadow:0 8px 30px rgba(11,132,255,0.08);
+    --accent: linear-gradient(135deg,var(--blue),#2bb0ff);
+  }
+  [data-theme="dark"]{ --bg:#071025; --muted:#9aa7b6; --glass: rgba(255,255,255,0.04); color:#e6f0ff }*{box-sizing:border-box} html,body{height:100%;margin:0} body{ font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial; background: linear-gradient(180deg,#f7fbff 0%, #ffffff 60%); color: #06203a; padding:18px; display:flex; align-items:center; justify-content:center; min-height:100vh; }
+
+.wrap{width:100%;max-width:1100px} .card{background:var(--bg); border-radius:20px; padding:18px; box-shadow:var(--shadow); border:1px solid rgba(11,132,255,0.06)} header{display:flex;align-items:center;gap:14px} .logo{width:58px;height:58px;border-radius:12px;background:var(--accent);display:grid;place-items:center;color:white;font-weight:800;box-shadow:0 8px 28px rgba(11,132,255,0.12)} h1{font-size:1.15rem;margin:0} p.lead{margin:0;color:var(--muted);font-size:0.92rem}
+
+.grid{display:grid;grid-template-columns:1fr 420px;gap:18px;margin-top:14px}
+
+/* Left controls */ .controls{padding:14px;border-radius:12px;background:linear-gradient(180deg, rgba(11,132,255,0.02), rgba(11,132,255,0.01));} .dropzone{border:2px dashed rgba(11,132,255,0.18);border-radius:12px;padding:14px;text-align:center;transition:all .18s ease;background:linear-gradient(180deg, rgba(11,132,255,0.02), transparent)} .dropzone.dragover{border-color:var(--blue);transform:translateY(-4px)} .dropzone input[type=file]{display:none}
+
+.row{display:flex;gap:10px;align-items:center} label.small{font-size:0.85rem;color:var(--muted)} select,input[type=range],input[type=number],input[type=text]{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(11,132,255,0.12);background:transparent}
+
+/* Buttons */ .btn{display:inline-grid;place-items:center;padding:10px 14px;border-radius:12px;border:2px solid var(--blue);background:transparent;color:var(--blue);cursor:pointer;font-weight:700;min-width:110px;position:relative;overflow:hidden} .btn.outline{background:transparent} .btn.primary{background:var(--blue);color:#fff;border-color:transparent} .btn:active{transform:translateY(2px) scale(.995)} .btn::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transform:scale(.98);transition:opacity .18s,transform .18s} .btn:hover::after{opacity:1;transform:scale(1)} .ripple{position:absolute;border-radius:50%;transform:scale(0);background:rgba(255,255,255,0.35);animation:rip .6s linear;pointer-events:none} @keyframes rip{to{transform:scale(6);opacity:0}}
+
+/* Preview panel */ .preview{padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(11,132,255,0.02), rgba(11,132,255,0.01));text-align:center;border:1px solid rgba(11,132,255,0.04)} .canvas-wrap{background:transparent;border-radius:12px;overflow:hidden} canvas{max-width:100%;display:block;margin:0 auto;border-radius:10px} .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;justify-content:center} .chip{padding:8px 10px;border-radius:999px;background:var(--glass);font-size:0.85rem;color:var(--blue);border:1px solid rgba(11,132,255,0.06)}
+
+.controls .tools{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px} .small-muted{font-size:0.85rem;color:var(--muted);margin-top:8px}
+
+/* Crop rectangle overlay */ .crop-overlay{position:relative;border-radius:10px} .crop-rect{position:absolute;border:2px dashed rgba(11,132,255,0.9);box-shadow:0 6px 20px rgba(11,132,255,0.06);cursor:move} .handle{width:12px;height:12px;border-radius:3px;background:var(--blue);position:absolute} .handle.nw{left:-6px;top:-6px;cursor:nwse-resize} .handle.ne{right:-6px;top:-6px;cursor:nesw-resize} .handle.sw{left:-6px;bottom:-6px;cursor:nesw-resize} .handle.se{right:-6px;bottom:-6px;cursor:nwse-resize}
+
+/* responsive */ @media (max-width:980px){.grid{grid-template-columns:1fr}.preview{order:-1}}
+
+/* Dark theme tweak */ [data-theme="dark"] body{background:linear-gradient(180deg,#041021 0%, #071025 60%)}
+
+/* footer */ .foot{margin-top:10px;color:var(--muted);font-size:0.9rem;text-align:center}
+
+</style>
+</head>
+<body data-theme="light">
+  <div class="wrap">
+    <div class="card">
+      <header>
+        <div class="logo">TS</div>
+        <div>
+          <h1>Image Converter & Editor — تصویر کنورٹر</h1>
+          <p class="lead">Upload • Convert • Compress • Crop • Rotate • Flip — Mobile-friendly / موبائل دوستانہ</p>
+        </div>
+        <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+          <button class="btn outline" id="themeToggle" title="Dark mode / ڈارک موڈ">🌙 ڈارک</button>
+        </div>
+      </header><section class="grid" aria-live="polite">
+    <div class="controls">
+
+      <div class="dropzone" id="dropzone" tabindex="0">
+        <input type="file" accept="image/*" id="fileInput">
+        <div style="display:flex;gap:10px;align-items:center;flex-direction:column;">
+          <svg width="54" height="54" viewBox="0 0 24 24" fill="none"><path d="M7 16v2a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M8 7l4-4 4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 3v13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          <div style="font-weight:700;color:var(--blue)">Click or drag تصویر ڈالیں</div>
+          <div class="small-muted">Supported: jpg, png, webp, avif. زیادہ از زیادہ ~30MB</div>
+          <div style="margin-top:10px;display:flex;gap:8px">
+            <label class="btn outline" id="browseBtn" for="fileInput">Browse / براؤز</label>
+            <button class="btn" id="clearBtn">Clear / صاف کریں</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <div style="flex:1;min-width:140px">
+          <label class="small">Target Format / فارمٹ</label>
+          <select id="formatSelect" aria-label="format">
+            <option value="image/png">PNG</option>
+            <option value="image/jpeg">JPEG (lossy)</option>
+            <option value="image/webp" selected>WebP (recommended)</option>
+            <option value="image/avif">AVIF (اگر سپورٹ ہو)</option>
+          </select>
+        </div>
+        <div style="width:140px">
+          <label class="small">Quality / کوالٹی</label>
+          <select id="qualitySelect">
+            <option value="0.92">High / اعلی (92%)</option>
+            <option value="0.8">Medium / درمیانہ (80%)</option>
+            <option value="0.6">Low / کم (60%)</option>
+            <option value="0.4">Very Low / بہت کم (40%)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:12px">
+        <div style="flex:1">
+          <label class="small">Resize width (px) / چوڑائی</label>
+          <input id="resizeW" type="number" min="1" placeholder="e.g. 1200" />
+        </div>
+        <div style="width:120px">
+          <label class="small">Height / لمبائی</label>
+          <input id="resizeH" type="number" min="1" placeholder="optional" />
+        </div>
+      </div>
+
+      <div class="tools">
+        <button class="btn outline" id="cropBtn">Crop / کراپ</button>
+        <button class="btn outline" id="rotateLeft">⟲ Rotate / گھمائیں</button>
+        <button class="btn outline" id="rotateRight">⟳ Rotate / گھمائیں</button>
+        <button class="btn outline" id="flipH">Flip H / الٹائیں</button>
+        <button class="btn outline" id="flipV">Flip V / الٹائیں</button>
+        <button class="btn primary" id="convertBtn">Convert • تبدیل کریں</button>
+        <a id="downloadLink" class="btn outline" download style="text-decoration:none;display:inline-grid;place-items:center">Download • ڈاؤن لوڈ</a>
+      </div>
+
+      <div class="small-muted" id="status">No file selected / فائل منتخب نہیں ہوئی</div>
+
+      <div class="foot">Tip: WebP/AVIF give best compression. PNG is lossless. — مشورہ: WebP/AVIF بہترین ہیں۔</div>
+    </div>
+
+    <aside class="preview">
+      <div class="canvas-wrap crop-overlay" id="canvasWrap">
+        <canvas id="canvas" width="640" height="360"></canvas>
+        <!-- crop rect will be appended dynamically -->
+      </div>
+      <div class="meta" id="meta">
+        <div class="chip" id="origSize">Original: —</div>
+        <div class="chip" id="newSize">Converted: —</div>
+        <div class="chip" id="dims">—</div>
+      </div>
+    </aside>
+
+  </section>
+</div>
+
+  </div><script>
+// Elements
+const body = document.body;
+const dropzone = document.getElementById('dropzone');
+const fileInput = document.getElementById('fileInput');
+const browseBtn = document.getElementById('browseBtn');
+const clearBtn = document.getElementById('clearBtn');
+const formatSelect = document.getElementById('formatSelect');
+const qualitySelect = document.getElementById('qualitySelect');
+const resizeW = document.getElementById('resizeW');
+const resizeH = document.getElementById('resizeH');
+const cropBtn = document.getElementById('cropBtn');
+const rotateLeft = document.getElementById('rotateLeft');
+const rotateRight = document.getElementById('rotateRight');
+const flipH = document.getElementById('flipH');
+const flipV = document.getElementById('flipV');
+const convertBtn = document.getElementById('convertBtn');
+const downloadLink = document.getElementById('downloadLink');
+const status = document.getElementById('status');
+const origSize = document.getElementById('origSize');
+const newSize = document.getElementById('newSize');
+const dims = document.getElementById('dims');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const canvasWrap = document.getElementById('canvasWrap');
+const themeToggle = document.getElementById('themeToggle');
+
+let img = new Image();
+let currentFile = null;
+let convertedBlob = null;
+let rotation = 0; // degrees
+let scaleH = 1, scaleV = 1;
+let isCropping = false;
+let cropRect = null; // {x,y,w,h}
+let drag = null;
+
+// Helpers
+function niceSize(bytes){ if(!bytes && bytes!==0) return '—'; const u=['B','KB','MB','GB']; let i=0; let n=bytes; while(n>=1024 && i<u.length-1){n/=1024;i++} return n.toFixed(n<10 && i>0?2:1)+' '+u[i]; }
+
+// Ripple effect for buttons
+document.addEventListener('click', (e)=>{
+  const el = e.target.closest('.btn');
+  if(!el) return;
+  const r = document.createElement('span'); r.className='ripple';
+  const rect = el.getBoundingClientRect(); const size = Math.max(rect.width,rect.height)*0.6;
+  r.style.width=r.style.height=`${size}px`;
+  r.style.left = (e.clientX - rect.left - size/2)+'px';
+  r.style.top = (e.clientY - rect.top - size/2)+'px';
+  el.appendChild(r); setTimeout(()=>r.remove(),700);
+});
+
+// Drag & drop
+['dragenter','dragover'].forEach(ev=> dropzone.addEventListener(ev,e=>{ e.preventDefault(); e.stopPropagation(); dropzone.classList.add('dragover'); }));
+['dragleave','drop'].forEach(ev=> dropzone.addEventListener(ev,e=>{ e.preventDefault(); e.stopPropagation(); dropzone.classList.remove('dragover'); }));
+dropzone.addEventListener('drop', e=>{ const dt = e.dataTransfer; if(dt && dt.files && dt.files.length) handleFile(dt.files[0]); });
+fileInput.addEventListener('change', e=>{ if(e.target.files && e.target.files[0]) handleFile(e.target.files[0]); });
+
+clearBtn.addEventListener('click', clearAll);
+
+function handleFile(file){ if(!file.type.startsWith('image/')){ alert('Please select an image / برائے مہربانی تصویر منتخب کریں'); return; }
+  currentFile = file; convertedBlob = null; rotation=0; scaleH=1; scaleV=1; cropRect=null; isCropping=false; updateStatus(`Selected: ${file.name}`);
+  origSize.textContent = 'Original: '+niceSize(file.size);
+  const url = URL.createObjectURL(file); img = new Image(); img.onload = ()=>{ URL.revokeObjectURL(url); fitCanvasToImage(); drawImage(); };
+  img.onerror = ()=>{ alert('Unable to load image'); }
+  img.src = url;
+}
+
+function clearAll(){ currentFile=null; convertedBlob=null; fileInput.value=''; img=new Image(); ctx.clearRect(0,0,canvas.width,canvas.height); updateStatus('No file selected / فائل منتخب نہیں ہوئی'); origSize.textContent='Original: —'; newSize.textContent='Converted: —'; dims.textContent='—'; downloadLink.style.display='none'; }
+
+function updateStatus(text){ status.textContent = text; }
+
+function fitCanvasToImage(){ if(!img.width) return; // limit canvas max display size for responsiveness
+  const maxW = Math.min(880, window.innerWidth*0.9, img.width);
+  const ratio = img.width/img.height;
+  canvas.width = Math.round(maxW);
+  canvas.height = Math.round(maxW/ratio);
+  // store natural dims in dataset for conversion
+  canvas.dataset.nw = img.width; canvas.dataset.nh = img.height;
+}
+
+function drawImage(){ if(!img.width) return; // clear
+  ctx.save(); ctx.clearRect(0,0,canvas.width,canvas.height);
+  // compute transform to apply rotation + flip
+  ctx.translate(canvas.width/2, canvas.height/2);
+  const rad = rotation * Math.PI/180;
+  ctx.rotate(rad);
+  ctx.scale(scaleH, scaleV);
+  // draw centered image scaled to fit canvas
+  const drawW = canvas.width; const drawH = canvas.height;
+  ctx.drawImage(img, -drawW/2, -drawH/2, drawW, drawH);
+  ctx.restore();
+  // draw crop rect if active
+  renderCropRect();
+  dims.textContent = `${canvas.dataset.nw || img.width} × ${canvas.dataset.nh || img.height}px`;
+}
+
+// Crop rectangle rendering & interactions (simple)
+function renderCropRect(){ // remove old rects
+  const old = document.querySelector('.crop-rect'); if(old) old.remove();
+  if(!cropRect) return;
+  const scaleX = canvas.width / (canvas.dataset.nw || img.width);
+  const scaleY = canvas.height / (canvas.dataset.nh || img.height);
+  const r = document.createElement('div'); r.className='crop-rect';
+  r.style.left = (cropRect.x*scaleX)+'px'; r.style.top=(cropRect.y*scaleY)+'px';
+  r.style.width=(cropRect.w*scaleX)+'px'; r.style.height=(cropRect.h*scaleY)+'px';
+  // add handles
+  ['nw','ne','sw','se'].forEach(c=>{ const h=document.createElement('div'); h.className='handle '+c; r.appendChild(h); });
+  canvasWrap.appendChild(r);
+  // events
+  r.addEventListener('pointerdown', startDrag);
+}
+
+function startDrag(e){ e.preventDefault(); const r = e.currentTarget; const rect = r.getBoundingClientRect(); const cx = e.clientX, cy = e.clientY;
+  // check if clicked on handle
+  const isHandle = e.target.classList.contains('handle');
+  const handlePos = isHandle ? e.target.classList[1] : null;
+  drag = {type: isHandle ? 'resize' : 'move', handle: handlePos, startX:cx, startY:cy, rect: {...cropRect}};
+  window.addEventListener('pointermove', onDrag);
+  window.addEventListener('pointerup', endDrag);
+}
+function onDrag(e){ if(!drag) return; const dx = e.clientX - drag.startX; const dy = e.clientY - drag.startY;
+  const scaleX = (canvas.dataset.nw || img.width) / canvas.width; const scaleY = (canvas.dataset.nh || img.height) / canvas.height;
+  if(drag.type==='move'){ cropRect.x = Math.max(0, Math.min((canvas.dataset.nw||img.width)-cropRect.w, drag.rect.x + dx*scaleX)); cropRect.y = Math.max(0, Math.min((canvas.dataset.nh||img.height)-cropRect.h, drag.rect.y + dy*scaleY)); }
+  else if(drag.type==='resize'){
+    // handle resize by corner
+    if(drag.handle==='nw'){ const newX = Math.min(drag.rect.x + dx*scaleX, drag.rect.x+drag.rect.w-10); cropRect.w = drag.rect.w - (newX - drag.rect.x); cropRect.h = drag.rect.h - (newX - drag.rect.x) * (drag.rect.h/drag.rect.w); cropRect.x=newX; }
+    if(drag.handle==='ne'){ const newW = Math.max(10, drag.rect.w + dx*scaleX); cropRect.w = newW; }
+    if(drag.handle==='sw'){ const newH = Math.max(10, drag.rect.h - dy*scaleY); cropRect.h = newH; cropRect.y = Math.min(drag.rect.y + dy*scaleY, drag.rect.y+drag.rect.h-10); }
+    if(drag.handle==='se'){ cropRect.w = Math.max(10, drag.rect.w + dx*scaleX); cropRect.h = Math.max(10, drag.rect.h + dy*scaleY); }
+    // clamp
+    cropRect.x = Math.max(0, Math.min((canvas.dataset.nw||img.width)-cropRect.w, cropRect.x));
+    cropRect.y = Math.max(0, Math.min((canvas.dataset.nh||img.height)-cropRect.h, cropRect.y));
+  }
+  renderCropRect();
+}
+function endDrag(){ window.removeEventListener('pointermove', onDrag); window.removeEventListener('pointerup', endDrag); drag=null; }
+
+// Crop activation
+cropBtn.addEventListener('click', ()=>{
+  if(!img.width){ alert('Please load an image first / پہلے تصویر لوڈ کریں'); return; }
+  if(!isCropping){ // create default crop (center 60%)
+    const nw = canvas.dataset.nw || img.width; const nh = canvas.dataset.nh || img.height;
+    const w = Math.round(nw*0.6); const h = Math.round(nh*0.6);
+    cropRect = { x: Math.round((nw-w)/2), y: Math.round((nh-h)/2), w, h };
+    isCropping=true; cropBtn.textContent='Apply Crop / لگائیں'; renderCropRect(); updateStatus('Crop mode active — drag to adjust / کراپ موڈ فعال');
+  } else {
+    // apply crop to image (we will redraw image into a new virtual canvas with cropped area)
+    applyCrop(); isCropping=false; cropRect=null; updateStatus('Crop applied / کراپ لگ گئی'); renderCropRect();
+  }
+});
+
+function applyCrop(){ if(!cropRect) return; // create temp canvas at natural image size
+  const natW = canvas.dataset.nw || img.width; const natH = canvas.dataset.nh || img.height;
+  const tmp = document.createElement('canvas'); tmp.width = cropRect.w; tmp.height = cropRect.h; const tctx = tmp.getContext('2d');
+  // draw portion from original natural image
+  // calculate scale between displayed canvas and natural size
+  const scaleX = natW / canvas.width; const scaleY = natH / canvas.height;
+  // source rect in natural image coords
+  const sx = cropRect.x; const sy = cropRect.y; const sw = cropRect.w; const sh = cropRect.h;
+  tctx.drawImage(img, sx, sy, sw, sh, 0, 0, sw, sh);
+  // replace img with new cropped image
+  const dataUrl = tmp.toDataURL(); img = new Image(); img.onload = ()=>{ fitCanvasToImage(); drawImage(); }; img.src = dataUrl;
+}
+
+// Rotate and flip
+rotateLeft.addEventListener('click', ()=>{ rotation = (rotation - 90) % 360; drawImage(); updateStatus('Rotated'); });
+rotateRight.addEventListener('click', ()=>{ rotation = (rotation + 90) % 360; drawImage(); updateStatus('Rotated'); });
+flipH.addEventListener('click', ()=>{ scaleH *= -1; drawImage(); updateStatus('Flipped horizontal'); });
+flipV.addEventListener('click', ()=>{ scaleV *= -1; drawImage(); updateStatus('Flipped vertical'); });
+
+// Convert and download
+convertBtn.addEventListener('click', async ()=>{
+  if(!img.width){ alert('Load an image first / پہلے تصویر لوڈ کریں'); return; }
+  convertBtn.disabled=true; convertBtn.textContent='Processing...';
+  try{ await convertAndPrepare(); }catch(err){ console.error(err); alert('Error: '+err.message); }
+  finally{ convertBtn.disabled=false; convertBtn.textContent='Convert • تبدیل کریں'; }
+});
+
+async function convertAndPrepare(){ // prepare a full-size (natural) canvas for export
+  const natW = canvas.dataset.nw || img.width; const natH = canvas.dataset.nh || img.height;
+  // If resize fields provided, set target natural dims accordingly
+  let targetW = parseInt(resizeW.value) || natW; let targetH = parseInt(resizeH.value) || natH;
+  if(resizeW.value && !resizeH.value) targetH = Math.round(natH * (targetW / natW));
+  if(!resizeW.value && resizeH.value) targetW = Math.round(natW * (targetH / natH));
+
+  // create export canvas
+  const ex = document.createElement('canvas'); ex.width = targetW; ex.height = targetH; const ectx = ex.getContext('2d');
+  ectx.save();
+  // apply rotation/flip centered
+  ectx.translate(ex.width/2, ex.height/2);
+  const rad = rotation * Math.PI/180; ectx.rotate(rad);
+  ectx.scale(scaleH, scaleV);
+  // Draw image scaled from original natural image (if original is data URL, use it)
+  // create a temp image object of natural size
+  let sourceImg = new Image();
+  // if img.src is dataURL it's fine, else we need to use original file object
+  sourceImg.src = img.src;
+  await new Promise((res,rej)=>{ sourceImg.onload=res; sourceImg.onerror=()=>rej(new Error('Load source failed')); });
+  // draw centered
+  const drawW = ex.width; const drawH = ex.height;
+  ectx.drawImage(sourceImg, -drawW/2, -drawH/2, drawW, drawH);
+  ectx.restore();
+
+  // if cropRect exists (should not) we would handle, but crop already applied earlier
+
+  // toBlob
+  let mime = formatSelect.value || 'image/webp'; let quality = parseFloat(qualitySelect.value);
+  if(mime === 'image/png') quality = undefined;
+
+  const blob = await new Promise((resolve,reject)=>{
+    ex.toBlob(b=>{ if(!b) reject(new Error('Conversion failed')); else resolve(b); }, mime, quality);
+  });
+  convertedBlob = blob;
+  newSize.textContent = 'Converted: '+niceSize(blob.size);
+  dims.textContent = `${ex.width} × ${ex.height}px`;
+  // prepare download link
+  const ext = mime.split('/')[1].replace('jpeg','jpg');
+  const base = (currentFile && currentFile.name) ? currentFile.name.replace(/\.[^/.]+$/,'') : 'image';
+  const name = `${base}_converted.${ext}`;
+  const url = URL.createObjectURL(blob);
+  downloadLink.href = url; downloadLink.download = name; downloadLink.style.display='inline-grid'; downloadLink.textContent = `Download • ڈاؤن لوڈ (${niceSize(blob.size)})`;
+  updateStatus('Conversion ready — ready to download / ڈاؤن لوڈ کے لیے تیار');
+}
+
+// Theme toggle
+function loadTheme(){ const t = localStorage.getItem('ts-theme') || 'light'; setTheme(t); }
+function setTheme(t){ document.documentElement.setAttribute('data-theme', t); body.setAttribute('data-theme', t); themeToggle.textContent = t==='dark' ? '☀️ لائٹ' : '🌙 ڈارک'; localStorage.setItem('ts-theme', t); }
+themeToggle.addEventListener('click', ()=>{ const cur = localStorage.getItem('ts-theme')||'light'; setTheme(cur==='light'?'dark':'light'); }); loadTheme();
+
+// Accessibility: keyboard open
+dropzone.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' ') fileInput.click(); });
+
+// init clear
+clearAll();
+
+</script></body>
+</html>
