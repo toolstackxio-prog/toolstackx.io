@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image to Text Dash - OCR Tool</title>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+            color: white;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        .app-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .upload-section {
+            flex: 1;
+            min-width: 300px;
+            padding: 40px;
+            background: #f8f9fa;
+        }
+
+        .result-section {
+            flex: 1;
+            min-width: 300px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .upload-area {
+            border: 2px dashed #6a11cb;
+            border-radius: 10px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(106, 17, 203, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .upload-area:hover {
+            background: rgba(106, 17, 203, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .upload-icon {
+            font-size: 50px;
+            color: #6a11cb;
+            margin-bottom: 15px;
+        }
+
+        .upload-text {
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .btn {
+            background: #6a11cb;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-block;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(106, 17, 203, 0.3);
+        }
+
+        .btn:hover {
+            background: #2575fc;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(37, 117, 252, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #6a11cb;
+            color: #6a11cb;
+        }
+
+        .btn-outline:hover {
+            background: #6a11cb;
+            color: white;
+        }
+
+        .controls {
+            margin-top: 30px;
+        }
+
+        .control-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        .language-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+            color: #333;
+        }
+
+        .preview-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .image-box {
+            width: 100%;
+            max-width: 400px;
+            height: 250px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            border: 1px solid #eee;
+        }
+
+        .image-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .image-placeholder {
+            color: #999;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .result-box {
+            width: 100%;
+            height: 300px;
+            border-radius: 10px;
+            padding: 20px;
+            background: #f8f9fa;
+            border: 1px solid #eee;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .result-placeholder {
+            color: #999;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 400px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #6a11cb;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            opacity: 0.8;
+        }
+
+        .file-info {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #666;
+            text-align: center;
+        }
+
+        .progress-container {
+            width: 100%;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow: hidden;
+            display: none;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: linear-gradient(90deg, #6a11cb, #2575fc);
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+            
+            header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Image to Text Dash</h1>
+            <p>Extract text from images using OCR technology. Fast, accurate, and completely free!</p>
+        </header>
+        
+        <div class="app-container">
+            <div class="upload-section">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📁</div>
+                    <h3 class="upload-text">Drag & Drop your image here</h3>
+                    <p>or</p>
+                    <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                    <button class="btn" id="browseBtn">Browse Files</button>
+                </div>
+                <div class="file-info" id="fileInfo">
+                    Supports JPG, PNG, GIF, BMP • Max 10MB
+                </div>
+                
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-text" id="progressText">Initializing OCR...</div>
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                
+                <div class="controls">
+                    <div class="control-group">
+                        <label for="language">OCR Language</label>
+                        <select id="language" class="language-select">
+                            <option value="eng">English</option>
+                            <option value="spa">Spanish</option>
+                            <option value="fra">French</option>
+                            <option value="deu">German</option>
+                            <option value="ita">Italian</option>
+                            <option value="por">Portuguese</option>
+                            <option value="rus">Russian</option>
+                            <option value="chi_sim">Chinese (Simplified)</option>
+                            <option value="jpn">Japanese</option>
+                            <option value="kor">Korean</option>
+                            <option value="ara">Arabic</option>
+                            <option value="hin">Hindi</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="ocrMode">OCR Mode</label>
+                        <select id="ocrMode" class="language-select">
+                            <option value="single">Single Text Block</option>
+                            <option value="multi">Multiple Text Blocks</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn" id="extractBtn" style="width: 100%; margin-top: 10px;" disabled>Extract Text</button>
+                </div>
+            </div>
+            
+            <div class="result-section">
+                <div class="preview-container">
+                    <div class="image-box" id="imageBox">
+                        <div class="image-placeholder">
+                            <p>Your image will appear here</p>
+                        </div>
+                    </div>
+                    
+                    <div class="result-box" id="resultBox">
+                        <div class="result-placeholder">
+                            <p>Extracted text will appear here</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value" id="charCount">--</div>
+                            <div class="stat-label">Characters</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value" id="wordCount">--</div>
+                            <div class="stat-label">Words</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value" id="lineCount">--</div>
+                            <div class="stat-label">Lines</div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn" id="copyBtn" disabled>Copy Text</button>
+                        <button class="btn btn-outline" id="clearBtn">Clear All</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Image to Text Dash &copy; 2023 | Extract text from images with OCR technology</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM elements
+            const fileInput = document.getElementById('fileInput');
+            const browseBtn = document.getElementById('browseBtn');
+            const uploadArea = document.getElementById('uploadArea');
+            const languageSelect = document.getElementById('language');
+            const ocrModeSelect = document.getElementById('ocrMode');
+            const extractBtn = document.getElementById('extractBtn');
+            const imageBox = document.getElementById('imageBox');
+            const resultBox = document.getElementById('resultBox');
+            const charCount = document.getElementById('charCount');
+            const wordCount = document.getElementById('wordCount');
+            const lineCount = document.getElementById('lineCount');
+            const copyBtn = document.getElementById('copyBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const fileInfo = document.getElementById('fileInfo');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            
+            // State variables
+            let currentImage = null;
+            let extractedText = '';
+            
+            // Initialize Tesseract worker
+            let worker = null;
+            
+            // Event listeners
+            browseBtn.addEventListener('click', () => fileInput.click());
+            uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('drop', handleDrop);
+            fileInput.addEventListener('change', handleFileSelect);
+            extractBtn.addEventListener('click', extractText);
+            copyBtn.addEventListener('click', copyText);
+            clearBtn.addEventListener('click', clearAll);
+            
+            // Initialize Tesseract
+            initializeTesseract();
+            
+            // Functions
+            function handleDragOver(e) {
+                e.preventDefault();
+                uploadArea.style.background = 'rgba(106, 17, 203, 0.15)';
+                uploadArea.style.borderColor = '#2575fc';
+            }
+            
+            function handleDrop(e) {
+                e.preventDefault();
+                uploadArea.style.background = 'rgba(106, 17, 203, 0.05)';
+                uploadArea.style.borderColor = '#6a11cb';
+                
+                if (e.dataTransfer.files.length) {
+                    handleImageFile(e.dataTransfer.files[0]);
+                }
+            }
+            
+            function handleFileSelect(e) {
+                if (e.target.files.length) {
+                    handleImageFile(e.target.files[0]);
+                }
+            }
+            
+            function handleImageFile(file) {
+                // Check if file is an image
+                if (!file.type.match('image.*')) {
+                    alert('Please select an image file (JPG, PNG, GIF, or BMP).');
+                    return;
+                }
+                
+                // Check file size (max 10MB)
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('File size too large. Please select an image smaller than 10MB.');
+                    return;
+                }
+                
+                // Update file info
+                fileInfo.textContent = `Selected: ${file.name} (${formatFileSize(file.size)})`;
+                
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    currentImage = new Image();
+                    currentImage.onload = function() {
+                        // Display image
+                        imageBox.innerHTML = '';
+                        const imgElement = document.createElement('img');
+                        imgElement.src = currentImage.src;
+                        imageBox.appendChild(imgElement);
+                        
+                        // Enable extract button
+                        extractBtn.disabled = false;
+                        
+                        // Reset result
+                        resetResult();
+                    };
+                    currentImage.src = e.target.result;
+                };
+                
+                reader.readAsDataURL(file);
+            }
+            
+            function initializeTesseract() {
+                // Tesseract initialization is done on first use
+                // We'll create the worker when needed
+            }
+            
+            function extractText() {
+                if (!currentImage) {
+                    alert('Please select an image first.');
+                    return;
+                }
+                
+                // Show progress
+                progressContainer.style.display = 'block';
+                progressBar.style.width = '10%';
+                progressText.textContent = 'Initializing OCR engine...';
+                
+                // Disable buttons during processing
+                extractBtn.disabled = true;
+                copyBtn.disabled = true;
+                
+                // Create worker if needed
+                if (!worker) {
+                    worker = Tesseract.createWorker({
+                        logger: m => updateProgress(m)
+                    });
+                }
+                
+                // Perform OCR
+                (async () => {
+                    try {
+                        await worker.load();
+                        await worker.loadLanguage(languageSelect.value);
+                        await worker.initialize(languageSelect.value);
+                        
+                        progressBar.style.width = '50%';
+                        progressText.textContent = 'Processing image...';
+                        
+                        const { data: { text, confidence } } = await worker.recognize(currentImage);
+                        
+                        progressBar.style.width = '100%';
+                        progressText.textContent = 'OCR complete!';
+                        
+                        // Display results
+                        extractedText = text.trim();
+                        displayText(extractedText);
+                        
+                        // Update stats
+                        updateStats(extractedText);
+                        
+                        // Enable copy button
+                        copyBtn.disabled = false;
+                        
+                        // Re-enable extract button
+                        extractBtn.disabled = false;
+                        
+                        // Hide progress after a delay
+                        setTimeout(() => {
+                            progressContainer.style.display = 'none';
+                        }, 2000);
+                        
+                    } catch (error) {
+                        console.error('OCR Error:', error);
+                        progressText.textContent = 'Error during OCR processing';
+                        extractBtn.disabled = false;
+                    }
+                })();
+            }
+            
+            function updateProgress(message) {
+                if (message.status === 'recognizing text') {
+                    const progress = Math.round(message.progress * 100);
+                    progressBar.style.width = `${10 + progress * 0.8}%`;
+                    
+                    if (progress < 100) {
+                        progressText.textContent = `Recognizing text: ${progress}%`;
+                    }
+                }
+            }
+            
+            function displayText(text) {
+                resultBox.innerHTML = '';
+                
+                if (!text) {
+                    resultBox.innerHTML = '<div class="result-placeholder"><p>No text detected in the image</p></div>';
+                    return;
+                }
+                
+                const textElement = document.createElement('div');
+                textElement.style.whiteSpace = 'pre-wrap';
+                textElement.textContent = text;
+                resultBox.appendChild(textElement);
+            }
+            
+            function updateStats(text) {
+                if (!text) {
+                    charCount.textContent = '0';
+                    wordCount.textContent = '0';
+                    lineCount.textContent = '0';
+                    return;
+                }
+                
+                // Character count
+                charCount.textContent = text.length;
+                
+                // Word count (simple approach)
+                const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+                wordCount.textContent = words.length;
+                
+                // Line count
+                const lines = text.split('\n').filter(line => line.trim().length > 0);
+                lineCount.textContent = lines.length;
+            }
+            
+            function copyText() {
+                if (!extractedText) return;
+                
+                navigator.clipboard.writeText(extractedText)
+                    .then(() => {
+                        // Visual feedback
+                        const originalText = copyBtn.textContent;
+                        copyBtn.textContent = 'Copied!';
+                        copyBtn.style.background = '#4CAF50';
+                        
+                        setTimeout(() => {
+                            copyBtn.textContent = originalText;
+                            copyBtn.style.background = '';
+                        }, 2000);
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy text: ', err);
+                        alert('Failed to copy text to clipboard');
+                    });
+            }
+            
+            function resetResult() {
+                resultBox.innerHTML = '<div class="result-placeholder"><p>Extracted text will appear here</p></div>';
+                charCount.textContent = '--';
+                wordCount.textContent = '--';
+                lineCount.textContent = '--';
+                copyBtn.disabled = true;
+                extractedText = '';
+            }
+            
+            function clearAll() {
+                fileInput.value = '';
+                currentImage = null;
+                imageBox.innerHTML = '<div class="image-placeholder"><p>Your image will appear here</p></div>';
+                resetResult();
+                fileInfo.textContent = 'Supports JPG, PNG, GIF, BMP • Max 10MB';
+                extractBtn.disabled = true;
+                progressContainer.style.display = 'none';
+            }
+            
+            function formatFileSize(bytes) {
+                if (bytes < 1024) return bytes + ' B';
+                else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+                else return (bytes / 1048576).toFixed(1) + ' MB';
+            }
+        });
+    </script>
+</body>
+</html>
