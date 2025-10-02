@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remove Duplicate Lines - Text Processing Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+        
+        .tool-card {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+            padding: 40px;
+            margin-top: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0;
+            color: white;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .tool-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .text-areas {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .input-section, .output-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #ee5a24;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .text-area-container {
+            position: relative;
+        }
+        
+        .text-area {
+            width: 100%;
+            height: 300px;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            resize: vertical;
+            transition: all 0.3s;
+            line-height: 1.6;
+            font-family: monospace;
+        }
+        
+        .text-area:focus {
+            border-color: #ee5a24;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(238, 90, 36, 0.2);
+        }
+        
+        .line-count {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            color: #666;
+            font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        
+        .options-panel {
+            background-color: #f8f9ff;
+            border-radius: 15px;
+            padding: 25px;
+        }
+        
+        .options-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #ee5a24;
+            text-align: center;
+        }
+        
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .option-group {
+            margin-bottom: 15px;
+        }
+        
+        .option-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .option-select, .option-checkbox {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: white;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .checkbox-group input {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 150px;
+        }
+        
+        .primary-btn {
+            background: linear-gradient(to right, #ff6b6b, #ee5a24);
+            color: white;
+            box-shadow: 0 4px 10px rgba(238, 90, 36, 0.3);
+        }
+        
+        .primary-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(238, 90, 36, 0.4);
+        }
+        
+        .secondary-btn {
+            background: #f8f9ff;
+            color: #333;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .secondary-btn:hover {
+            background: #eef1ff;
+            border-color: #ee5a24;
+        }
+        
+        .copy-btn {
+            background: #4CAF50;
+            color: white;
+            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+        }
+        
+        .copy-btn:hover {
+            background: #45a049;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(76, 175, 80, 0.4);
+        }
+        
+        .stats-section {
+            display: flex;
+            justify-content: space-between;
+            background-color: #f8f9ff;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ee5a24;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 600;
+        }
+        
+        .additional-tools {
+            margin-top: 30px;
+            background-color: #f8f9ff;
+            border-radius: 15px;
+            padding: 25px;
+        }
+        
+        .tools-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #ee5a24;
+            text-align: center;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .tool-item {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .tool-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+        }
+        
+        .tool-icon {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            color: #ee5a24;
+        }
+        
+        .tool-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: white;
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .text-areas {
+                flex-direction: column;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .stats-section {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .stat-value {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Remove Duplicate Lines</h1>
+            <p class="subtitle">Clean your text by removing duplicate lines with advanced options</p>
+        </header>
+        
+        <div class="tool-card">
+            <div class="tool-content">
+                <div class="text-areas">
+                    <div class="input-section">
+                        <div class="section-title">
+                            <span>Input Text</span>
+                            <span id="inputLineCount">0 lines</span>
+                        </div>
+                        <div class="text-area-container">
+                            <textarea class="text-area" id="inputText" placeholder="Paste your text with duplicate lines here...">Apple
+Banana
+Apple
+Orange
+Banana
+Grapes
+Apple
+Orange
+Mango
+Banana</textarea>
+                            <div class="line-count" id="inputLineCountDisplay">0</div>
+                        </div>
+                    </div>
+                    
+                    <div class="output-section">
+                        <div class="section-title">
+                            <span>Processed Text</span>
+                            <span id="outputLineCount">0 lines</span>
+                        </div>
+                        <div class="text-area-container">
+                            <textarea class="text-area" id="outputText" placeholder="Unique lines will appear here..." readonly></textarea>
+                            <div class="line-count" id="outputLineCountDisplay">0</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="options-panel">
+                    <div class="options-title">Processing Options</div>
+                    <div class="options-grid">
+                        <div class="option-group">
+                            <label class="option-label">Case Sensitivity</label>
+                            <select class="option-select" id="caseSensitivity">
+                                <option value="insensitive">Case Insensitive</option>
+                                <option value="sensitive">Case Sensitive</option>
+                            </select>
+                        </div>
+                        
+                        <div class="option-group">
+                            <label class="option-label">Sorting</label>
+                            <select class="option-select" id="sorting">
+                                <option value="original">Keep Original Order</option>
+                                <option value="asc">Sort A-Z</option>
+                                <option value="desc">Sort Z-A</option>
+                            </select>
+                        </div>
+                        
+                        <div class="option-group">
+                            <label class="option-label">Processing Mode</label>
+                            <select class="option-select" id="processingMode">
+                                <option value="remove">Remove Duplicates</option>
+                                <option value="show">Show Only Duplicates</option>
+                                <option value="count">Show Duplicate Counts</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="options-grid" style="margin-top: 15px;">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="trimLines" checked>
+                            <label for="trimLines">Trim whitespace from lines</label>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="ignoreEmpty">
+                            <label for="ignoreEmpty">Ignore empty lines</label>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="preserveFirst">
+                            <label for="preserveFirst">Preserve first occurrence</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="action-btn primary-btn" id="processBtn">Remove Duplicates</button>
+                    <button class="action-btn secondary-btn" id="clearBtn">Clear Text</button>
+                    <button class="action-btn copy-btn" id="copyBtn">Copy Result</button>
+                </div>
+                
+                <div class="stats-section">
+                    <div class="stat-item">
+                        <div class="stat-value" id="originalLines">0</div>
+                        <div class="stat-label">Original Lines</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="uniqueLines">0</div>
+                        <div class="stat-label">Unique Lines</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="duplicateLines">0</div>
+                        <div class="stat-label">Duplicate Lines</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="reductionPercent">0%</div>
+                        <div class="stat-label">Reduction</div>
+                    </div>
+                </div>
+                
+                <div class="additional-tools">
+                    <div class="tools-title">Additional Text Tools</div>
+                    <div class="tools-grid">
+                        <div class="tool-item" data-tool="sort">
+                            <div class="tool-icon">🔤</div>
+                            <div class="tool-name">Sort Lines</div>
+                        </div>
+                        <div class="tool-item" data-tool="reverse">
+                            <div class="tool-icon">🔄</div>
+                            <div class="tool-name">Reverse Lines</div>
+                        </div>
+                        <div class="tool-item" data-tool="shuffle">
+                            <div class="tool-icon">🎲</div>
+                            <div class="tool-name">Shuffle Lines</div>
+                        </div>
+                        <div class="tool-item" data-tool="trim">
+                            <div class="tool-icon">✂️</div>
+                            <div class="tool-name">Trim All Lines</div>
+                        </div>
+                        <div class="tool-item" data-tool="uppercase">
+                            <div class="tool-icon">🔠</div>
+                            <div class="tool-name">Uppercase All</div>
+                        </div>
+                        <div class="tool-item" data-tool="lowercase">
+                            <div class="tool-icon">🔡</div>
+                            <div class="tool-name">Lowercase All</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Remove Duplicate Lines Tool | &copy; 2023 All Rights Reserved</p>
+        </footer>
+    </div>
+
+    <div class="notification" id="notification">
+        Text copied to clipboard!
+    </div>
+
+    <script>
+        // DOM Elements
+        const inputText = document.getElementById('inputText');
+        const outputText = document.getElementById('outputText');
+        const inputLineCount = document.getElementById('inputLineCount');
+        const outputLineCount = document.getElementById('outputLineCount');
+        const inputLineCountDisplay = document.getElementById('inputLineCountDisplay');
+        const outputLineCountDisplay = document.getElementById('outputLineCountDisplay');
+        const caseSensitivity = document.getElementById('caseSensitivity');
+        const sorting = document.getElementById('sorting');
+        const processingMode = document.getElementById('processingMode');
+        const trimLines = document.getElementById('trimLines');
+        const ignoreEmpty = document.getElementById('ignoreEmpty');
+        const preserveFirst = document.getElementById('preserveFirst');
+        const processBtn = document.getElementById('processBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const originalLines = document.getElementById('originalLines');
+        const uniqueLines = document.getElementById('uniqueLines');
+        const duplicateLines = document.getElementById('duplicateLines');
+        const reductionPercent = document.getElementById('reductionPercent');
+        const toolItems = document.querySelectorAll('.tool-item');
+        const notification = document.getElementById('notification');
+        
+        // Event Listeners
+        inputText.addEventListener('input', updateLineCounts);
+        processBtn.addEventListener('click', processText);
+        clearBtn.addEventListener('click', clearText);
+        copyBtn.addEventListener('click', copyToClipboard);
+        
+        // Add event listeners to options for real-time processing
+        [caseSensitivity, sorting, processingMode, trimLines, ignoreEmpty, preserveFirst].forEach(option => {
+            option.addEventListener('change', processText);
+        });
+        
+        toolItems.forEach(tool => {
+            tool.addEventListener('click', () => {
+                const toolType = tool.getAttribute('data-tool');
+                applyTool(toolType);
+            });
+        });
+        
+        // Functions
+        function updateLineCounts() {
+            const inputLines = inputText.value.split('\n').length;
+            const outputLines = outputText.value.split('\n').length;
+            
+            inputLineCount.textContent = `${inputLines} lines`;
+            outputLineCount.textContent = `${outputLines} lines`;
+            inputLineCountDisplay.textContent = inputLines;
+            outputLineCountDisplay.textContent = outputLines;
+        }
+        
+        function processText() {
+            const text = inputText.value;
+            const lines = text.split('\n');
+            
+            // Update original lines count
+            originalLines.textContent = lines.length;
+            
+            // Process lines based on options
+            let processedLines = [...lines];
+            
+            // Trim lines if option is checked
+            if (trimLines.checked) {
+                processedLines = processedLines.map(line => line.trim());
+            }
+            
+            // Ignore empty lines if option is checked
+            if (ignoreEmpty.checked) {
+                processedLines = processedLines.filter(line => line !== '');
+            }
+            
+            // Process based on mode
+            let resultLines = [];
+            let uniqueCount = 0;
+            let duplicateCount = 0;
+            
+            switch(processingMode.value) {
+                case 'remove':
+                    resultLines = removeDuplicates(processedLines);
+                    uniqueCount = resultLines.length;
+                    duplicateCount = processedLines.length - uniqueCount;
+                    break;
+                    
+                case 'show':
+                    resultLines = showOnlyDuplicates(processedLines);
+                    duplicateCount = resultLines.length;
+                    uniqueCount = processedLines.length - duplicateCount;
+                    break;
+                    
+                case 'count':
+                    resultLines = showDuplicateCounts(processedLines);
+                    const uniqueSet = new Set(
+                        caseSensitivity.value === 'sensitive' 
+                            ? processedLines 
+                            : processedLines.map(line => line.toLowerCase())
+                    );
+                    uniqueCount = uniqueSet.size;
+                    duplicateCount = processedLines.length - uniqueCount;
+                    break;
+            }
+            
+            // Sort if needed
+            if (sorting.value !== 'original') {
+                resultLines = sortLines(resultLines, sorting.value);
+            }
+            
+            // Update output
+            outputText.value = resultLines.join('\n');
+            
+            // Update stats
+            uniqueLines.textContent = uniqueCount;
+            duplicateLines.textContent = duplicateCount;
+            
+            const reduction = lines.length > 0 ? Math.round((duplicateCount / lines.length) * 100) : 0;
+            reductionPercent.textContent = `${reduction}%`;
+            
+            updateLineCounts();
+        }
+        
+        function removeDuplicates(lines) {
+            const seen = new Set();
+            const result = [];
+            
+            for (const line of lines) {
+                const key = caseSensitivity.value === 'sensitive' ? line : line.toLowerCase();
+                
+                if (!seen.has(key)) {
+                    seen.add(key);
+                    result.push(line);
+                } else if (!preserveFirst.checked) {
+                    // If not preserving first occurrence, we might want different behavior
+                    // For now, we'll just skip duplicates after the first
+                }
+            }
+            
+            return result;
+        }
+        
+        function showOnlyDuplicates(lines) {
+            const seen = new Set();
+            const duplicates = new Set();
+            const result = [];
+            
+            for (const line of lines) {
+                const key = caseSensitivity.value === 'sensitive' ? line : line.toLowerCase();
+                
+                if (seen.has(key)) {
+                    duplicates.add(key);
+                } else {
+                    seen.add(key);
+                }
+            }
+            
+            // Return only the duplicate lines
+            for (const line of lines) {
+                const key = caseSensitivity.value === 'sensitive' ? line : line.toLowerCase();
+                if (duplicates.has(key)) {
+                    result.push(line);
+                }
+            }
+            
+            return result;
+        }
+        
+        function showDuplicateCounts(lines) {
+            const counts = new Map();
+            
+            for (const line of lines) {
+                const key = caseSensitivity.value === 'sensitive' ? line : line.toLowerCase();
+                counts.set(key, (counts.get(key) || 0) + 1);
+            }
+            
+            const result = [];
+            for (const [line, count] of counts) {
+                if (count > 1) {
+                    result.push(`${line} (${count} times)`);
+                }
+            }
+            
+            return result;
+        }
+        
+        function sortLines(lines, order) {
+            const sorted = [...lines].sort((a, b) => {
+                const aComp = caseSensitivity.value === 'sensitive' ? a : a.toLowerCase();
+                const bComp = caseSensitivity.value === 'sensitive' ? b : b.toLowerCase();
+                
+                if (order === 'asc') {
+                    return aComp.localeCompare(bComp);
+                } else {
+                    return bComp.localeCompare(aComp);
+                }
+            });
+            
+            return sorted;
+        }
+        
+        function applyTool(toolType) {
+            let text = inputText.value;
+            let lines = text.split('\n');
+            let result = [];
+            
+            switch(toolType) {
+                case 'sort':
+                    result = sortLines(lines, 'asc');
+                    break;
+                case 'reverse':
+                    result = lines.reverse();
+                    break;
+                case 'shuffle':
+                    result = [...lines];
+                    for (let i = result.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [result[i], result[j]] = [result[j], result[i]];
+                    }
+                    break;
+                case 'trim':
+                    result = lines.map(line => line.trim());
+                    break;
+                case 'uppercase':
+                    result = lines.map(line => line.toUpperCase());
+                    break;
+                case 'lowercase':
+                    result = lines.map(line => line.toLowerCase());
+                    break;
+                default:
+                    result = lines;
+            }
+            
+            inputText.value = result.join('\n');
+            processText();
+        }
+        
+        function clearText() {
+            inputText.value = '';
+            outputText.value = '';
+            updateLineCounts();
+            
+            // Reset stats
+            originalLines.textContent = '0';
+            uniqueLines.textContent = '0';
+            duplicateLines.textContent = '0';
+            reductionPercent.textContent = '0%';
+        }
+        
+        function copyToClipboard() {
+            if (outputText.value) {
+                outputText.select();
+                document.execCommand('copy');
+                showNotification('Text copied to clipboard!');
+            } else {
+                showNotification('No text to copy!');
+            }
+        }
+        
+        function showNotification(message) {
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Initialize
+        window.onload = function() {
+            processText();
+            updateLineCounts();
+        };
+    </script>
+</body>
+</html>
