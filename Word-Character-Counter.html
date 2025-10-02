@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word & Character Counter - Text Analysis Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+        
+        .counter-card {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+            padding: 40px;
+            margin-top: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .counter-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0;
+            color: white;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .counter-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .text-input-section {
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #1a2980;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .text-area-container {
+            position: relative;
+        }
+        
+        .text-area {
+            width: 100%;
+            height: 250px;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            resize: vertical;
+            transition: all 0.3s;
+            line-height: 1.6;
+        }
+        
+        .text-area:focus {
+            border-color: #1a2980;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(26, 41, 128, 0.2);
+        }
+        
+        .char-count {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            color: #666;
+            font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background-color: #f8f9ff;
+            border-radius: 12px;
+            padding: 25px 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a2980;
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: #666;
+            font-weight: 600;
+        }
+        
+        .stat-detail {
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 5px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 150px;
+        }
+        
+        .primary-btn {
+            background: linear-gradient(to right, #1a2980, #26d0ce);
+            color: white;
+            box-shadow: 0 4px 10px rgba(26, 41, 128, 0.3);
+        }
+        
+        .primary-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(26, 41, 128, 0.4);
+        }
+        
+        .secondary-btn {
+            background: #f8f9ff;
+            color: #333;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .secondary-btn:hover {
+            background: #eef1ff;
+            border-color: #1a2980;
+        }
+        
+        .copy-btn {
+            background: #4CAF50;
+            color: white;
+            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+        }
+        
+        .copy-btn:hover {
+            background: #45a049;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(76, 175, 80, 0.4);
+        }
+        
+        .analysis-section {
+            background-color: #f8f9ff;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+        
+        .analysis-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #1a2980;
+            text-align: center;
+        }
+        
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .analysis-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .analysis-heading {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #1a2980;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .analysis-icon {
+            font-size: 1.3rem;
+        }
+        
+        .analysis-content {
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.5;
+        }
+        
+        .keyword-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .keyword {
+            background: #eef1ff;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            color: #1a2980;
+        }
+        
+        .reading-time {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .time-item {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .time-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1a2980;
+        }
+        
+        .time-label {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: white;
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .stat-value {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .reading-time {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Word & Character Counter</h1>
+            <p class="subtitle">Analyze your text with detailed statistics and insights</p>
+        </header>
+        
+        <div class="counter-card">
+            <div class="counter-content">
+                <div class="text-input-section">
+                    <div class="section-title">
+                        <span>Enter Your Text</span>
+                        <span id="totalCharCount">0 characters</span>
+                    </div>
+                    <div class="text-area-container">
+                        <textarea class="text-area" id="inputText" placeholder="Type or paste your text here to analyze it...">Welcome to the Word & Character Counter! This tool helps you analyze your text by counting words, characters, sentences, paragraphs, and more. It also provides reading time estimates and keyword analysis. Simply type or paste your text in this area, and all statistics will update in real-time. This is perfect for writers, students, content creators, and anyone who needs to analyze their text content.</textarea>
+                        <div class="char-count" id="charCountDisplay">0</div>
+                    </div>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="wordCount">0</div>
+                        <div class="stat-label">Words</div>
+                        <div class="stat-detail" id="uniqueWords">0 unique</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="charCount">0</div>
+                        <div class="stat-label">Characters</div>
+                        <div class="stat-detail" id="charNoSpaces">0 without spaces</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="sentenceCount">0</div>
+                        <div class="stat-label">Sentences</div>
+                        <div class="stat-detail" id="avgSentenceLength">0 words/sentence</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="paragraphCount">0</div>
+                        <div class="stat-label">Paragraphs</div>
+                        <div class="stat-detail" id="avgParagraphLength">0 words/paragraph</div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="action-btn primary-btn" id="clearBtn">Clear Text</button>
+                    <button class="action-btn secondary-btn" id="sampleBtn">Load Sample Text</button>
+                    <button class="action-btn copy-btn" id="copyBtn">Copy Text</button>
+                </div>
+                
+                <div class="analysis-section">
+                    <div class="analysis-title">Text Analysis</div>
+                    <div class="analysis-grid">
+                        <div class="analysis-card">
+                            <div class="analysis-heading">
+                                <span class="analysis-icon">📊</span>
+                                <span>Reading Time</span>
+                            </div>
+                            <div class="reading-time">
+                                <div class="time-item">
+                                    <div class="time-value" id="readingTimeSlow">0 min</div>
+                                    <div class="time-label">Slow (150 wpm)</div>
+                                </div>
+                                <div class="time-item">
+                                    <div class="time-value" id="readingTimeAvg">0 min</div>
+                                    <div class="time-label">Average (200 wpm)</div>
+                                </div>
+                                <div class="time-item">
+                                    <div class="time-value" id="readingTimeFast">0 min</div>
+                                    <div class="time-label">Fast (250 wpm)</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="analysis-card">
+                            <div class="analysis-heading">
+                                <span class="analysis-icon">🔤</span>
+                                <span>Keyword Density</span>
+                            </div>
+                            <div class="analysis-content">
+                                <div>Most used words:</div>
+                                <div class="keyword-list" id="keywordList">
+                                    <!-- Keywords will be inserted here -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="analysis-card">
+                            <div class="analysis-heading">
+                                <span class="analysis-icon">📝</span>
+                                <span>Text Summary</span>
+                            </div>
+                            <div class="analysis-content">
+                                <div id="textSummary">Your text contains 0 words and 0 characters.</div>
+                                <div class="reading-time" style="margin-top: 15px; padding-top: 15px;">
+                                    <div class="time-item">
+                                        <div class="time-value" id="avgWordLength">0.0</div>
+                                        <div class="time-label">Avg. Word Length</div>
+                                    </div>
+                                    <div class="time-item">
+                                        <div class="time-value" id="longestWord">0</div>
+                                        <div class="time-label">Longest Word</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Word & Character Counter | &copy; 2023 All Rights Reserved</p>
+        </footer>
+    </div>
+
+    <div class="notification" id="notification">
+        Text copied to clipboard!
+    </div>
+
+    <script>
+        // DOM Elements
+        const inputText = document.getElementById('inputText');
+        const totalCharCount = document.getElementById('totalCharCount');
+        const charCountDisplay = document.getElementById('charCountDisplay');
+        const wordCount = document.getElementById('wordCount');
+        const charCount = document.getElementById('charCount');
+        const charNoSpaces = document.getElementById('charNoSpaces');
+        const sentenceCount = document.getElementById('sentenceCount');
+        const avgSentenceLength = document.getElementById('avgSentenceLength');
+        const paragraphCount = document.getElementById('paragraphCount');
+        const avgParagraphLength = document.getElementById('avgParagraphLength');
+        const uniqueWords = document.getElementById('uniqueWords');
+        const readingTimeSlow = document.getElementById('readingTimeSlow');
+        const readingTimeAvg = document.getElementById('readingTimeAvg');
+        const readingTimeFast = document.getElementById('readingTimeFast');
+        const keywordList = document.getElementById('keywordList');
+        const textSummary = document.getElementById('textSummary');
+        const avgWordLength = document.getElementById('avgWordLength');
+        const longestWord = document.getElementById('longestWord');
+        const clearBtn = document.getElementById('clearBtn');
+        const sampleBtn = document.getElementById('sampleBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const notification = document.getElementById('notification');
+        
+        // Sample text
+        const sampleText = "The Word & Character Counter is a powerful tool for analyzing text content. It provides detailed statistics about your writing, including word count, character count, sentence count, and paragraph count. This tool is especially useful for writers, students, bloggers, and content creators who need to meet specific length requirements or analyze their writing style. The counter updates in real-time as you type, giving you immediate feedback on your text. Additionally, it calculates reading time estimates and identifies frequently used keywords to help you understand your writing patterns.";
+        
+        // Event Listeners
+        inputText.addEventListener('input', analyzeText);
+        clearBtn.addEventListener('click', clearText);
+        sampleBtn.addEventListener('click', loadSampleText);
+        copyBtn.addEventListener('click', copyToClipboard);
+        
+        // Functions
+        function analyzeText() {
+            const text = inputText.value;
+            
+            // Basic counts
+            const charCountValue = text.length;
+            const charCountNoSpaces = text.replace(/\s/g, '').length;
+            const wordCountValue = countWords(text);
+            const sentenceCountValue = countSentences(text);
+            const paragraphCountValue = countParagraphs(text);
+            
+            // Update basic stats
+            totalCharCount.textContent = `${charCountValue} characters`;
+            charCountDisplay.textContent = charCountValue;
+            wordCount.textContent = wordCountValue;
+            charCount.textContent = charCountValue;
+            charNoSpaces.textContent = `${charCountNoSpaces} without spaces`;
+            sentenceCount.textContent = sentenceCountValue;
+            paragraphCount.textContent = paragraphCountValue;
+            
+            // Calculate averages
+            const avgSentenceLengthValue = sentenceCountValue > 0 ? (wordCountValue / sentenceCountValue).toFixed(1) : 0;
+            const avgParagraphLengthValue = paragraphCountValue > 0 ? (wordCountValue / paragraphCountValue).toFixed(1) : 0;
+            
+            avgSentenceLength.textContent = `${avgSentenceLengthValue} words/sentence`;
+            avgParagraphLength.textContent = `${avgParagraphLengthValue} words/paragraph`;
+            
+            // Calculate unique words
+            const uniqueWordsCount = countUniqueWords(text);
+            uniqueWords.textContent = `${uniqueWordsCount} unique`;
+            
+            // Calculate reading time
+            calculateReadingTime(wordCountValue);
+            
+            // Analyze keywords
+            analyzeKeywords(text);
+            
+            // Update text summary
+            updateTextSummary(wordCountValue, charCountValue, charCountNoSpaces);
+            
+            // Calculate word statistics
+            calculateWordStats(text);
+        }
+        
+        function countWords(text) {
+            if (text.trim() === '') return 0;
+            return text.trim().split(/\s+/).length;
+        }
+        
+        function countSentences(text) {
+            if (text.trim() === '') return 0;
+            // Split by sentence-ending punctuation
+            const sentences = text.split(/[.!?]+/).filter(s => s.trim() !== '');
+            return sentences.length;
+        }
+        
+        function countParagraphs(text) {
+            if (text.trim() === '') return 0;
+            return text.split(/\n+/).filter(p => p.trim() !== '').length;
+        }
+        
+        function countUniqueWords(text) {
+            if (text.trim() === '') return 0;
+            const words = text.toLowerCase().match(/\b\w+\b/g) || [];
+            const uniqueWordsSet = new Set(words);
+            return uniqueWordsSet.size;
+        }
+        
+        function calculateReadingTime(wordCount) {
+            const slowWPM = 150;
+            const avgWPM = 200;
+            const fastWPM = 250;
+            
+            const slowTime = Math.ceil(wordCount / slowWPM);
+            const avgTime = Math.ceil(wordCount / avgWPM);
+            const fastTime = Math.ceil(wordCount / fastWPM);
+            
+            readingTimeSlow.textContent = `${slowTime} min`;
+            readingTimeAvg.textContent = `${avgTime} min`;
+            readingTimeFast.textContent = `${fastTime} min`;
+        }
+        
+        function analyzeKeywords(text) {
+            if (text.trim() === '') {
+                keywordList.innerHTML = '<div class="keyword">No text to analyze</div>';
+                return;
+            }
+            
+            // Extract words and count frequency
+            const words = text.toLowerCase().match(/\b\w+\b/g) || [];
+            const wordFreq = {};
+            
+            words.forEach(word => {
+                if (word.length > 3) { // Only consider words longer than 3 characters
+                    wordFreq[word] = (wordFreq[word] || 0) + 1;
+                }
+            });
+            
+            // Convert to array and sort by frequency
+            const sortedWords = Object.entries(wordFreq)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 10); // Top 10 words
+            
+            // Display keywords
+            keywordList.innerHTML = '';
+            sortedWords.forEach(([word, count]) => {
+                const keywordElement = document.createElement('div');
+                keywordElement.className = 'keyword';
+                keywordElement.textContent = `${word} (${count})`;
+                keywordList.appendChild(keywordElement);
+            });
+        }
+        
+        function updateTextSummary(wordCount, charCount, charNoSpaces) {
+            textSummary.textContent = `Your text contains ${wordCount} words and ${charCount} characters (${charNoSpaces} without spaces).`;
+        }
+        
+        function calculateWordStats(text) {
+            if (text.trim() === '') {
+                avgWordLength.textContent = '0.0';
+                longestWord.textContent = '0';
+                return;
+            }
+            
+            const words = text.match(/\b\w+\b/g) || [];
+            
+            // Calculate average word length
+            const totalChars = words.reduce((sum, word) => sum + word.length, 0);
+            const avgLength = (totalChars / words.length).toFixed(1);
+            avgWordLength.textContent = avgLength;
+            
+            // Find longest word
+            const longest = words.reduce((longest, word) => {
+                return word.length > longest.length ? word : longest;
+            }, '');
+            
+            longestWord.textContent = longest.length;
+        }
+        
+        function clearText() {
+            inputText.value = '';
+            analyzeText();
+        }
+        
+        function loadSampleText() {
+            inputText.value = sampleText;
+            analyzeText();
+        }
+        
+        function copyToClipboard() {
+            if (inputText.value) {
+                inputText.select();
+                document.execCommand('copy');
+                showNotification('Text copied to clipboard!');
+            } else {
+                showNotification('No text to copy!');
+            }
+        }
+        
+        function showNotification(message) {
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Initialize
+        window.onload = function() {
+            analyzeText();
+        };
+    </script>
+</body>
+</html>
