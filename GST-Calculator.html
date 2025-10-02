@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GST Calculator - Goods and Services Tax Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 1000px;
+            width: 100%;
+        }
+        
+        .calculator-card {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+            padding: 40px;
+            margin-top: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .calculator-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0;
+            color: white;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .calculator-content {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .input-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .results-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .calculation-type {
+            display: flex;
+            background-color: #f0f5ff;
+            border-radius: 10px;
+            padding: 5px;
+            margin-bottom: 25px;
+        }
+        
+        .type-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .type-btn.active {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        .input-label {
+            display: block;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #ee5a24;
+        }
+        
+        .input-with-unit {
+            position: relative;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+        
+        .input-field:focus {
+            border-color: #ee5a24;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(238, 90, 36, 0.2);
+        }
+        
+        .input-unit {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-weight: 600;
+        }
+        
+        .gst-rates {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .gst-rate-btn {
+            background: #f8f9ff;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .gst-rate-btn:hover {
+            border-color: #ee5a24;
+        }
+        
+        .gst-rate-btn.active {
+            background: #ff6b6b;
+            color: white;
+            border-color: #ff6b6b;
+        }
+        
+        .custom-rate {
+            grid-column: span 2;
+        }
+        
+        .custom-rate-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .custom-rate-input input {
+            flex: 1;
+        }
+        
+        .calculate-btn {
+            background: linear-gradient(to right, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 16px 40px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(238, 90, 36, 0.4);
+        }
+        
+        .calculate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(238, 90, 36, 0.6);
+        }
+        
+        .calculate-btn:active {
+            transform: translateY(0);
+        }
+        
+        .gst-result {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .result-amount {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .result-label {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .breakdown-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .breakdown-card {
+            background-color: #f8f9ff;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .breakdown-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ee5a24;
+            margin-bottom: 8px;
+        }
+        
+        .breakdown-label {
+            font-size: 1rem;
+            color: #666;
+            font-weight: 600;
+        }
+        
+        .calculation-steps {
+            background-color: #f8f9ff;
+            border-radius: 15px;
+            padding: 25px;
+        }
+        
+        .steps-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #ee5a24;
+            text-align: center;
+        }
+        
+        .steps-list {
+            list-style-type: none;
+        }
+        
+        .step-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .step-item:last-child {
+            border-bottom: none;
+        }
+        
+        .step-icon {
+            margin-right: 15px;
+            font-size: 1.2rem;
+            color: #ee5a24;
+        }
+        
+        .gst-types {
+            margin-top: 30px;
+            background-color: #f8f9ff;
+            border-radius: 15px;
+            padding: 25px;
+        }
+        
+        .types-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #ee5a24;
+            text-align: center;
+        }
+        
+        .types-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .type-item {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .type-name {
+            font-weight: 600;
+            color: #ee5a24;
+            margin-bottom: 5px;
+        }
+        
+        .type-rate {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            text-align: center;
+            margin-top: 15px;
+            font-weight: 600;
+            display: none;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: white;
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .calculator-content {
+                flex-direction: column;
+            }
+            
+            .breakdown-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .gst-rates {
+                grid-template-columns: 1fr;
+            }
+            
+            .custom-rate {
+                grid-column: span 1;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .result-amount {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>GST Calculator</h1>
+            <p class="subtitle">Calculate Goods and Services Tax for your transactions</p>
+        </header>
+        
+        <div class="calculator-card">
+            <div class="calculator-content">
+                <div class="input-section">
+                    <div class="calculation-type">
+                        <button class="type-btn active" id="addGstBtn">Add GST</button>
+                        <button class="type-btn" id="removeGstBtn">Remove GST</button>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label" id="amountLabel">Enter Amount (Excluding GST)</label>
+                        <div class="input-with-unit">
+                            <input type="number" class="input-field" id="amount" placeholder="Enter amount" min="0" step="0.01" value="1000">
+                            <span class="input-unit">₹</span>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">Select GST Rate</label>
+                        <div class="gst-rates">
+                            <button class="gst-rate-btn" data-rate="5">5%</button>
+                            <button class="gst-rate-btn" data-rate="12">12%</button>
+                            <button class="gst-rate-btn active" data-rate="18">18%</button>
+                            <button class="gst-rate-btn" data-rate="28">28%</button>
+                            <div class="gst-rate-btn custom-rate">
+                                <div class="custom-rate-input">
+                                    <input type="number" class="input-field" id="customRate" placeholder="Custom Rate" min="0" max="100" step="0.1">
+                                    <span>%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="calculate-btn" id="calculateBtn">Calculate GST</button>
+                    
+                    <div class="error-message" id="errorMessage">
+                        Please enter a valid amount and GST rate!
+                    </div>
+                </div>
+                
+                <div class="results-section">
+                    <div class="gst-result" id="gstResult" style="display: none;">
+                        <div class="result-amount" id="resultAmount">₹0</div>
+                        <div class="result-label" id="resultLabel">Total Amount (Including GST)</div>
+                    </div>
+                    
+                    <div class="breakdown-cards">
+                        <div class="breakdown-card">
+                            <div class="breakdown-value" id="originalAmount">₹0</div>
+                            <div class="breakdown-label" id="originalLabel">Original Amount</div>
+                        </div>
+                        <div class="breakdown-card">
+                            <div class="breakdown-value" id="gstAmount">₹0</div>
+                            <div class="breakdown-label">GST Amount</div>
+                        </div>
+                    </div>
+                    
+                    <div class="calculation-steps">
+                        <div class="steps-title">Calculation Steps</div>
+                        <ul class="steps-list" id="stepsList">
+                            <li class="step-item">
+                                <span class="step-icon">➊</span>
+                                <span>Enter the amount and select GST rate</span>
+                            </li>
+                            <li class="step-item">
+                                <span class="step-icon">➋</span>
+                                <span>Click Calculate to see results</span>
+                            </li>
+                            <li class="step-item">
+                                <span class="step-icon">➌</span>
+                                <span>View detailed breakdown below</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="gst-types">
+                        <div class="types-title">Common GST Rates in India</div>
+                        <div class="types-list">
+                            <div class="type-item">
+                                <div class="type-name">Essential Goods</div>
+                                <div class="type-rate">0%, 5%</div>
+                            </div>
+                            <div class="type-item">
+                                <div class="type-name">Standard Goods</div>
+                                <div class="type-rate">12%, 18%</div>
+                            </div>
+                            <div class="type-item">
+                                <div class="type-name">Luxury & Sin Goods</div>
+                                <div class="type-rate">28%</div>
+                            </div>
+                            <div class="type-item">
+                                <div class="type-name">Services</div>
+                                <div class="type-rate">5%, 12%, 18%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>GST Calculator | &copy; 2023 All Rights Reserved</p>
+        </footer>
+    </div>
+
+    <script>
+        // DOM Elements
+        const addGstBtn = document.getElementById('addGstBtn');
+        const removeGstBtn = document.getElementById('removeGstBtn');
+        const amountLabel = document.getElementById('amountLabel');
+        const amountInput = document.getElementById('amount');
+        const gstRateBtns = document.querySelectorAll('.gst-rate-btn');
+        const customRateInput = document.getElementById('customRate');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const errorMessage = document.getElementById('errorMessage');
+        const gstResult = document.getElementById('gstResult');
+        const resultAmount = document.getElementById('resultAmount');
+        const resultLabel = document.getElementById('resultLabel');
+        const originalAmount = document.getElementById('originalAmount');
+        const originalLabel = document.getElementById('originalLabel');
+        const gstAmount = document.getElementById('gstAmount');
+        const stepsList = document.getElementById('stepsList');
+        
+        // Variables
+        let calculationType = 'add'; // 'add' or 'remove'
+        let gstRate = 18;
+        
+        // Event Listeners
+        addGstBtn.addEventListener('click', () => {
+            calculationType = 'add';
+            addGstBtn.classList.add('active');
+            removeGstBtn.classList.remove('active');
+            amountLabel.textContent = 'Enter Amount (Excluding GST)';
+            updateSteps();
+            calculateGST();
+        });
+        
+        removeGstBtn.addEventListener('click', () => {
+            calculationType = 'remove';
+            removeGstBtn.classList.add('active');
+            addGstBtn.classList.remove('active');
+            amountLabel.textContent = 'Enter Amount (Including GST)';
+            updateSteps();
+            calculateGST();
+        });
+        
+        gstRateBtns.forEach(btn => {
+            if (!btn.classList.contains('custom-rate')) {
+                btn.addEventListener('click', () => {
+                    gstRateBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    gstRate = parseFloat(btn.getAttribute('data-rate'));
+                    customRateInput.value = '';
+                    calculateGST();
+                });
+            }
+        });
+        
+        customRateInput.addEventListener('input', () => {
+            if (customRateInput.value) {
+                gstRateBtns.forEach(b => b.classList.remove('active'));
+                gstRate = parseFloat(customRateInput.value);
+                calculateGST();
+            }
+        });
+        
+        calculateBtn.addEventListener('click', calculateGST);
+        
+        // Allow Enter key to trigger calculation
+        [amountInput, customRateInput].forEach(input => {
+            input.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') {
+                    calculateGST();
+                }
+            });
+        });
+        
+        // Functions
+        function calculateGST() {
+            const amount = parseFloat(amountInput.value);
+            
+            // Validate inputs
+            if (!amount || amount <= 0 || !gstRate || gstRate <= 0) {
+                errorMessage.style.display = 'block';
+                gstResult.style.display = 'none';
+                return;
+            }
+            
+            errorMessage.style.display = 'none';
+            
+            let original, gst, total;
+            
+            if (calculationType === 'add') {
+                // Add GST to net amount
+                original = amount;
+                gst = (amount * gstRate) / 100;
+                total = original + gst;
+                
+                originalLabel.textContent = 'Original Amount';
+                resultLabel.textContent = 'Total Amount (Including GST)';
+            } else {
+                // Remove GST from gross amount
+                total = amount;
+                original = (amount * 100) / (100 + gstRate);
+                gst = total - original;
+                
+                originalLabel.textContent = 'Base Amount (Excluding GST)';
+                resultLabel.textContent = 'Total Amount (Including GST)';
+            }
+            
+            // Format and display results
+            resultAmount.textContent = formatCurrency(total);
+            originalAmount.textContent = formatCurrency(original);
+            gstAmount.textContent = formatCurrency(gst);
+            
+            // Update calculation steps
+            updateSteps(original, gst, total);
+            
+            // Show results
+            gstResult.style.display = 'block';
+        }
+        
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(amount);
+        }
+        
+        function updateSteps(original, gst, total) {
+            // Clear existing steps
+            stepsList.innerHTML = '';
+            
+            if (calculationType === 'add') {
+                stepsList.innerHTML = `
+                    <li class="step-item">
+                        <span class="step-icon">➊</span>
+                        <span>Original Amount: <strong>${formatCurrency(original || parseFloat(amountInput.value) || 0)}</strong></span>
+                    </li>
+                    <li class="step-item">
+                        <span class="step-icon">➋</span>
+                        <span>GST (${gstRate}%): <strong>${formatCurrency(gst || (parseFloat(amountInput.value) * gstRate / 100) || 0)}</strong></span>
+                    </li>
+                    <li class="step-item">
+                        <span class="step-icon">➌</span>
+                        <span>Total Amount: <strong>${formatCurrency(total || (parseFloat(amountInput.value) * (1 + gstRate / 100)) || 0)}</strong></span>
+                    </li>
+                `;
+            } else {
+                stepsList.innerHTML = `
+                    <li class="step-item">
+                        <span class="step-icon">➊</span>
+                        <span>Total Amount (Incl. GST): <strong>${formatCurrency(total || parseFloat(amountInput.value) || 0)}</strong></span>
+                    </li>
+                    <li class="step-item">
+                        <span class="step-icon">➋</span>
+                        <span>GST (${gstRate}%): <strong>${formatCurrency(gst || (parseFloat(amountInput.value) - (parseFloat(amountInput.value) * 100 / (100 + gstRate))) || 0)}</strong></span>
+                    </li>
+                    <li class="step-item">
+                        <span class="step-icon">➌</span>
+                        <span>Base Amount (Excl. GST): <strong>${formatCurrency(original || (parseFloat(amountInput.value) * 100 / (100 + gstRate)) || 0)}</strong></span>
+                    </li>
+                `;
+            }
+        }
+        
+        // Initialize the calculator with default values
+        window.onload = function() {
+            calculateGST();
+        };
+    </script>
+</body>
+</html>
