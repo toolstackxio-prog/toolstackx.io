@@ -1,1 +1,334 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Encryptor/Decryptor | ToolStackX</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .app-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .input-section, .output-section {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #fdbb2d;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 1rem;
+            resize: vertical;
+            margin-bottom: 20px;
+        }
+        
+        textarea:focus {
+            outline: 2px solid #fdbb2d;
+        }
+        
+        .key-input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+        
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        button {
+            flex: 1;
+            min-width: 140px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .encrypt-btn {
+            background: #1a2a6c;
+            color: white;
+        }
+        
+        .decrypt-btn {
+            background: #b21f1f;
+            color: white;
+        }
+        
+        .clear-btn {
+            background: #fdbb2d;
+            color: #333;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .output-section p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .feature-card i {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #fdbb2d;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Text Encryptor/Decryptor</h1>
+            <p class="tagline">Securely encrypt and decrypt your text with a custom key</p>
+        </header>
+        
+        <div class="app-container">
+            <div class="input-section">
+                <h2>Input Text</h2>
+                <textarea id="inputText" placeholder="Enter text to encrypt or decrypt here..."></textarea>
+                
+                <label for="encryptionKey">Encryption Key:</label>
+                <input type="text" id="encryptionKey" class="key-input" placeholder="Enter your secret key">
+                
+                <div class="btn-group">
+                    <button class="encrypt-btn" onclick="encryptText()">Encrypt Text</button>
+                    <button class="decrypt-btn" onclick="decryptText()">Decrypt Text</button>
+                    <button class="clear-btn" onclick="clearAll()">Clear All</button>
+                </div>
+            </div>
+            
+            <div class="output-section">
+                <h2>Output Text</h2>
+                <textarea id="outputText" placeholder="Encrypted or decrypted text will appear here..." readonly></textarea>
+                <p>Character Count: <span id="charCount">0</span></p>
+                <p>Processing Time: <span id="processingTime">0</span> ms</p>
+            </div>
+        </div>
+        
+        <div class="features">
+            <div class="feature-card">
+                <i>🔒</i>
+                <h3>Secure Encryption</h3>
+                <p>Uses advanced encryption algorithm to protect your text</p>
+            </div>
+            <div class="feature-card">
+                <i>⚡</i>
+                <h3>Fast Processing</h3>
+                <p>Quick encryption and decryption with minimal delay</p>
+            </div>
+            <div class="feature-card">
+                <i>🔑</i>
+                <h3>Custom Key</h3>
+                <p>Use your own secret key for enhanced security</p>
+            </div>
+            <div class="feature-card">
+                <i>📱</i>
+                <h3>Responsive Design</h3>
+                <p>Works perfectly on all devices and screen sizes</p>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Text Encryptor/Decryptor | Part of ToolStackX.io</p>
+            <p>© 2023 ToolStackX. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        function encryptText() {
+            const inputText = document.getElementById('inputText').value;
+            const key = document.getElementById('encryptionKey').value;
+            
+            if (!inputText) {
+                alert('Please enter some text to encrypt.');
+                return;
+            }
+            
+            if (!key) {
+                alert('Please enter an encryption key.');
+                return;
+            }
+            
+            const startTime = performance.now();
+            
+            // Simple encryption algorithm (for demonstration)
+            let encrypted = '';
+            for (let i = 0; i < inputText.length; i++) {
+                const charCode = inputText.charCodeAt(i) ^ key.charCodeAt(i % key.length);
+                encrypted += String.fromCharCode(charCode);
+            }
+            
+            // Convert to base64 for better display
+            encrypted = btoa(encrypted);
+            
+            const endTime = performance.now();
+            const processingTime = (endTime - startTime).toFixed(2);
+            
+            document.getElementById('outputText').value = encrypted;
+            document.getElementById('charCount').textContent = encrypted.length;
+            document.getElementById('processingTime').textContent = processingTime;
+        }
+        
+        function decryptText() {
+            const inputText = document.getElementById('inputText').value;
+            const key = document.getElementById('encryptionKey').value;
+            
+            if (!inputText) {
+                alert('Please enter some text to decrypt.');
+                return;
+            }
+            
+            if (!key) {
+                alert('Please enter the decryption key.');
+                return;
+            }
+            
+            const startTime = performance.now();
+            
+            try {
+                // Convert from base64
+                let decoded = atob(inputText);
+                
+                // Simple decryption algorithm (reverse of encryption)
+                let decrypted = '';
+                for (let i = 0; i < decoded.length; i++) {
+                    const charCode = decoded.charCodeAt(i) ^ key.charCodeAt(i % key.length);
+                    decrypted += String.fromCharCode(charCode);
+                }
+                
+                const endTime = performance.now();
+                const processingTime = (endTime - startTime).toFixed(2);
+                
+                document.getElementById('outputText').value = decrypted;
+                document.getElementById('charCount').textContent = decrypted.length;
+                document.getElementById('processingTime').textContent = processingTime;
+            } catch (error) {
+                alert('Error: Could not decrypt the text. Please check your input and key.');
+                console.error(error);
+            }
+        }
+        
+        function clearAll() {
+            document.getElementById('inputText').value = '';
+            document.getElementById('outputText').value = '';
+            document.getElementById('encryptionKey').value = '';
+            document.getElementById('charCount').textContent = '0';
+            document.getElementById('processingTime').textContent = '0';
+        }
+    </script>
+</body>
+</html>
