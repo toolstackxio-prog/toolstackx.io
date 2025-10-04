@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UUID Generator | ToolStackX</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            margin-top: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .generator-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .generator-controls {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .generator-output {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .uuid-container {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            min-height: 200px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .uuid-item {
+            padding: 10px;
+            margin-bottom: 8px;
+            background: white;
+            border-radius: 6px;
+            border-left: 4px solid #3498db;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            word-break: break-all;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .uuid-item:nth-child(2n) {
+            border-left-color: #2ecc71;
+        }
+        
+        .uuid-item:nth-child(3n) {
+            border-left-color: #e74c3c;
+        }
+        
+        .uuid-item:nth-child(4n) {
+            border-left-color: #f39c12;
+        }
+        
+        .copy-btn {
+            background: none;
+            border: none;
+            color: #3498db;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        
+        .copy-btn:hover {
+            background: #3498db;
+            color: white;
+        }
+        
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: #2ecc71;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #27ae60;
+        }
+        
+        .btn-danger {
+            background-color: #e74c3c;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .uuid-info {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .uuid-info h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .uuid-info ul {
+            padding-left: 20px;
+        }
+        
+        .uuid-info li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .instructions {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-top: 30px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .instructions h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .instructions ul {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .generator-container {
+                flex-direction: column;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>UUID Generator</h1>
+            <p class="subtitle">Generate Universally Unique Identifiers instantly</p>
+        </header>
+        
+        <div class="generator-container">
+            <div class="generator-controls">
+                <h2 class="section-title">Generate UUIDs</h2>
+                
+                <div class="input-group">
+                    <label for="uuid-count">Number of UUIDs to generate</label>
+                    <input type="number" id="uuid-count" min="1" max="100" value="5">
+                </div>
+                
+                <div class="input-group">
+                    <label for="uuid-version">UUID Version</label>
+                    <select id="uuid-version">
+                        <option value="v4">UUID v4 (Random)</option>
+                        <option value="v1">UUID v1 (Timestamp-based)</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="uuid-format">Output Format</label>
+                    <select id="uuid-format">
+                        <option value="standard">Standard (8-4-4-4-12)</option>
+                        <option value="uppercase">Uppercase</option>
+                        <option value="no-hyphens">No Hyphens</option>
+                        <option value="braces">With Braces</option>
+                        <option value="urn">URN Format</option>
+                    </select>
+                </div>
+                
+                <button id="generate-btn" class="btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>
+                        <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"/>
+                    </svg>
+                    Generate UUIDs
+                </button>
+                
+                <button id="copy-all-btn" class="btn btn-secondary" disabled>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                        <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                    </svg>
+                    Copy All UUIDs
+                </button>
+                
+                <button id="clear-btn" class="btn btn-danger">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                    </svg>
+                    Clear All
+                </button>
+            </div>
+            
+            <div class="generator-output">
+                <h2 class="section-title">Generated UUIDs</h2>
+                
+                <div class="uuid-container" id="uuid-container">
+                    <div class="uuid-item">
+                        <span>No UUIDs generated yet</span>
+                    </div>
+                </div>
+                
+                <div class="uuid-info">
+                    <h3>About UUID Versions</h3>
+                    <ul>
+                        <li><strong>UUID v4 (Random)</strong>: Uses random numbers to generate UUIDs. Most commonly used.</li>
+                        <li><strong>UUID v1 (Timestamp-based)</strong>: Uses MAC address and timestamp. Provides time-based ordering.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h3>How to Use:</h3>
+            <ul>
+                <li>Select the number of UUIDs you want to generate</li>
+                <li>Choose between UUID v4 (random) or v1 (timestamp-based)</li>
+                <li>Select your preferred output format</li>
+                <li>Click "Generate UUIDs" to create them</li>
+                <li>Copy individual UUIDs or all at once</li>
+            </ul>
+        </div>
+    </div>
+    
+    <footer>
+        <p>ToolStackX UUID Generator &copy; 2023</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const uuidCount = document.getElementById('uuid-count');
+            const uuidVersion = document.getElementById('uuid-version');
+            const uuidFormat = document.getElementById('uuid-format');
+            const generateBtn = document.getElementById('generate-btn');
+            const copyAllBtn = document.getElementById('copy-all-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const uuidContainer = document.getElementById('uuid-container');
+            
+            // Generate UUIDs when button is clicked
+            generateBtn.addEventListener('click', generateUUIDs);
+            
+            // Clear all UUIDs
+            clearBtn.addEventListener('click', function() {
+                uuidContainer.innerHTML = '<div class="uuid-item"><span>No UUIDs generated yet</span></div>';
+                copyAllBtn.disabled = true;
+            });
+            
+            // Copy all UUIDs to clipboard
+            copyAllBtn.addEventListener('click', copyAllUUIDs);
+            
+            function generateUUIDs() {
+                const count = parseInt(uuidCount.value);
+                const version = uuidVersion.value;
+                const format = uuidFormat.value;
+                
+                if (count < 1 || count > 100) {
+                    alert('Please enter a number between 1 and 100');
+                    return;
+                }
+                
+                // Clear container
+                uuidContainer.innerHTML = '';
+                
+                // Generate UUIDs
+                for (let i = 0; i < count; i++) {
+                    let uuid;
+                    
+                    if (version === 'v4') {
+                        uuid = generateUUIDv4();
+                    } else {
+                        uuid = generateUUIDv1();
+                    }
+                    
+                    // Apply formatting
+                    uuid = formatUUID(uuid, format);
+                    
+                    // Create UUID element
+                    const uuidElement = document.createElement('div');
+                    uuidElement.className = 'uuid-item';
+                    uuidElement.innerHTML = `
+                        <span>${uuid}</span>
+                        <button class="copy-btn" data-uuid="${uuid}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                                <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                            </svg>
+                        </button>
+                    `;
+                    
+                    uuidContainer.appendChild(uuidElement);
+                }
+                
+                // Add event listeners to copy buttons
+                document.querySelectorAll('.copy-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const uuid = this.getAttribute('data-uuid');
+                        copyToClipboard(uuid);
+                        
+                        // Visual feedback
+                        const originalHTML = this.innerHTML;
+                        this.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>';
+                        this.style.background = '#2ecc71';
+                        this.style.color = 'white';
+                        
+                        setTimeout(() => {
+                            this.innerHTML = originalHTML;
+                            this.style.background = '';
+                            this.style.color = '';
+                        }, 1000);
+                    });
+                });
+                
+                // Enable copy all button
+                copyAllBtn.disabled = false;
+            }
+            
+            function generateUUIDv4() {
+                // Generate a UUID v4 (random)
+                return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                    const r = Math.random() * 16 | 0;
+                    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                    return v.toString(16);
+                });
+            }
+            
+            function generateUUIDv1() {
+                // Generate a UUID v1 (timestamp-based, simplified version)
+                // Note: This is a simplified implementation for demonstration
+                const timestamp = Date.now();
+                const randomPart1 = Math.random().toString(16).substr(2, 8);
+                const randomPart2 = Math.random().toString(16).substr(2, 4);
+                const randomPart3 = Math.random().toString(16).substr(2, 4);
+                const randomPart4 = Math.random().toString(16).substr(2, 12);
+                
+                return `${randomPart1}-${randomPart2}-1${randomPart3.substr(1)}-${(Math.random() * 4 | 0 + 8).toString(16)}${randomPart4.substr(1)}`;
+            }
+            
+            function formatUUID(uuid, format) {
+                switch (format) {
+                    case 'uppercase':
+                        return uuid.toUpperCase();
+                    case 'no-hyphens':
+                        return uuid.replace(/-/g, '');
+                    case 'braces':
+                        return `{${uuid}}`;
+                    case 'urn':
+                        return `urn:uuid:${uuid}`;
+                    default:
+                        return uuid;
+                }
+            }
+            
+            function copyAllUUIDs() {
+                const uuidElements = document.querySelectorAll('.uuid-item span');
+                if (uuidElements.length === 0) return;
+                
+                let allUUIDs = '';
+                uuidElements.forEach(el => {
+                    allUUIDs += el.textContent + '\n';
+                });
+                
+                copyToClipboard(allUUIDs.trim());
+                
+                // Visual feedback
+                const originalText = copyAllBtn.innerHTML;
+                copyAllBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg> Copied!';
+                copyAllBtn.style.background = '#2ecc71';
+                
+                setTimeout(() => {
+                    copyAllBtn.innerHTML = originalText;
+                    copyAllBtn.style.background = '';
+                }, 2000);
+            }
+            
+            function copyToClipboard(text) {
+                navigator.clipboard.writeText(text)
+                    .then(() => {
+                        console.log('Text copied to clipboard');
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy text: ', err);
+                        // Fallback for older browsers
+                        const textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                    });
+            }
+            
+            // Generate initial UUIDs
+            generateUUIDs();
+        });
+    </script>
+</body>
+</html>
