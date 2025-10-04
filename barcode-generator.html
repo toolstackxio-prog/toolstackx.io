@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barcode Generator | ToolStackX</title>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            margin-top: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        .generator-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .generator-controls {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .generator-output {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .barcode-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            text-align: center;
+            width: 100%;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #barcode {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .barcode-text {
+            margin-top: 15px;
+            font-weight: 600;
+            color: #2c3e50;
+            word-break: break-all;
+            text-align: center;
+        }
+        
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: #2ecc71;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #27ae60;
+        }
+        
+        .btn-danger {
+            background-color: #e74c3c;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .format-info {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .format-info h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .format-info ul {
+            padding-left: 20px;
+        }
+        
+        .format-info li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .instructions {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-top: 30px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .instructions h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .instructions ul {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .generator-container {
+                flex-direction: column;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Barcode Generator</h1>
+            <p class="subtitle">Create barcodes in multiple formats instantly</p>
+        </header>
+        
+        <div class="generator-container">
+            <div class="generator-controls">
+                <h2 class="section-title">Generate Barcode</h2>
+                
+                <div class="input-group">
+                    <label for="barcode-data">Barcode Data</label>
+                    <input type="text" id="barcode-data" placeholder="Enter text or numbers for barcode..." value="123456789012">
+                </div>
+                
+                <div class="input-group">
+                    <label for="barcode-format">Barcode Format</label>
+                    <select id="barcode-format">
+                        <option value="CODE128">CODE128</option>
+                        <option value="CODE39">CODE39</option>
+                        <option value="EAN13">EAN-13</option>
+                        <option value="EAN8">EAN-8</option>
+                        <option value="UPC">UPC-A</option>
+                        <option value="ITF14">ITF-14</option>
+                        <option value="MSI">MSI</option>
+                        <option value="pharmacode">Pharmacode</option>
+                    </select>
+                </div>
+                
+                <div class="options-grid">
+                    <div class="input-group">
+                        <label for="barcode-width">Width (px)</label>
+                        <input type="number" id="barcode-width" min="1" max="5" step="0.1" value="2">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="barcode-height">Height (px)</label>
+                        <input type="number" id="barcode-height" min="20" max="200" value="100">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="barcode-color">Barcode Color</label>
+                        <input type="color" id="barcode-color" value="#000000">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="bg-color">Background Color</label>
+                        <input type="color" id="bg-color" value="#FFFFFF">
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="display-value">Display Text</label>
+                    <select id="display-value">
+                        <option value="true">Show text below barcode</option>
+                        <option value="false">Hide text</option>
+                    </select>
+                </div>
+                
+                <button id="generate-btn" class="btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"/>
+                        <path d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z"/>
+                    </svg>
+                    Generate Barcode
+                </button>
+                
+                <button id="download-btn" class="btn btn-secondary" disabled>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                    </svg>
+                    Download Barcode
+                </button>
+                
+                <button id="clear-btn" class="btn btn-danger">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                    </svg>
+                    Clear
+                </button>
+            </div>
+            
+            <div class="generator-output">
+                <div class="barcode-container">
+                    <svg id="barcode"></svg>
+                    <div class="barcode-text" id="barcode-data-display">Your barcode will appear here</div>
+                </div>
+                
+                <div class="format-info">
+                    <h3>About Barcode Formats</h3>
+                    <ul>
+                        <li><strong>CODE128</strong>: General purpose, high density</li>
+                        <li><strong>CODE39</strong>: Alphanumeric, widely used</li>
+                        <li><strong>EAN-13</strong>: Product barcodes (12-13 digits)</li>
+                        <li><strong>EAN-8</strong>: Small product barcodes (7-8 digits)</li>
+                        <li><strong>UPC-A</strong>: North American product codes (12 digits)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h3>How to Use:</h3>
+            <ul>
+                <li>Enter the data you want to encode in the barcode</li>
+                <li>Select the barcode format that fits your needs</li>
+                <li>Customize the appearance with width, height, and colors</li>
+                <li>Click "Generate Barcode" to create your barcode</li>
+                <li>Download the barcode as an SVG image</li>
+            </ul>
+        </div>
+    </div>
+    
+    <footer>
+        <p>ToolStackX Barcode Generator &copy; 2023</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const barcodeData = document.getElementById('barcode-data');
+            const barcodeFormat = document.getElementById('barcode-format');
+            const barcodeWidth = document.getElementById('barcode-width');
+            const barcodeHeight = document.getElementById('barcode-height');
+            const barcodeColor = document.getElementById('barcode-color');
+            const bgColor = document.getElementById('bg-color');
+            const displayValue = document.getElementById('display-value');
+            const generateBtn = document.getElementById('generate-btn');
+            const downloadBtn = document.getElementById('download-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const barcodeSvg = document.getElementById('barcode');
+            const barcodeDataDisplay = document.getElementById('barcode-data-display');
+            
+            // Initialize with sample barcode
+            generateBarcode();
+            
+            // Generate barcode when button is clicked
+            generateBtn.addEventListener('click', generateBarcode);
+            
+            // Generate barcode when any input changes
+            barcodeData.addEventListener('input', generateBarcode);
+            barcodeFormat.addEventListener('change', generateBarcode);
+            barcodeWidth.addEventListener('input', generateBarcode);
+            barcodeHeight.addEventListener('input', generateBarcode);
+            barcodeColor.addEventListener('input', generateBarcode);
+            bgColor.addEventListener('input', generateBarcode);
+            displayValue.addEventListener('change', generateBarcode);
+            
+            // Clear inputs
+            clearBtn.addEventListener('click', function() {
+                barcodeData.value = '';
+                generateBarcode();
+            });
+            
+            // Download barcode
+            downloadBtn.addEventListener('click', downloadBarcode);
+            
+            function generateBarcode() {
+                const data = barcodeData.value.trim();
+                
+                if (!data) {
+                    barcodeSvg.innerHTML = '';
+                    barcodeDataDisplay.textContent = 'Your barcode will appear here';
+                    downloadBtn.disabled = true;
+                    return;
+                }
+                
+                try {
+                    // Generate barcode using JsBarcode
+                    JsBarcode("#barcode", data, {
+                        format: barcodeFormat.value,
+                        width: parseFloat(barcodeWidth.value),
+                        height: parseInt(barcodeHeight.value),
+                        displayValue: displayValue.value === 'true',
+                        lineColor: barcodeColor.value,
+                        background: bgColor.value,
+                        margin: 10,
+                        valid: function(valid) {
+                            if (!valid) {
+                                barcodeDataDisplay.textContent = 'Invalid data for selected barcode format';
+                                downloadBtn.disabled = true;
+                            } else {
+                                barcodeDataDisplay.textContent = data;
+                                downloadBtn.disabled = false;
+                            }
+                        }
+                    });
+                } catch (error) {
+                    barcodeDataDisplay.textContent = 'Error: ' + error.message;
+                    downloadBtn.disabled = true;
+                }
+            }
+            
+            function downloadBarcode() {
+                const svgData = new XMLSerializer().serializeToString(barcodeSvg);
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const img = new Image();
+                
+                img.onload = function() {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                    
+                    const link = document.createElement('a');
+                    link.download = 'barcode.png';
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                };
+                
+                img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
+            }
+        });
+    </script>
+</body>
+</html>
