@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Use | ToolStackX</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            margin-top: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .website-url {
+            color: #3498db;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .last-updated {
+            color: #7f8c8d;
+            font-size: 1rem;
+            font-style: italic;
+        }
+        
+        .content {
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        
+        .section {
+            margin-bottom: 35px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        h3 {
+            color: #2c3e50;
+            font-size: 1.4rem;
+            margin: 20px 0 10px 0;
+        }
+        
+        h4 {
+            color: #2c3e50;
+            font-size: 1.2rem;
+            margin: 15px 0 8px 0;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        ul, ol {
+            margin: 15px 0 15px 30px;
+        }
+        
+        li {
+            margin-bottom: 10px;
+            padding-left: 5px;
+        }
+        
+        .highlight-box {
+            background-color: #e8f4fd;
+            border: 1px solid #3498db;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .warning-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .contact-info {
+            background-color: #e8f4fd;
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #3498db;
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .back-to-home {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 30px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+        }
+        
+        .back-to-home:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+        
+        .definition-list {
+            margin: 20px 0;
+        }
+        
+        .definition-term {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-top: 15px;
+        }
+        
+        .definition-description {
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .tool-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .tool-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #2ecc71;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            h3 {
+                font-size: 1.2rem;
+            }
+            
+            h4 {
+                font-size: 1.1rem;
+            }
+            
+            table {
+                font-size: 14px;
+            }
+            
+            th, td {
+                padding: 10px;
+            }
+            
+            .tool-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Terms of Use</h1>
+            <p class="website-url">https://toolstackxio-prog.github.io/toolstackx.io/</p>
+            <p class="last-updated">Last Updated: October 28, 2023</p>
+        </header>
+        
+        <div class="content">
+            <div class="section">
+                <h2>1. Acceptance of Terms</h2>
+                <p>Welcome to ToolStackX ("we," "our," or "us"). By accessing or using our website located at <a href="https://toolstackxio-prog.github.io/toolstackx.io/">https://toolstackxio-prog.github.io/toolstackx.io/</a> (the "Service"), you agree to be bound by these Terms of Use ("Terms").</p>
+                
+                <div class="highlight-box">
+                    <p><strong>Important:</strong> Please read these Terms carefully before using our Service. If you do not agree to these Terms, you may not access or use our Service.</p>
+                </div>
+                
+                <p>These Terms apply to all visitors, users, and others who access or use the Service. By accessing or using the Service, you agree to be bound by these Terms. If you disagree with any part of the Terms, then you may not access the Service.</p>
+            </div>
+            
+            <div class="section">
+                <h2>2. Description of Service</h2>
+                
+                <h3>2.1 What is ToolStackX?</h3>
+                <p>ToolStackX is a collection of web-based tools that operate entirely within your web browser. Our Service provides various utility tools including but not limited to:</p>
+                
+                <div class="tool-list">
+                    <div class="tool-item">
+                        <h4>Word Counter</h4>
+                        <p>Count words, characters, sentences, and paragraphs</p>
+                    </div>
+                    <div class="tool-item">
+                        <h4>QR Code Generator</h4>
+                        <p>Create and customize QR codes</p>
+                    </div>
+                    <div class="tool-item">
+                        <h4>Barcode Generator</h4>
+                        <p>Generate barcodes in various formats</p>
+                    </div>
+                    <div class="tool-item">
+                        <h4>UUID Generator</h4>
+                        <p>Create universally unique identifiers</p>
+                    </div>
+                    <div class="tool-item">
+                        <h4>Unit Converter</h4>
+                        <p>Convert between different measurement units</p>
+                    </div>
+                    <div class="tool-item">
+                        <h4>Time Zone Converter</h4>
+                        <p>Convert times between different time zones</p>
+                    </div>
+                    <div class="tool-item">
+                        <h4>Random Generator</h4>
+                        <p>Generate random numbers and passwords</p>
+                    </div>
+                    <div class="tool-item">
+                        <h4>YouTube Thumbnail Creator</h4>
+                        <p>Design custom YouTube thumbnails</p>
+                    </div>
+                </div>
+                
+                <h3>2.2 Client-Side Processing</h3>
+                <p>All ToolStackX tools operate entirely within your web browser. This means:</p>
+                <ul>
+                    <li>Your data is processed locally on your device</li>
+                    <li>No user data is transmitted to our servers</li>
+                    <li>No user accounts or registration is required</li>
+                    <li>All processing happens in real-time within your browser</li>
+                </ul>
+                
+                <h3>2.3 Service Availability</h3>
+                <p>We strive to maintain high availability of our Service, but we do not guarantee uninterrupted access. The Service may be temporarily unavailable for maintenance, updates, or due to technical issues beyond our control.</p>
+            </div>
+            
+            <div class="section">
+                <h2>3. User Responsibilities and Acceptable Use</h2>
+                
+                <h3>3.1 Permitted Use</h3>
+                <p>You may use our Service for personal, educational, and commercial purposes, provided that:</p>
+                <ul>
+                    <li>You comply with these Terms</li>
+                    <li>You use the Service in accordance with applicable laws</li>
+                    <li>You do not misuse or disrupt the Service</li>
+                    <li>You respect intellectual property rights</li>
+                </ul>
+                
+                <h3>3.2 Prohibited Activities</h3>
+                <p>You agree not to use the Service to:</p>
+                <ul>
+                    <li>Violate any applicable laws, regulations, or third-party rights</li>
+                    <li>Transmit any malicious code, viruses, or harmful content</li>
+                    <li>Attempt to gain unauthorized access to our systems</li>
+                    <li>Use the Service for any illegal or unauthorized purpose</li>
+                    <li>Interfere with or disrupt the integrity or performance of the Service</li>
+                    <li>Reverse engineer, decompile, or disassemble any part of the Service</li>
+                    <li>Use the Service to generate content for malicious purposes</li>
+                </ul>
+                
+                <div class="warning-box">
+                    <p><strong>Warning:</strong> Any unauthorized use of the Service may result in termination of your access and may expose you to civil and criminal liability.</p>
+                </div>
+                
+                <h3>3.3 Content You Provide</h3>
+                <p>When using our tools, you may input various types of content including text, images, and data. You retain all rights to the content you input, and we do not claim ownership over your content.</p>
+                
+                <p>However, by using our Service, you grant us a limited license to process your content solely for the purpose of providing the Service to you. Since our tools operate client-side, this processing happens entirely on your device.</p>
+            </div>
+            
+            <div class="section">
+                <h2>4. Intellectual Property Rights</h2>
+                
+                <h3>4.1 Our Intellectual Property</h3>
+                <p>The Service and its original content, features, and functionality are owned by ToolStackX and are protected by international copyright, trademark, patent, trade secret, and other intellectual property laws.</p>
+                
+                <p>This includes but is not limited to:</p>
+                <ul>
+                    <li>The ToolStackX name and logo</li>
+                    <li>Website design and layout</li>
+                    <li>Tool interfaces and user experience</li>
+                    <li>Proprietary code and algorithms</li>
+                </ul>
+                
+                <h3>4.2 Third-Party Intellectual Property</h3>
+                <p>Our Service may incorporate third-party open-source libraries and resources. We respect all third-party intellectual property rights and comply with applicable licenses.</p>
+                
+                <table>
+                    <tr>
+                        <th>Third-Party Resource</th>
+                        <th>Purpose</th>
+                        <th>License</th>
+                    </tr>
+                    <tr>
+                        <td>Fabric.js</td>
+                        <td>Canvas manipulation for thumbnail creator</td>
+                        <td>MIT License</td>
+                    </tr>
+                    <tr>
+                        <td>JsBarcode</td>
+                        <td>Barcode generation</td>
+                        <td>MIT License</td>
+                    </tr>
+                    <tr>
+                        <td>QRCode.js</td>
+                        <td>QR code generation</td>
+                        <td>MIT License</td>
+                    </tr>
+                    <tr>
+                        <td>jsQR</td>
+                        <td>QR code scanning</td>
+                        <td>Apache License 2.0</td>
+                    </tr>
+                </table>
+                
+                <h3>4.3 User-Generated Content</h3>
+                <p>You retain all intellectual property rights to the content you create using our tools. We do not claim ownership over outputs generated through our Service.</p>
+            </div>
+            
+            <div class="section">
+                <h2>5. Disclaimer of Warranties</h2>
+                
+                <div class="warning-box">
+                    <p><strong>Important Disclaimer:</strong> The Service is provided "AS IS" and "AS AVAILABLE" without warranties of any kind, either express or implied.</p>
+                </div>
+                
+                <p>To the fullest extent permissible by law, ToolStackX disclaims all warranties, express or implied, including but not limited to:</p>
+                <ul>
+                    <li>Implied warranties of merchantability</li>
+                    <li>Fitness for a particular purpose</li>
+                    <li>Non-infringement of intellectual property</li>
+                    <li>Accuracy, reliability, or completeness of results</li>
+                    <li>Uninterrupted or error-free operation</li>
+                </ul>
+                
+                <h3>5.1 Tool-Specific Disclaimers</h3>
+                
+                <div class="definition-list">
+                    <p class="definition-term">Conversion Tools</p>
+                    <p class="definition-description">Unit conversion results are provided for informational purposes only. We do not guarantee the accuracy of conversions for critical applications.</p>
+                    
+                    <p class="definition-term">Code Generators</p>
+                    <p class="definition-description">Generated codes (QR, barcodes, UUIDs) should be verified for your specific use case. We are not responsible for any issues arising from their use.</p>
+                    
+                    <p class="definition-term">Password Generator</p>
+                    <p class="definition-description">Generated passwords are provided as suggestions. We recommend testing password strength for your specific security requirements.</p>
+                    
+                    <p class="definition-term">Thumbnail Creator</p>
+                    <p class="definition-description">Ensure you have appropriate rights to any images used in thumbnail creation.</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>6. Limitation of Liability</h2>
+                
+                <div class="highlight-box">
+                    <p><strong>Limitation of Liability:</strong> To the maximum extent permitted by applicable law, ToolStackX shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses, resulting from:</p>
+                </div>
+                
+                <ul>
+                    <li>Your access to or use of or inability to access or use the Service</li>
+                    <li>Any conduct or content of any third party on the Service</li>
+                    <li>Any content obtained from the Service</li>
+                    <li>Unauthorized access, use, or alteration of your transmissions or content</li>
+                </ul>
+                
+                <p>In no event shall ToolStackX's aggregate liability for all claims relating to the Service exceed the amount you paid us, if any, for accessing the Service during the twelve (12) months prior to the claim.</p>
+                
+                <h3>6.1 Jurisdictional Limitations</h3>
+                <p>Some jurisdictions do not allow the exclusion of certain warranties or the limitation or exclusion of liability for incidental or consequential damages. Accordingly, some of the above limitations may not apply to you.</p>
+            </div>
+            
+            <div class="section">
+                <h2>7. Privacy</h2>
+                
+                <p>Your privacy is important to us. Our Privacy Policy explains how we collect, use, and protect your information. By using our Service, you agree to our collection and use of information as described in our Privacy Policy.</p>
+                
+                <div class="highlight-box">
+                    <p><strong>Privacy Notice:</strong> ToolStackX is designed with privacy in mind. Since our tools operate client-side, your data never leaves your browser. We do not store or process your data on our servers.</p>
+                </div>
+                
+                <p>Please review our <a href="privacy-policy.html">Privacy Policy</a> for complete information about our privacy practices.</p>
+            </div>
+            
+            <div class="section">
+                <h2>8. Third-Party Services and Links</h2>
+                
+                <p>Our Service may contain links to third-party websites or services that are not owned or controlled by ToolStackX.</p>
+                
+                <p>We have no control over, and assume no responsibility for, the content, privacy policies, or practices of any third-party websites or services. You further acknowledge and agree that ToolStackX shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with use of or reliance on any such content, goods, or services available on or through any such websites or services.</p>
+                
+                <p>We strongly advise you to read the terms and conditions and privacy policies of any third-party websites or services that you visit.</p>
+            </div>
+            
+            <div class="section">
+                <h2>9. Termination</h2>
+                
+                <p>We may terminate or suspend access to our Service immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms.</p>
+                
+                <p>All provisions of the Terms which by their nature should survive termination shall survive termination, including, without limitation, ownership provisions, warranty disclaimers, indemnity, and limitations of liability.</p>
+                
+                <p>Upon termination, your right to use the Service will immediately cease.</p>
+            </div>
+            
+            <div class="section">
+                <h2>10. Changes to Terms</h2>
+                
+                <p>We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material, we will try to provide at least 30 days' notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion.</p>
+                
+                <p>By continuing to access or use our Service after those revisions become effective, you agree to be bound by the revised terms. If you do not agree to the new terms, please stop using the Service.</p>
+                
+                <p>We will update the "Last Updated" date at the top of these Terms when changes are made.</p>
+            </div>
+            
+            <div class="section">
+                <h2>11. Governing Law and Dispute Resolution</h2>
+                
+                <h3>11.1 Governing Law</h3>
+                <p>These Terms shall be governed and construed in accordance with the laws of the United States, without regard to its conflict of law provisions.</p>
+                
+                <h3>11.2 Dispute Resolution</h3>
+                <p>Any dispute arising from these Terms or your use of the Service shall be resolved through informal negotiations. If informal resolution fails, the dispute shall be submitted to binding arbitration in accordance with the rules of the American Arbitration Association.</p>
+                
+                <p>You agree that any arbitration shall take place in the United States and shall be conducted in the English language.</p>
+                
+                <h3>11.3 Class Action Waiver</h3>
+                <p>You agree that any arbitration or proceeding shall be limited to the dispute between us individually. You may not join or consolidate claims with other users, or litigate any dispute as a representative or member of a class or in a private attorney general capacity.</p>
+            </div>
+            
+            <div class="section">
+                <h2>12. Miscellaneous</h2>
+                
+                <h3>12.1 Entire Agreement</h3>
+                <p>These Terms constitute the entire agreement between you and ToolStackX regarding our Service and supersede and replace any prior agreements we might have had between us regarding the Service.</p>
+                
+                <h3>12.2 Severability</h3>
+                <p>If any provision of these Terms is held to be invalid or unenforceable by a court, the remaining provisions of these Terms will remain in effect.</p>
+                
+                <h3>12.3 No Waiver</h3>
+                <p>Our failure to enforce any right or provision of these Terms will not be considered a waiver of those rights. If we waive any term of these Terms in an individual instance, such waiver shall not be considered a permanent waiver of that term.</p>
+                
+                <h3>12.4 Assignment</h3>
+                <p>You may not assign or transfer these Terms, by operation of law or otherwise, without our prior written consent. Any attempt by you to assign or transfer these Terms without such consent will be null and void. We may freely assign or transfer these Terms without restriction.</p>
+            </div>
+            
+            <div class="section">
+                <h2>13. Contact Information</h2>
+                
+                <div class="contact-info">
+                    <p>If you have any questions about these Terms, please contact us:</p>
+                    
+                    <ul style="list-style: none; margin: 20px 0;">
+                        <li><strong>Website:</strong> <a href="https://toolstackxio-prog.github.io/toolstackx.io/">https://toolstackxio-prog.github.io/toolstackx.io/</a></li>
+                        <li><strong>GitHub Repository:</strong> <a href="https://github.com/toolstackxio-prog/toolstackx.io">https://github.com/toolstackxio-prog/toolstackx.io</a></li>
+                    </ul>
+                    
+                    <p>We will make our best effort to respond to your inquiries in a timely manner.</p>
+                </div>
+            </div>
+            
+            <div style="text-align: center;">
+                <a href="https://toolstackxio-prog.github.io/toolstackx.io/" class="back-to-home">← Back to ToolStackX Homepage</a>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>ToolStackX &copy; 2023 - All Rights Reserved</p>
+    </footer>
+
+    <script>
+        // Update the last updated date automatically
+        document.addEventListener('DOMContentLoaded', function() {
+            const lastUpdatedElement = document.querySelector('.last-updated');
+            const lastUpdated = new Date().toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            lastUpdatedElement.textContent = `Last Updated: ${lastUpdated}`;
+        });
+    </script>
+</body>
+</html>
