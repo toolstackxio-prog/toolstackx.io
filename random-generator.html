@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Number & Password Generator | ToolStackX</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            margin-top: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab {
+            padding: 12px 25px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #7f8c8d;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            color: #3498db;
+            border-bottom: 3px solid #3498db;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .generator-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .generator-controls {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .generator-output {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .checkbox-group input {
+            width: auto;
+            margin-right: 10px;
+        }
+        
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .result-container {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            min-height: 200px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .result-item {
+            padding: 10px;
+            margin-bottom: 8px;
+            background: white;
+            border-radius: 6px;
+            border-left: 4px solid #3498db;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            word-break: break-all;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .result-item:nth-child(2n) {
+            border-left-color: #2ecc71;
+        }
+        
+        .result-item:nth-child(3n) {
+            border-left-color: #e74c3c;
+        }
+        
+        .result-item:nth-child(4n) {
+            border-left-color: #f39c12;
+        }
+        
+        .copy-btn {
+            background: none;
+            border: none;
+            color: #3498db;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        
+        .copy-btn:hover {
+            background: #3498db;
+            color: white;
+        }
+        
+        .strength-meter {
+            height: 10px;
+            background: #eee;
+            border-radius: 5px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        
+        .strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s;
+        }
+        
+        .strength-weak {
+            background: #e74c3c;
+            width: 25%;
+        }
+        
+        .strength-medium {
+            background: #f39c12;
+            width: 50%;
+        }
+        
+        .strength-strong {
+            background: #2ecc71;
+            width: 75%;
+        }
+        
+        .strength-very-strong {
+            background: #27ae60;
+            width: 100%;
+        }
+        
+        .strength-text {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            text-align: center;
+        }
+        
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: #2ecc71;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #27ae60;
+        }
+        
+        .btn-danger {
+            background-color: #e74c3c;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .password-presets {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .preset-btn {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .preset-btn:hover {
+            background: #e9ecef;
+        }
+        
+        .instructions {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-top: 30px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .instructions h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .instructions ul {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .generator-container {
+                flex-direction: column;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .password-presets {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Random Number & Password Generator</h1>
+            <p class="subtitle">Generate secure passwords and random numbers instantly</p>
+        </header>
+        
+        <div class="tabs">
+            <button class="tab active" data-tab="password">Password Generator</button>
+            <button class="tab" data-tab="number">Random Number Generator</button>
+        </div>
+        
+        <div id="password" class="tab-content active">
+            <div class="generator-container">
+                <div class="generator-controls">
+                    <h2 class="section-title">Generate Password</h2>
+                    
+                    <div class="input-group">
+                        <label for="password-length">Password Length</label>
+                        <input type="range" id="password-length" min="4" max="50" value="12">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>4</span>
+                            <span id="length-value">12</span>
+                            <span>50</span>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Character Types</label>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="uppercase" checked>
+                            <label for="uppercase">Uppercase Letters (A-Z)</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="lowercase" checked>
+                            <label for="lowercase">Lowercase Letters (a-z)</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="numbers" checked>
+                            <label for="numbers">Numbers (0-9)</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="symbols">
+                            <label for="symbols">Symbols (!@#$%^&* etc.)</label>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Password Strength</label>
+                        <div class="strength-meter">
+                            <div class="strength-bar" id="strength-bar"></div>
+                        </div>
+                        <div class="strength-text" id="strength-text">Medium</div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Quick Presets</label>
+                        <div class="password-presets">
+                            <button class="preset-btn" data-preset="simple">Simple (8 chars, letters & numbers)</button>
+                            <button class="preset-btn" data-preset="strong">Strong (12 chars, all types)</button>
+                            <button class="preset-btn" data-preset="very-strong">Very Strong (16 chars, all types)</button>
+                            <button class="preset-btn" data-preset="pin">PIN (4-6 digits)</button>
+                        </div>
+                    </div>
+                    
+                    <button id="generate-password" class="btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                        </svg>
+                        Generate Password
+                    </button>
+                    
+                    <button id="generate-multiple" class="btn btn-secondary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"/>
+                            <path d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z"/>
+                        </svg>
+                        Generate Multiple
+                    </button>
+                </div>
+                
+                <div class="generator-output">
+                    <h2 class="section-title">Generated Passwords</h2>
+                    
+                    <div class="result-container" id="password-result-container">
+                        <div class="result-item">
+                            <span>No passwords generated yet</span>
+                        </div>
+                    </div>
+                    
+                    <button id="copy-all-passwords" class="btn btn-secondary" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy All Passwords
+                    </button>
+                    
+                    <button id="clear-passwords" class="btn btn-danger">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                        </svg>
+                        Clear All
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="number" class="tab-content">
+            <div class="generator-container">
+                <div class="generator-controls">
+                    <h2 class="section-title">Generate Random Numbers</h2>
+                    
+                    <div class="options-grid">
+                        <div class="input-group">
+                            <label for="min-value">Minimum Value</label>
+                            <input type="number" id="min-value" value="1">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="max-value">Maximum Value</label>
+                            <input type="number" id="max-value" value="100">
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="number-count">Number of Results</label>
+                        <input type="number" id="number-count" min="1" max="100" value="5">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="number-format">Number Format</label>
+                        <select id="number-format">
+                            <option value="integer">Integer</option>
+                            <option value="decimal">Decimal</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group" id="decimal-places-container" style="display: none;">
+                        <label for="decimal-places">Decimal Places</label>
+                        <input type="number" id="decimal-places" min="1" max="10" value="2">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="allow-duplicates">Allow Duplicates</label>
+                        <select id="allow-duplicates">
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+                    
+                    <button id="generate-numbers" class="btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zM7 11.5a.5.5 0 0 1-1 0V6.707L5.354 7.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L7 6.707V11.5z"/>
+                        </svg>
+                        Generate Numbers
+                    </button>
+                </div>
+                
+                <div class="generator-output">
+                    <h2 class="section-title">Generated Numbers</h2>
+                    
+                    <div class="result-container" id="number-result-container">
+                        <div class="result-item">
+                            <span>No numbers generated yet</span>
+                        </div>
+                    </div>
+                    
+                    <button id="copy-all-numbers" class="btn btn-secondary" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy All Numbers
+                    </button>
+                    
+                    <button id="clear-numbers" class="btn btn-danger">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                        </svg>
+                        Clear All
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h3>How to Use:</h3>
+            <ul>
+                <li><strong>Password Generator:</strong> Set length, choose character types, and generate secure passwords</li>
+                <li><strong>Random Number Generator:</strong> Set range, count, and format for random numbers</li>
+                <li>Use the tabs to switch between password and number generation</li>
+                <li>Copy individual items or all at once to clipboard</li>
+                <li>Use password presets for quick generation of common password types</li>
+            </ul>
+        </div>
+    </div>
+    
+    <footer>
+        <p>ToolStackX Random Number & Password Generator &copy; 2023</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab functionality
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    // Show active tab content
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === tabId) {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+            
+            // Password Generator
+            const passwordLength = document.getElementById('password-length');
+            const lengthValue = document.getElementById('length-value');
+            const uppercase = document.getElementById('uppercase');
+            const lowercase = document.getElementById('lowercase');
+            const numbers = document.getElementById('numbers');
+            const symbols = document.getElementById('symbols');
+            const strengthBar = document.getElementById('strength-bar');
+            const strengthText = document.getElementById('strength-text');
+            const generatePasswordBtn = document.getElementById('generate-password');
+            const generateMultipleBtn = document.getElementById('generate-multiple');
+            const passwordResultContainer = document.getElementById('password-result-container');
+            const copyAllPasswordsBtn = document.getElementById('copy-all-passwords');
+            const clearPasswordsBtn = document.getElementById('clear-passwords');
+            const presetBtns = document.querySelectorAll('.preset-btn');
+            
+            // Character sets
+            const charSets = {
+                uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+                lowercase: 'abcdefghijklmnopqrstuvwxyz',
+                numbers: '0123456789',
+                symbols: '!@#$%^&*()_+-=[]{}|;:,.<>?'
+            };
+            
+            // Update length value display
+            passwordLength.addEventListener('input', function() {
+                lengthValue.textContent = this.value;
+                updatePasswordStrength();
+            });
+            
+            // Update password strength when options change
+            [uppercase, lowercase, numbers, symbols].forEach(checkbox => {
+                checkbox.addEventListener('change', updatePasswordStrength);
+            });
+            
+            // Generate password
+            generatePasswordBtn.addEventListener('click', function() {
+                generatePassword();
+            });
+            
+            // Generate multiple passwords
+            generateMultipleBtn.addEventListener('click', function() {
+                for (let i = 0; i < 5; i++) {
+                    generatePassword();
+                }
+            });
+            
+            // Password presets
+            presetBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const preset = this.getAttribute('data-preset');
+                    
+                    switch(preset) {
+                        case 'simple':
+                            passwordLength.value = 8;
+                            lengthValue.textContent = '8';
+                            uppercase.checked = true;
+                            lowercase.checked = true;
+                            numbers.checked = true;
+                            symbols.checked = false;
+                            break;
+                        case 'strong':
+                            passwordLength.value = 12;
+                            lengthValue.textContent = '12';
+                            uppercase.checked = true;
+                            lowercase.checked = true;
+                            numbers.checked = true;
+                            symbols.checked = true;
+                            break;
+                        case 'very-strong':
+                            passwordLength.value = 16;
+                            lengthValue.textContent = '16';
+                            uppercase.checked = true;
+                            lowercase.checked = true;
+                            numbers.checked = true;
+                            symbols.checked = true;
+                            break;
+                        case 'pin':
+                            passwordLength.value = 6;
+                            lengthValue.textContent = '6';
+                            uppercase.checked = false;
+                            lowercase.checked = false;
+                            numbers.checked = true;
+                            symbols.checked = false;
+                            break;
+                    }
+                    
+                    updatePasswordStrength();
+                    generatePassword();
+                });
+            });
+            
+            // Copy all passwords
+            copyAllPasswordsBtn.addEventListener('click', copyAllPasswords);
+            
+            // Clear passwords
+            clearPasswordsBtn.addEventListener('click', function() {
+                passwordResultContainer.innerHTML = '<div class="result-item"><span>No passwords generated yet</span></div>';
+                copyAllPasswordsBtn.disabled = true;
+            });
+            
+            function generatePassword() {
+                const length = parseInt(passwordLength.value);
+                let charset = '';
+                
+                if (uppercase.checked) charset += charSets.uppercase;
+                if (lowercase.checked) charset += charSets.lowercase;
+                if (numbers.checked) charset += charSets.numbers;
+                if (symbols.checked) charset += charSets.symbols;
+                
+                // If no character set is selected, use lowercase as default
+                if (charset === '') {
+                    charset = charSets.lowercase;
+                    lowercase.checked = true;
+                }
+                
+                let password = '';
+                for (let i = 0; i < length; i++) {
+                    const randomIndex = Math.floor(Math.random() * charset.length);
+                    password += charset[randomIndex];
+                }
+                
+                // Add to results
+                addPasswordToResults(password);
+            }
+            
+            function addPasswordToResults(password) {
+                // Remove "no passwords" message if it exists
+                if (passwordResultContainer.querySelector('.result-item span').textContent === 'No passwords generated yet') {
+                    passwordResultContainer.innerHTML = '';
+                }
+                
+                const resultItem = document.createElement('div');
+                resultItem.className = 'result-item';
+                resultItem.innerHTML = `
+                    <span>${password}</span>
+                    <button class="copy-btn" data-password="${password}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                    </button>
+                `;
+                
+                passwordResultContainer.appendChild(resultItem);
+                
+                // Add event listener to copy button
+                resultItem.querySelector('.copy-btn').addEventListener('click', function() {
+                    const password = this.getAttribute('data-password');
+                    copyToClipboard(password);
+                    
+                    // Visual feedback
+                    const originalHTML = this.innerHTML;
+                    this.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>';
+                    this.style.background = '#2ecc71';
+                    this.style.color = 'white';
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalHTML;
+                        this.style.background = '';
+                        this.style.color = '';
+                    }, 1000);
+                });
+                
+                // Enable copy all button
+                copyAllPasswordsBtn.disabled = false;
+            }
+            
+            function copyAllPasswords() {
+                const passwordElements = document.querySelectorAll('#password-result-container .result-item span');
+                if (passwordElements.length === 0) return;
+                
+                let allPasswords = '';
+                passwordElements.forEach(el => {
+                    allPasswords += el.textContent + '\n';
+                });
+                
+                copyToClipboard(allPasswords.trim());
+                
+                // Visual feedback
+                const originalText = copyAllPasswordsBtn.innerHTML;
+                copyAllPasswordsBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg> Copied!';
+                copyAllPasswordsBtn.style.background = '#2ecc71';
+                
+                setTimeout(() => {
+                    copyAllPasswordsBtn.innerHTML = originalText;
+                    copyAllPasswordsBtn.style.background = '';
+                }, 2000);
+            }
+            
+            function updatePasswordStrength() {
+                const length = parseInt(passwordLength.value);
+                let strength = 0;
+                
+                // Length contributes to strength
+                if (length >= 12) strength += 2;
+                else if (length >= 8) strength += 1;
+                
+                // Character variety contributes to strength
+                if (uppercase.checked) strength += 1;
+                if (lowercase.checked) strength += 1;
+                if (numbers.checked) strength += 1;
+                if (symbols.checked) strength += 2;
+                
+                // Update strength bar and text
+                strengthBar.className = 'strength-bar';
+                
+                if (strength <= 2) {
+                    strengthBar.classList.add('strength-weak');
+                    strengthText.textContent = 'Weak';
+                } else if (strength <= 4) {
+                    strengthBar.classList.add('strength-medium');
+                    strengthText.textContent = 'Medium';
+                } else if (strength <= 6) {
+                    strengthBar.classList.add('strength-strong');
+                    strengthText.textContent = 'Strong';
+                } else {
+                    strengthBar.classList.add('strength-very-strong');
+                    strengthText.textContent = 'Very Strong';
+                }
+            }
+            
+            // Random Number Generator
+            const minValue = document.getElementById('min-value');
+            const maxValue = document.getElementById('max-value');
+            const numberCount = document.getElementById('number-count');
+            const numberFormat = document.getElementById('number-format');
+            const decimalPlacesContainer = document.getElementById('decimal-places-container');
+            const decimalPlaces = document.getElementById('decimal-places');
+            const allowDuplicates = document.getElementById('allow-duplicates');
+            const generateNumbersBtn = document.getElementById('generate-numbers');
+            const numberResultContainer = document.getElementById('number-result-container');
+            const copyAllNumbersBtn = document.getElementById('copy-all-numbers');
+            const clearNumbersBtn = document.getElementById('clear-numbers');
+            
+            // Show/hide decimal places based on format
+            numberFormat.addEventListener('change', function() {
+                if (this.value === 'decimal') {
+                    decimalPlacesContainer.style.display = 'block';
+                } else {
+                    decimalPlacesContainer.style.display = 'none';
+                }
+            });
+            
+            // Generate numbers
+            generateNumbersBtn.addEventListener('click', generateNumbers);
+            
+            // Copy all numbers
+            copyAllNumbersBtn.addEventListener('click', copyAllNumbers);
+            
+            // Clear numbers
+            clearNumbersBtn.addEventListener('click', function() {
+                numberResultContainer.innerHTML = '<div class="result-item"><span>No numbers generated yet</span></div>';
+                copyAllNumbersBtn.disabled = true;
+            });
+            
+            function generateNumbers() {
+                const min = parseFloat(minValue.value);
+                const max = parseFloat(maxValue.value);
+                const count = parseInt(numberCount.value);
+                const format = numberFormat.value;
+                const decimals = parseInt(decimalPlaces.value);
+                const duplicatesAllowed = allowDuplicates.value === 'yes';
+                
+                if (min >= max) {
+                    alert('Minimum value must be less than maximum value');
+                    return;
+                }
+                
+                if (count < 1) {
+                    alert('Number of results must be at least 1');
+                    return;
+                }
+                
+                // Remove "no numbers" message if it exists
+                if (numberResultContainer.querySelector('.result-item span').textContent === 'No numbers generated yet') {
+                    numberResultContainer.innerHTML = '';
+                }
+                
+                const numbers = [];
+                
+                for (let i = 0; i < count; i++) {
+                    let randomNum;
+                    
+                    if (format === 'integer') {
+                        randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
+                    } else {
+                        randomNum = Math.random() * (max - min) + min;
+                        randomNum = parseFloat(randomNum.toFixed(decimals));
+                    }
+                    
+                    // Check for duplicates if not allowed
+                    if (!duplicatesAllowed && numbers.includes(randomNum)) {
+                        i--; // Try again
+                        continue;
+                    }
+                    
+                    numbers.push(randomNum);
+                    
+                    // Add to results
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'result-item';
+                    resultItem.innerHTML = `
+                        <span>${randomNum}</span>
+                        <button class="copy-btn" data-number="${randomNum}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                                <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                            </svg>
+                        </button>
+                    `;
+                    
+                    numberResultContainer.appendChild(resultItem);
+                    
+                    // Add event listener to copy button
+                    resultItem.querySelector('.copy-btn').addEventListener('click', function() {
+                        const number = this.getAttribute('data-number');
+                        copyToClipboard(number);
+                        
+                        // Visual feedback
+                        const originalHTML = this.innerHTML;
+                        this.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg>';
+                        this.style.background = '#2ecc71';
+                        this.style.color = 'white';
+                        
+                        setTimeout(() => {
+                            this.innerHTML = originalHTML;
+                            this.style.background = '';
+                            this.style.color = '';
+                        }, 1000);
+                    });
+                }
+                
+                // Enable copy all button
+                copyAllNumbersBtn.disabled = false;
+            }
+            
+            function copyAllNumbers() {
+                const numberElements = document.querySelectorAll('#number-result-container .result-item span');
+                if (numberElements.length === 0) return;
+                
+                let allNumbers = '';
+                numberElements.forEach(el => {
+                    allNumbers += el.textContent + '\n';
+                });
+                
+                copyToClipboard(allNumbers.trim());
+                
+                // Visual feedback
+                const originalText = copyAllNumbersBtn.innerHTML;
+                copyAllNumbersBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg> Copied!';
+                copyAllNumbersBtn.style.background = '#2ecc71';
+                
+                setTimeout(() => {
+                    copyAllNumbersBtn.innerHTML = originalText;
+                    copyAllNumbersBtn.style.background = '';
+                }, 2000);
+            }
+            
+            // Utility function to copy text to clipboard
+            function copyToClipboard(text) {
+                navigator.clipboard.writeText(text)
+                    .then(() => {
+                        console.log('Text copied to clipboard');
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy text: ', err);
+                        // Fallback for older browsers
+                        const textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                    });
+            }
+            
+            // Initialize password strength
+            updatePasswordStrength();
+            
+            // Generate initial password
+            generatePassword();
+        });
+    </script>
+</body>
+</html>
