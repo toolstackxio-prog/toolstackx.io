@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keyword Density Checker | ToolStackX</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #2d5a8c, #3498db);
+            color: var(--light);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            color: var(--light);
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .keyword-checker {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .input-section, .results-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h2 i {
+            font-size: 1.5rem;
+        }
+        
+        .text-input-container {
+            margin-bottom: 20px;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 300px;
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 1rem;
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+        }
+        
+        textarea:focus {
+            outline: 2px solid var(--secondary);
+        }
+        
+        .options-panel {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .option-group {
+            margin-bottom: 15px;
+        }
+        
+        .option-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .option-group input, .option-group select {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .option-group select option {
+            background: var(--dark);
+            color: white;
+        }
+        
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .analyze-btn {
+            background: var(--success);
+            color: white;
+        }
+        
+        .clear-btn {
+            background: var(--accent);
+            color: white;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--secondary);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .results-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .results-tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .results-tab.active {
+            background: var(--secondary);
+        }
+        
+        .results-tab:hover:not(.active) {
+            background: rgba(52, 152, 219, 0.3);
+        }
+        
+        .results-content {
+            display: none;
+        }
+        
+        .results-content.active {
+            display: block;
+        }
+        
+        .keyword-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .keyword-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .keyword-item:hover {
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        .keyword-text {
+            font-weight: 600;
+        }
+        
+        .keyword-stats {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .keyword-count, .keyword-density {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+        
+        .keyword-count {
+            color: var(--warning);
+        }
+        
+        .keyword-density {
+            color: var(--success);
+        }
+        
+        .seo-insights {
+            margin-top: 30px;
+        }
+        
+        .insight-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .insight-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .insight-content {
+            line-height: 1.6;
+        }
+        
+        .insight-good {
+            border-left: 4px solid var(--success);
+        }
+        
+        .insight-warning {
+            border-left: 4px solid var(--warning);
+        }
+        
+        .insight-bad {
+            border-left: 4px solid var(--accent);
+        }
+        
+        .examples {
+            margin-top: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .example-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .example-card:hover {
+            background: rgba(0, 0, 0, 0.3);
+            transform: translateY(-5px);
+        }
+        
+        .example-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+        
+        .example-text {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-card i {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        .feature-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 25px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .keyword-checker {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .stats-overview {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Keyword Density Checker</h1>
+            <p class="tagline">Analyze your content for keyword usage and get SEO insights to improve your search engine rankings</p>
+        </header>
+        
+        <div class="keyword-checker">
+            <div class="input-section">
+                <h2><i>📝</i> Text Input</h2>
+                
+                <div class="text-input-container">
+                    <textarea id="textInput" placeholder="Paste your text content here to analyze keyword density...">Keyword density is an important aspect of SEO that measures how often a specific keyword appears in your content compared to the total word count. Understanding keyword density helps you optimize your content for search engines without over-optimizing. The ideal keyword density varies depending on the content type and competition, but generally falls between 1-3% for primary keywords. This tool helps you analyze your content and identify opportunities to improve your keyword strategy for better search engine visibility.</textarea>
+                </div>
+                
+                <div class="options-panel">
+                    <div class="option-group">
+                        <label for="minLength">Minimum Word Length</label>
+                        <input type="number" id="minLength" min="1" max="10" value="3">
+                    </div>
+                    
+                    <div class="option-group">
+                        <label for="minFrequency">Minimum Frequency</label>
+                        <input type="number" id="minFrequency" min="1" max="10" value="2">
+                    </div>
+                    
+                    <div class="option-group">
+                        <label for="stopWords">Exclude Common Words</label>
+                        <select id="stopWords">
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="analyze-btn" onclick="analyzeKeywords()">
+                        <i>🔍</i> Analyze Keywords
+                    </button>
+                    <button class="clear-btn" onclick="clearText()">
+                        <i>🗑️</i> Clear Text
+                    </button>
+                </div>
+            </div>
+            
+            <div class="results-section">
+                <h2><i>📊</i> Analysis Results</h2>
+                
+                <div class="stats-overview">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalWords">0</div>
+                        <div class="stat-label">Total Words</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="uniqueWords">0</div>
+                        <div class="stat-label">Unique Words</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="keywordCount">0</div>
+                        <div class="stat-label">Keywords</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="avgDensity">0%</div>
+                        <div class="stat-label">Avg Density</div>
+                    </div>
+                </div>
+                
+                <div class="results-tabs">
+                    <div class="results-tab active" data-tab="keywords">Keywords</div>
+                    <div class="results-tab" data-tab="insights">SEO Insights</div>
+                </div>
+                
+                <div class="results-content active" id="keywordsTab">
+                    <div class="keyword-list" id="keywordList">
+                        <!-- Keywords will be listed here -->
+                    </div>
+                </div>
+                
+                <div class="results-content" id="insightsTab">
+                    <div class="seo-insights" id="seoInsights">
+                        <!-- SEO insights will be displayed here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="examples">
+            <h2><i>💡</i> Example Texts</h2>
+            <div class="examples-grid">
+                <div class="example-card" onclick="loadExample('seo')">
+                    <div class="example-title">SEO Content</div>
+                    <div class="example-text">Learn how to optimize your website for search engines with our comprehensive SEO guide. Discover keyword research techniques, on-page optimization strategies, and link building methods.</div>
+                </div>
+                <div class="example-card" onclick="loadExample('product')">
+                    <div class="example-title">Product Description</div>
+                    <div class="example-text">Our premium wireless headphones deliver exceptional sound quality with noise cancellation technology. Enjoy crystal-clear audio and comfortable design for all-day listening.</div>
+                </div>
+                <div class="example-card" onclick="loadExample('blog')">
+                    <div class="example-title">Blog Post</div>
+                    <div class="example-text">In today's digital age, content marketing has become essential for business growth. Creating valuable, engaging content helps build trust with your audience and drives organic traffic.</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="features">
+            <div class="feature-card">
+                <i>📊</i>
+                <h3>Keyword Analysis</h3>
+                <p>Get detailed statistics on keyword frequency and density in your content</p>
+            </div>
+            <div class="feature-card">
+                <i>🔍</i>
+                <h3>SEO Insights</h3>
+                <p>Receive actionable recommendations to improve your content for search engines</p>
+            </div>
+            <div class="feature-card">
+                <i>⚙️</i>
+                <h3>Customizable Settings</h3>
+                <p>Adjust minimum word length, frequency, and stop word filtering</p>
+            </div>
+            <div class="feature-card">
+                <i>💡</i>
+                <h3>Content Examples</h3>
+                <p>Test the tool with pre-loaded examples for different content types</p>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Keyword Density Checker | Part of ToolStackX.io</p>
+            <p>© 2023 ToolStackX. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // DOM Elements
+        const textInput = document.getElementById('textInput');
+        const minLength = document.getElementById('minLength');
+        const minFrequency = document.getElementById('minFrequency');
+        const stopWords = document.getElementById('stopWords');
+        const totalWords = document.getElementById('totalWords');
+        const uniqueWords = document.getElementById('uniqueWords');
+        const keywordCount = document.getElementById('keywordCount');
+        const avgDensity = document.getElementById('avgDensity');
+        const keywordList = document.getElementById('keywordList');
+        const seoInsights = document.getElementById('seoInsights');
+        const resultsTabs = document.querySelectorAll('.results-tab');
+        const resultsContents = document.querySelectorAll('.results-content');
+        
+        // Common stop words to exclude
+        const commonStopWords = [
+            'a', 'an', 'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 
+            'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did',
+            'will', 'would', 'could', 'should', 'may', 'might', 'must', 'can', 'it', 'its', 'they', 'them',
+            'their', 'this', 'that', 'these', 'those', 'i', 'me', 'my', 'we', 'our', 'you', 'your', 'he',
+            'him', 'his', 'she', 'her', 'hers', 'us', 'as', 'from', 'if', 'so', 'than', 'then', 'when',
+            'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some',
+            'such', 'no', 'not', 'only', 'own', 'same', 'too', 'very', 'just', 'now', 'also', 'here',
+            'there', 'what', 'which', 'who', 'whom', 'whose'
+        ];
+        
+        // Example texts
+        const examples = {
+            seo: "Search engine optimization (SEO) is the process of improving your website's visibility in search engine results. Effective SEO strategies include keyword research, content optimization, and technical improvements. By focusing on relevant keywords and creating high-quality content, you can increase organic traffic to your website. SEO requires ongoing effort as search algorithms constantly evolve. The key to successful SEO is understanding user intent and providing valuable information that matches search queries.",
+            
+            product: "The UltraSound Pro wireless headphones feature advanced noise cancellation technology that blocks out ambient noise for immersive audio experience. With 30-hour battery life and quick charging capability, these headphones are perfect for travel and daily use. The ergonomic design ensures comfort during extended listening sessions. Compatible with all Bluetooth devices, the UltraSound Pro delivers crystal-clear sound quality with deep bass and crisp highs. Available in black, silver, and navy blue colors.",
+            
+            blog: "Content marketing has revolutionized how businesses connect with their audiences. Unlike traditional advertising, content marketing focuses on providing value through educational and entertaining content. This approach builds trust and establishes authority in your industry. Successful content marketing requires understanding your target audience's needs and creating content that addresses their pain points. Blog posts, videos, infographics, and social media content all play important roles in a comprehensive content marketing strategy."
+        };
+        
+        // Initialize the tool
+        function initKeywordChecker() {
+            // Set up event listeners for tabs
+            resultsTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Update active tab
+                    resultsTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show corresponding content
+                    resultsContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === `${tabId}Tab`) {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+            
+            // Analyze initial text
+            analyzeKeywords();
+        }
+        
+        // Analyze keywords in the text
+        function analyzeKeywords() {
+            const text = textInput.value.trim();
+            if (!text) {
+                alert('Please enter some text to analyze.');
+                return;
+            }
+            
+            // Get analysis parameters
+            const minWordLength = parseInt(minLength.value);
+            const minWordFrequency = parseInt(minFrequency.value);
+            const excludeStopWords = stopWords.value === 'true';
+            
+            // Process the text
+            const words = text.toLowerCase()
+                .replace(/[^\w\s]/g, ' ') // Replace punctuation with spaces
+                .split(/\s+/) // Split by whitespace
+                .filter(word => word.length >= minWordLength); // Filter by minimum length
+            
+            // Count word frequencies
+            const wordCounts = {};
+            words.forEach(word => {
+                if (excludeStopWords && commonStopWords.includes(word)) return;
+                wordCounts[word] = (wordCounts[word] || 0) + 1;
+            });
+            
+            // Filter by minimum frequency
+            const filteredWords = {};
+            Object.keys(wordCounts).forEach(word => {
+                if (wordCounts[word] >= minWordFrequency) {
+                    filteredWords[word] = wordCounts[word];
+                }
+            });
+            
+            // Calculate densities
+            const totalWordCount = words.length;
+            const keywords = Object.keys(filteredWords)
+                .map(word => ({
+                    word: word,
+                    count: filteredWords[word],
+                    density: (filteredWords[word] / totalWordCount * 100).toFixed(2)
+                }))
+                .sort((a, b) => b.count - a.count); // Sort by frequency (descending)
+            
+            // Update statistics
+            totalWords.textContent = totalWordCount.toLocaleString();
+            uniqueWords.textContent = Object.keys(filteredWords).length.toLocaleString();
+            keywordCount.textContent = keywords.length.toLocaleString();
+            
+            // Calculate average density
+            const avg = keywords.length > 0 ? 
+                keywords.reduce((sum, kw) => sum + parseFloat(kw.density), 0) / keywords.length : 0;
+            avgDensity.textContent = avg.toFixed(2) + '%';
+            
+            // Display keywords
+            displayKeywords(keywords);
+            
+            // Generate SEO insights
+            generateSeoInsights(keywords, totalWordCount);
+        }
+        
+        // Display keywords in the list
+        function displayKeywords(keywords) {
+            keywordList.innerHTML = '';
+            
+            if (keywords.length === 0) {
+                keywordList.innerHTML = '<div style="text-align: center; padding: 20px; opacity: 0.7;">No keywords found matching your criteria</div>';
+                return;
+            }
+            
+            keywords.forEach(keyword => {
+                const keywordItem = document.createElement('div');
+                keywordItem.className = 'keyword-item';
+                
+                keywordItem.innerHTML = `
+                    <div class="keyword-text">${keyword.word}</div>
+                    <div class="keyword-stats">
+                        <div class="keyword-count">${keyword.count}</div>
+                        <div class="keyword-density">${keyword.density}%</div>
+                    </div>
+                `;
+                
+                keywordList.appendChild(keywordItem);
+            });
+        }
+        
+        // Generate SEO insights based on keyword analysis
+        function generateSeoInsights(keywords, totalWordCount) {
+            seoInsights.innerHTML = '';
+            
+            if (keywords.length === 0) {
+                seoInsights.innerHTML = '<div class="insight-card insight-warning"><h3><i>⚠️</i> No Keywords Found</h3><div class="insight-content">Your text doesn\'t contain enough keywords to analyze. Consider adding more relevant terms.</div></div>';
+                return;
+            }
+            
+            const topKeywords = keywords.slice(0, 5);
+            const highDensityKeywords = keywords.filter(kw => parseFloat(kw.density) > 3);
+            const lowDensityKeywords = keywords.filter(kw => parseFloat(kw.density) < 0.5);
+            
+            // Insight 1: Top keywords
+            let insight1 = document.createElement('div');
+            insight1.className = 'insight-card insight-good';
+            insight1.innerHTML = `
+                <h3><i>🏆</i> Top Keywords</h3>
+                <div class="insight-content">
+                    Your most frequent keywords are: <strong>${topKeywords.map(kw => kw.word).join(', ')}</strong>.
+                    ${topKeywords[0].count > 5 ? 'Consider using these keywords strategically throughout your content.' : 'These keywords appear naturally in your content.'}
+                </div>
+            `;
+            seoInsights.appendChild(insight1);
+            
+            // Insight 2: Keyword density analysis
+            let insight2 = document.createElement('div');
+            let insight2Class = 'insight-good';
+            let insight2Icon = '✅';
+            let insight2Text = '';
+            
+            if (highDensityKeywords.length > 0) {
+                insight2Class = 'insight-warning';
+                insight2Icon = '⚠️';
+                insight2Text = `Some keywords (${highDensityKeywords.map(kw => kw.word).join(', ')}) have high density (>3%), which might be considered keyword stuffing. Consider using synonyms or related terms.`;
+            } else if (keywords.length < 5) {
+                insight2Class = 'insight-warning';
+                insight2Icon = '⚠️';
+                insight2Text = 'You have a limited number of keywords. Consider adding more relevant terms to improve SEO.';
+            } else {
+                insight2Text = 'Your keyword density appears balanced. Most keywords fall within the recommended 1-3% range.';
+            }
+            
+            insight2.className = `insight-card ${insight2Class}`;
+            insight2.innerHTML = `
+                <h3><i>${insight2Icon}</i> Density Analysis</h3>
+                <div class="insight-content">${insight2Text}</div>
+            `;
+            seoInsights.appendChild(insight2);
+            
+            // Insight 3: Content length
+            let insight3 = document.createElement('div');
+            let insight3Class = 'insight-good';
+            let insight3Icon = '✅';
+            let insight3Text = '';
+            
+            if (totalWordCount < 300) {
+                insight3Class = 'insight-warning';
+                insight3Icon = '⚠️';
+                insight3Text = 'Your content is quite short. Consider expanding it to at least 300 words for better SEO performance.';
+            } else if (totalWordCount > 1500) {
+                insight3Class = 'insight-warning';
+                insight3Icon = '⚠️';
+                insight3Text = 'Your content is very long. Consider breaking it into multiple pages or adding subheadings for better readability.';
+            } else {
+                insight3Text = `Your content length (${totalWordCount} words) is good for SEO. This provides enough space to naturally include keywords.`;
+            }
+            
+            insight3.className = `insight-card ${insight3Class}`;
+            insight3.innerHTML = `
+                <h3><i>${insight3Icon}</i> Content Length</h3>
+                <div class="insight-content">${insight3Text}</div>
+            `;
+            seoInsights.appendChild(insight3);
+            
+            // Insight 4: Keyword variety
+            let insight4 = document.createElement('div');
+            let insight4Class = keywords.length > 10 ? 'insight-good' : 'insight-warning';
+            let insight4Icon = keywords.length > 10 ? '✅' : '⚠️';
+            
+            insight4.className = `insight-card ${insight4Class}`;
+            insight4.innerHTML = `
+                <h3><i>${insight4Icon}</i> Keyword Variety</h3>
+                <div class="insight-content">
+                    You're using ${keywords.length} unique keywords.
+                    ${keywords.length > 10 ? 
+                        'Good variety! This helps cover different search queries.' : 
+                        'Consider adding more keyword variations to target different search intents.'}
+                </div>
+            `;
+            seoInsights.appendChild(insight4);
+        }
+        
+        // Clear the text input
+        function clearText() {
+            textInput.value = '';
+            totalWords.textContent = '0';
+            uniqueWords.textContent = '0';
+            keywordCount.textContent = '0';
+            avgDensity.textContent = '0%';
+            keywordList.innerHTML = '';
+            seoInsights.innerHTML = '';
+        }
+        
+        // Load example text
+        function loadExample(type) {
+            if (examples[type]) {
+                textInput.value = examples[type];
+                analyzeKeywords();
+            }
+        }
+        
+        // Initialize the tool when the page loads
+        window.onload = initKeywordChecker;
+    </script>
+</body>
+</html>
