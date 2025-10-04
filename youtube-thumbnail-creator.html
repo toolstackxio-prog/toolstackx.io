@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Thumbnail Creator | ToolStackX</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ff0000, #cc0000, #990000);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            margin-top: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+        
+        .creator-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .editor-controls {
+            flex: 1;
+            min-width: 300px;
+            max-width: 400px;
+        }
+        
+        .canvas-container {
+            flex: 2;
+            min-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #7f8c8d;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            color: #3498db;
+            border-bottom: 3px solid #3498db;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        .color-picker-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .color-picker {
+            width: 50px;
+            height: 40px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: #2ecc71;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #27ae60;
+        }
+        
+        .btn-danger {
+            background-color: #e74c3c;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .btn-youtube {
+            background-color: #ff0000;
+        }
+        
+        .btn-youtube:hover {
+            background-color: #cc0000;
+        }
+        
+        #thumbnail-canvas {
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            background: white;
+        }
+        
+        .canvas-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .template-item {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .template-item:hover {
+            border-color: #3498db;
+            transform: translateY(-3px);
+        }
+        
+        .template-preview {
+            width: 100%;
+            height: 80px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .template-1 { background: linear-gradient(135deg, #ff0000, #ff6b6b); }
+        .template-2 { background: linear-gradient(135deg, #3498db, #2ecc71); }
+        .template-3 { background: linear-gradient(135deg, #9b59b6, #e74c3c); }
+        .template-4 { background: linear-gradient(135deg, #f39c12, #e67e22); }
+        
+        .text-controls-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .font-preview {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 10px;
+            padding: 5px;
+        }
+        
+        .element-list {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        
+        .element-item {
+            padding: 8px;
+            margin-bottom: 5px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .element-item.active {
+            background: #3498db;
+            color: white;
+        }
+        
+        .instructions {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-top: 30px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .instructions h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .instructions ul {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 1100px) {
+            .creator-container {
+                flex-direction: column;
+            }
+            
+            .editor-controls {
+                max-width: 100%;
+            }
+            
+            .canvas-container {
+                min-width: 100%;
+            }
+            
+            #thumbnail-canvas {
+                width: 100%;
+                height: auto;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .text-controls-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .template-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>YouTube Thumbnail Creator</h1>
+            <p class="subtitle">Design eye-catching thumbnails for your YouTube videos</p>
+        </header>
+        
+        <div class="creator-container">
+            <div class="editor-controls">
+                <div class="tabs">
+                    <button class="tab active" data-tab="templates">Templates</button>
+                    <button class="tab" data-tab="text">Text</button>
+                    <button class="tab" data-tab="images">Images</button>
+                    <button class="tab" data-tab="elements">Elements</button>
+                </div>
+                
+                <div id="templates" class="tab-content active">
+                    <h2 class="section-title">Quick Templates</h2>
+                    <div class="template-grid">
+                        <div class="template-item" data-template="1">
+                            <div class="template-preview template-1">Gaming</div>
+                            <p>Gaming Template</p>
+                        </div>
+                        <div class="template-item" data-template="2">
+                            <div class="template-preview template-2">Tech</div>
+                            <p>Tech Template</p>
+                        </div>
+                        <div class="template-item" data-template="3">
+                            <div class="template-preview template-3">Vlog</div>
+                            <p>Vlog Template</p>
+                        </div>
+                        <div class="template-item" data-template="4">
+                            <div class="template-preview template-4">Tutorial</div>
+                            <p>Tutorial Template</p>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="bg-color">Background Color</label>
+                        <div class="color-picker-group">
+                            <input type="color" id="bg-color" value="#1a1a1a" class="color-picker">
+                            <input type="text" id="bg-color-text" value="#1a1a1a" readonly>
+                        </div>
+                    </div>
+                    
+                    <button id="apply-template" class="btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                        </svg>
+                        Apply Template
+                    </button>
+                </div>
+                
+                <div id="text" class="tab-content">
+                    <h2 class="section-title">Add Text</h2>
+                    
+                    <div class="input-group">
+                        <label for="text-content">Text Content</label>
+                        <textarea id="text-content" rows="3" placeholder="Enter your text here...">YOUR TITLE HERE</textarea>
+                    </div>
+                    
+                    <div class="text-controls-grid">
+                        <div class="input-group">
+                            <label for="font-family">Font Family</label>
+                            <select id="font-family">
+                                <option value="Arial">Arial</option>
+                                <option value="Verdana">Verdana</option>
+                                <option value="Helvetica">Helvetica</option>
+                                <option value="Tahoma">Tahoma</option>
+                                <option value="Trebuchet MS">Trebuchet MS</option>
+                                <option value="Times New Roman">Times New Roman</option>
+                                <option value="Georgia">Georgia</option>
+                                <option value="Garamond">Garamond</option>
+                                <option value="Courier New">Courier New</option>
+                                <option value="Brush Script MT">Brush Script MT</option>
+                                <option value="Impact">Impact</option>
+                                <option value="Comic Sans MS">Comic Sans MS</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="font-size">Font Size</label>
+                            <input type="range" id="font-size" min="10" max="120" value="48">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>10</span>
+                                <span id="font-size-value">48</span>
+                                <span>120</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Text Color</label>
+                        <div class="color-picker-group">
+                            <input type="color" id="text-color" value="#ffffff" class="color-picker">
+                            <input type="text" id="text-color-text" value="#ffffff" readonly>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="text-align">Text Alignment</label>
+                        <select id="text-align">
+                            <option value="left">Left</option>
+                            <option value="center" selected>Center</option>
+                            <option value="right">Right</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Font Preview</label>
+                        <div class="font-preview" id="font-preview">
+                            AaBbCc
+                        </div>
+                    </div>
+                    
+                    <button id="add-text" class="btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>
+                            <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"/>
+                        </svg>
+                        Add Text to Thumbnail
+                    </button>
+                </div>
+                
+                <div id="images" class="tab-content">
+                    <h2 class="section-title">Add Images</h2>
+                    
+                    <div class="input-group">
+                        <label for="image-upload">Upload Image</label>
+                        <input type="file" id="image-upload" accept="image/*">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="image-url">Or use Image URL</label>
+                        <input type="text" id="image-url" placeholder="Paste image URL here...">
+                    </div>
+                    
+                    <button id="add-image" class="btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                            <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/>
+                        </svg>
+                        Add Image to Thumbnail
+                    </button>
+                </div>
+                
+                <div id="elements" class="tab-content">
+                    <h2 class="section-title">Manage Elements</h2>
+                    
+                    <div class="input-group">
+                        <label>Canvas Elements</label>
+                        <div class="element-list" id="element-list">
+                            <div class="element-item">No elements added yet</div>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="element-opacity">Element Opacity</label>
+                        <input type="range" id="element-opacity" min="0" max="100" value="100">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>0%</span>
+                            <span id="opacity-value">100%</span>
+                            <span>100%</span>
+                        </div>
+                    </div>
+                    
+                    <button id="bring-forward" class="btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+                        </svg>
+                        Bring Forward
+                    </button>
+                    
+                    <button id="send-backward" class="btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
+                        </svg>
+                        Send Backward
+                    </button>
+                    
+                    <button id="delete-element" class="btn btn-danger">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                        </svg>
+                        Delete Selected
+                    </button>
+                    
+                    <button id="clear-all" class="btn btn-danger">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                        </svg>
+                        Clear All
+                    </button>
+                </div>
+            </div>
+            
+            <div class="canvas-container">
+                <h2 class="section-title">Thumbnail Preview</h2>
+                <canvas id="thumbnail-canvas" width="1280" height="720"></canvas>
+                
+                <div class="canvas-controls">
+                    <button id="download-thumbnail" class="btn btn-youtube">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                        </svg>
+                        Download Thumbnail
+                    </button>
+                    
+                    <button id="reset-canvas" class="btn btn-danger">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                        </svg>
+                        Reset Canvas
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h3>How to Create a YouTube Thumbnail:</h3>
+            <ul>
+                <li>Start with a template or set a custom background color</li>
+                <li>Add text with custom fonts, colors, and sizes</li>
+                <li>Upload your own images or use image URLs</li>
+                <li>Arrange elements using the "Bring Forward" and "Send Backward" buttons</li>
+                <li>Adjust element opacity for creative effects</li>
+                <li>Download your thumbnail when you're satisfied with the design</li>
+                <li>For best results, use high-contrast colors and bold, readable text</li>
+            </ul>
+        </div>
+    </div>
+    
+    <footer>
+        <p>ToolStackX YouTube Thumbnail Creator &copy; 2023</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Fabric.js canvas
+            const canvas = new fabric.Canvas('thumbnail-canvas', {
+                width: 1280,
+                height: 720,
+                backgroundColor: '#1a1a1a'
+            });
+            
+            // Tab functionality
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    // Show active tab content
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === tabId) {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+            
+            // Color picker synchronization
+            const bgColor = document.getElementById('bg-color');
+            const bgColorText = document.getElementById('bg-color-text');
+            const textColor = document.getElementById('text-color');
+            const textColorText = document.getElementById('text-color-text');
+            
+            bgColor.addEventListener('input', function() {
+                bgColorText.value = this.value;
+            });
+            
+            bgColorText.addEventListener('input', function() {
+                bgColor.value = this.value;
+            });
+            
+            textColor.addEventListener('input', function() {
+                textColorText.value = this.value;
+            });
+            
+            textColorText.addEventListener('input', function() {
+                textColor.value = this.value;
+            });
+            
+            // Font size display
+            const fontSize = document.getElementById('font-size');
+            const fontSizeValue = document.getElementById('font-size-value');
+            
+            fontSize.addEventListener('input', function() {
+                fontSizeValue.textContent = this.value;
+                updateFontPreview();
+            });
+            
+            // Font preview
+            const fontFamily = document.getElementById('font-family');
+            const fontPreview = document.getElementById('font-preview');
+            
+            fontFamily.addEventListener('change', updateFontPreview);
+            
+            function updateFontPreview() {
+                fontPreview.style.fontFamily = fontFamily.value;
+                fontPreview.style.fontSize = fontSize.value + 'px';
+            }
+            
+            // Opacity control
+            const elementOpacity = document.getElementById('element-opacity');
+            const opacityValue = document.getElementById('opacity-value');
+            
+            elementOpacity.addEventListener('input', function() {
+                opacityValue.textContent = this.value + '%';
+                
+                // Update selected object opacity
+                const activeObject = canvas.getActiveObject();
+                if (activeObject) {
+                    activeObject.set('opacity', this.value / 100);
+                    canvas.renderAll();
+                }
+            });
+            
+            // Apply template
+            const applyTemplateBtn = document.getElementById('apply-template');
+            const templateItems = document.querySelectorAll('.template-item');
+            
+            templateItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    templateItems.forEach(i => i.style.borderColor = '#ddd');
+                    this.style.borderColor = '#3498db';
+                });
+            });
+            
+            applyTemplateBtn.addEventListener('click', function() {
+                const selectedTemplate = document.querySelector('.template-item[style*="border-color: rgb(52, 152, 219)"]');
+                
+                if (selectedTemplate) {
+                    const templateId = selectedTemplate.getAttribute('data-template');
+                    applyTemplate(templateId);
+                } else {
+                    alert('Please select a template first');
+                }
+            });
+            
+            function applyTemplate(templateId) {
+                // Clear canvas first
+                canvas.clear();
+                canvas.backgroundColor = bgColor.value;
+                
+                // Add template-specific elements
+                switch(templateId) {
+                    case '1': // Gaming template
+                        addTextElement('EPIC GAMEPLAY', {
+                            left: 640,
+                            top: 200,
+                            fontSize: 80,
+                            fontFamily: 'Impact',
+                            fill: '#ffffff',
+                            stroke: '#000000',
+                            strokeWidth: 3
+                        });
+                        
+                        addTextElement('FORTNITE SEASON 10', {
+                            left: 640,
+                            top: 320,
+                            fontSize: 50,
+                            fontFamily: 'Arial',
+                            fill: '#ff6b6b',
+                            fontStyle: 'bold'
+                        });
+                        break;
+                        
+                    case '2': // Tech template
+                        addTextElement('NEW TECH REVIEW', {
+                            left: 640,
+                            top: 200,
+                            fontSize: 70,
+                            fontFamily: 'Helvetica',
+                            fill: '#3498db',
+                            stroke: '#ffffff',
+                            strokeWidth: 2
+                        });
+                        
+                        addTextElement('iPhone 15 Pro Max', {
+                            left: 640,
+                            top: 320,
+                            fontSize: 60,
+                            fontFamily: 'Helvetica',
+                            fill: '#2c3e50',
+                            fontStyle: 'bold'
+                        });
+                        break;
+                        
+                    case '3': // Vlog template
+                        addTextElement('MY DAILY VLOG', {
+                            left: 640,
+                            top: 200,
+                            fontSize: 80,
+                            fontFamily: 'Comic Sans MS',
+                            fill: '#ffffff',
+                            stroke: '#9b59b6',
+                            strokeWidth: 3
+                        });
+                        
+                        addTextElement('DAY IN THE LIFE', {
+                            left: 640,
+                            top: 320,
+                            fontSize: 50,
+                            fontFamily: 'Arial',
+                            fill: '#e74c3c',
+                            fontStyle: 'italic'
+                        });
+                        break;
+                        
+                    case '4': // Tutorial template
+                        addTextElement('HOW TO TUTORIAL', {
+                            left: 640,
+                            top: 200,
+                            fontSize: 70,
+                            fontFamily: 'Verdana',
+                            fill: '#ffffff',
+                            stroke: '#f39c12',
+                            strokeWidth: 2
+                        });
+                        
+                        addTextElement('STEP BY STEP GUIDE', {
+                            left: 640,
+                            top: 320,
+                            fontSize: 50,
+                            fontFamily: 'Verdana',
+                            fill: '#e67e22',
+                            fontStyle: 'bold'
+                        });
+                        break;
+                }
+                
+                canvas.renderAll();
+                updateElementList();
+            }
+            
+            // Add text element
+            const addTextBtn = document.getElementById('add-text');
+            const textContent = document.getElementById('text-content');
+            const textAlign = document.getElementById('text-align');
+            
+            addTextBtn.addEventListener('click', function() {
+                const text = textContent.value || 'YOUR TEXT HERE';
+                
+                addTextElement(text, {
+                    left: 640,
+                    top: 360,
+                    fontSize: parseInt(fontSize.value),
+                    fontFamily: fontFamily.value,
+                    fill: textColor.value,
+                    textAlign: textAlign.value
+                });
+                
+                canvas.renderAll();
+                updateElementList();
+            });
+            
+            function addTextElement(text, options) {
+                const textObj = new fabric.Text(text, {
+                    left: options.left || 100,
+                    top: options.top || 100,
+                    fontSize: options.fontSize || 48,
+                    fontFamily: options.fontFamily || 'Arial',
+                    fill: options.fill || '#ffffff',
+                    textAlign: options.textAlign || 'center',
+                    stroke: options.stroke || '',
+                    strokeWidth: options.strokeWidth || 0,
+                    fontStyle: options.fontStyle || 'normal',
+                    originX: 'center',
+                    originY: 'center'
+                });
+                
+                canvas.add(textObj);
+                canvas.setActiveObject(textObj);
+            }
+            
+            // Add image element
+            const addImageBtn = document.getElementById('add-image');
+            const imageUpload = document.getElementById('image-upload');
+            const imageUrl = document.getElementById('image-url');
+            
+            addImageBtn.addEventListener('click', function() {
+                if (imageUpload.files && imageUpload.files[0]) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        fabric.Image.fromURL(e.target.result, function(img) {
+                            // Scale image to fit canvas
+                            const maxWidth = 800;
+                            const maxHeight = 500;
+                            
+                            if (img.width > maxWidth || img.height > maxHeight) {
+                                const scale = Math.min(maxWidth / img.width, maxHeight / img.height);
+                                img.scale(scale);
+                            }
+                            
+                            img.set({
+                                left: 640,
+                                top: 360,
+                                originX: 'center',
+                                originY: 'center'
+                            });
+                            
+                            canvas.add(img);
+                            canvas.setActiveObject(img);
+                            canvas.renderAll();
+                            updateElementList();
+                        });
+                    };
+                    
+                    reader.readAsDataURL(imageUpload.files[0]);
+                } else if (imageUrl.value) {
+                    fabric.Image.fromURL(imageUrl.value, function(img) {
+                        // Scale image to fit canvas
+                        const maxWidth = 800;
+                        const maxHeight = 500;
+                        
+                        if (img.width > maxWidth || img.height > maxHeight) {
+                            const scale = Math.min(maxWidth / img.width, maxHeight / img.height);
+                            img.scale(scale);
+                        }
+                        
+                        img.set({
+                            left: 640,
+                            top: 360,
+                            originX: 'center',
+                            originY: 'center'
+                        });
+                        
+                        canvas.add(img);
+                        canvas.setActiveObject(img);
+                        canvas.renderAll();
+                        updateElementList();
+                    });
+                } else {
+                    alert('Please upload an image or provide an image URL');
+                }
+            });
+            
+            // Element management
+            const bringForwardBtn = document.getElementById('bring-forward');
+            const sendBackwardBtn = document.getElementById('send-backward');
+            const deleteElementBtn = document.getElementById('delete-element');
+            const clearAllBtn = document.getElementById('clear-all');
+            const elementList = document.getElementById('element-list');
+            
+            bringForwardBtn.addEventListener('click', function() {
+                const activeObject = canvas.getActiveObject();
+                if (activeObject) {
+                    canvas.bringForward(activeObject);
+                    canvas.renderAll();
+                    updateElementList();
+                }
+            });
+            
+            sendBackwardBtn.addEventListener('click', function() {
+                const activeObject = canvas.getActiveObject();
+                if (activeObject) {
+                    canvas.sendBackwards(activeObject);
+                    canvas.renderAll();
+                    updateElementList();
+                }
+            });
+            
+            deleteElementBtn.addEventListener('click', function() {
+                const activeObject = canvas.getActiveObject();
+                if (activeObject) {
+                    canvas.remove(activeObject);
+                    canvas.renderAll();
+                    updateElementList();
+                }
+            });
+            
+            clearAllBtn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to clear the entire canvas?')) {
+                    canvas.clear();
+                    canvas.backgroundColor = bgColor.value;
+                    canvas.renderAll();
+                    updateElementList();
+                }
+            });
+            
+            // Update element list when canvas changes
+            canvas.on('selection:created', updateElementList);
+            canvas.on('selection:updated', updateElementList);
+            canvas.on('selection:cleared', updateElementList);
+            canvas.on('object:modified', updateElementList);
+            
+            function updateElementList() {
+                elementList.innerHTML = '';
+                
+                if (canvas.getObjects().length === 0) {
+                    elementList.innerHTML = '<div class="element-item">No elements added yet</div>';
+                    return;
+                }
+                
+                canvas.getObjects().forEach((obj, index) => {
+                    const elementItem = document.createElement('div');
+                    elementItem.className = 'element-item';
+                    
+                    let type = 'Unknown';
+                    if (obj.type === 'text') {
+                        type = 'Text: ' + (obj.text.length > 20 ? obj.text.substring(0, 20) + '...' : obj.text);
+                    } else if (obj.type === 'image') {
+                        type = 'Image';
+                    }
+                    
+                    elementItem.innerHTML = `
+                        <span>${index + 1}. ${type}</span>
+                    `;
+                    
+                    if (obj === canvas.getActiveObject()) {
+                        elementItem.classList.add('active');
+                    }
+                    
+                    elementItem.addEventListener('click', function() {
+                        canvas.setActiveObject(obj);
+                        canvas.renderAll();
+                        updateElementList();
+                    });
+                    
+                    elementList.appendChild(elementItem);
+                });
+            }
+            
+            // Download thumbnail
+            const downloadBtn = document.getElementById('download-thumbnail');
+            
+            downloadBtn.addEventListener('click', function() {
+                const dataURL = canvas.toDataURL({
+                    format: 'png',
+                    quality: 1
+                });
+                
+                const link = document.createElement('a');
+                link.download = 'youtube-thumbnail.png';
+                link.href = dataURL;
+                link.click();
+            });
+            
+            // Reset canvas
+            const resetBtn = document.getElementById('reset-canvas');
+            
+            resetBtn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to reset the canvas? All elements will be removed.')) {
+                    canvas.clear();
+                    canvas.backgroundColor = bgColor.value;
+                    canvas.renderAll();
+                    updateElementList();
+                }
+            });
+            
+            // Background color change
+            bgColor.addEventListener('change', function() {
+                canvas.backgroundColor = this.value;
+                canvas.renderAll();
+            });
+            
+            // Initialize font preview
+            updateFontPreview();
+            
+            // Add initial text to canvas
+            addTextElement('YOUR TITLE HERE', {
+                left: 640,
+                top: 360,
+                fontSize: 60,
+                fontFamily: 'Impact',
+                fill: '#ffffff',
+                stroke: '#000000',
+                strokeWidth: 3
+            });
+        });
+    </script>
+</body>
+</html>
