@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator & Scanner | ToolStackX</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            margin-top: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab {
+            padding: 12px 25px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #7f8c8d;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            color: #3498db;
+            border-bottom: 3px solid #3498db;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        .generator-container, .scanner-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .generator-controls, .scanner-controls {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .generator-output, .scanner-output {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .qr-code-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        #qrcode {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: #2ecc71;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #27ae60;
+        }
+        
+        .btn-danger {
+            background-color: #e74c3c;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .video-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+        
+        #video {
+            width: 100%;
+            border-radius: 10px;
+            background: #000;
+        }
+        
+        #canvas {
+            display: none;
+        }
+        
+        .scan-area {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70%;
+            height: 70%;
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.3);
+        }
+        
+        .result {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            width: 100%;
+            text-align: center;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            word-break: break-all;
+        }
+        
+        .instructions {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-top: 30px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .instructions h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .instructions ul {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .generator-container, .scanner-container {
+                flex-direction: column;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>QR Code Generator & Scanner</h1>
+            <p class="subtitle">Create and scan QR codes instantly</p>
+        </header>
+        
+        <div class="tabs">
+            <button class="tab active" data-tab="generator">QR Generator</button>
+            <button class="tab" data-tab="scanner">QR Scanner</button>
+        </div>
+        
+        <div id="generator" class="tab-content active">
+            <h2 class="section-title">Generate QR Code</h2>
+            
+            <div class="generator-container">
+                <div class="generator-controls">
+                    <div class="input-group">
+                        <label for="qr-text">Text or URL</label>
+                        <textarea id="qr-text" rows="4" placeholder="Enter text or URL to encode...">https://toolstackxio-prog.github.io/toolstackx.io/</textarea>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="qr-size">QR Code Size</label>
+                        <select id="qr-size">
+                            <option value="128">128x128</option>
+                            <option value="256" selected>256x256</option>
+                            <option value="400">400x400</option>
+                            <option value="512">512x512</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="qr-color">QR Code Color</label>
+                        <input type="color" id="qr-color" value="#000000">
+                    </div>
+                    
+                    <button id="generate-btn" class="btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"/>
+                            <path d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z"/>
+                        </svg>
+                        Generate QR Code
+                    </button>
+                    
+                    <button id="download-btn" class="btn btn-secondary" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                        </svg>
+                        Download QR Code
+                    </button>
+                </div>
+                
+                <div class="generator-output">
+                    <div class="qr-code-container">
+                        <div id="qrcode"></div>
+                        <p>Your QR code will appear here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="scanner" class="tab-content">
+            <h2 class="section-title">Scan QR Code</h2>
+            
+            <div class="scanner-container">
+                <div class="scanner-controls">
+                    <div class="input-group">
+                        <label>Camera Feed</label>
+                        <div class="video-container">
+                            <video id="video" playsinline></video>
+                            <div class="scan-area"></div>
+                        </div>
+                        <canvas id="canvas"></canvas>
+                    </div>
+                    
+                    <button id="start-scan" class="btn btn-secondary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M0 12V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm6.25-7C5.56 5 5 5.56 5 6.25v3.5a1.25 1.25 0 1 0 2.5 0v-3.5C7.5 5.56 6.94 5 6.25 5zm3.5 0c-.69 0-1.25.56-1.25 1.25v3.5a1.25 1.25 0 1 0 2.5 0v-3.5C11 5.56 10.44 5 9.75 5z"/>
+                        </svg>
+                        Start Scanner
+                    </button>
+                    
+                    <button id="stop-scan" class="btn btn-danger" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M5 3.5h6A1.5 1.5 0 0 1 12.5 5v6a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 11V5A1.5 1.5 0 0 1 5 3.5z"/>
+                        </svg>
+                        Stop Scanner
+                    </button>
+                </div>
+                
+                <div class="scanner-output">
+                    <div class="input-group">
+                        <label>Scan Result</label>
+                        <div class="result" id="scan-result">
+                            No QR code detected yet
+                        </div>
+                    </div>
+                    
+                    <button id="copy-result" class="btn" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                        </svg>
+                        Copy Result
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h3>How to Use:</h3>
+            <ul>
+                <li><strong>Generator:</strong> Enter text or URL, customize size and color, then generate and download your QR code</li>
+                <li><strong>Scanner:</strong> Allow camera access, point at a QR code, and the content will be displayed automatically</li>
+                <li>Switch between tabs to use the generator or scanner</li>
+            </ul>
+        </div>
+    </div>
+    
+    <footer>
+        <p>ToolStackX QR Code Generator & Scanner &copy; 2023</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab functionality
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    // Show active tab content
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === tabId) {
+                            content.classList.add('active');
+                        }
+                    });
+                    
+                    // If switching to scanner tab, stop any ongoing generation
+                    if (tabId === 'scanner') {
+                        stopScanner();
+                    }
+                });
+            });
+            
+            // QR Code Generator
+            const generateBtn = document.getElementById('generate-btn');
+            const downloadBtn = document.getElementById('download-btn');
+            const qrText = document.getElementById('qr-text');
+            const qrSize = document.getElementById('qr-size');
+            const qrColor = document.getElementById('qr-color');
+            const qrcodeDiv = document.getElementById('qrcode');
+            
+            let currentQRCode = null;
+            
+            generateBtn.addEventListener('click', generateQRCode);
+            
+            function generateQRCode() {
+                const text = qrText.value.trim();
+                if (!text) {
+                    alert('Please enter text or URL to generate QR code');
+                    return;
+                }
+                
+                // Clear previous QR code
+                qrcodeDiv.innerHTML = '';
+                
+                // Generate new QR code
+                currentQRCode = new QRCode(qrcodeDiv, {
+                    text: text,
+                    width: parseInt(qrSize.value),
+                    height: parseInt(qrSize.value),
+                    colorDark: qrColor.value,
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+                
+                // Enable download button
+                downloadBtn.disabled = false;
+            }
+            
+            downloadBtn.addEventListener('click', downloadQRCode);
+            
+            function downloadQRCode() {
+                if (!currentQRCode) {
+                    alert('Please generate a QR code first');
+                    return;
+                }
+                
+                const canvas = qrcodeDiv.querySelector('canvas');
+                if (!canvas) {
+                    alert('QR code not generated properly');
+                    return;
+                }
+                
+                const link = document.createElement('a');
+                link.download = 'qrcode.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }
+            
+            // QR Code Scanner
+            const video = document.getElementById('video');
+            const canvas = document.getElementById('canvas');
+            const startScanBtn = document.getElementById('start-scan');
+            const stopScanBtn = document.getElementById('stop-scan');
+            const scanResult = document.getElementById('scan-result');
+            const copyResultBtn = document.getElementById('copy-result');
+            
+            let stream = null;
+            let scanning = false;
+            
+            startScanBtn.addEventListener('click', startScanner);
+            stopScanBtn.addEventListener('click', stopScanner);
+            
+            async function startScanner() {
+                try {
+                    stream = await navigator.mediaDevices.getUserMedia({ 
+                        video: { facingMode: "environment" } 
+                    });
+                    
+                    video.srcObject = stream;
+                    video.setAttribute("playsinline", true);
+                    video.play();
+                    
+                    startScanBtn.disabled = true;
+                    stopScanBtn.disabled = false;
+                    
+                    requestAnimationFrame(tick);
+                    scanning = true;
+                } catch (err) {
+                    console.error("Error accessing camera: ", err);
+                    scanResult.textContent = "Error accessing camera. Please check permissions.";
+                }
+            }
+            
+            function stopScanner() {
+                if (stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                    stream = null;
+                }
+                
+                video.srcObject = null;
+                startScanBtn.disabled = false;
+                stopScanBtn.disabled = true;
+                scanning = false;
+                
+                // Reset result display
+                scanResult.textContent = "Scanner stopped";
+                copyResultBtn.disabled = true;
+            }
+            
+            function tick() {
+                if (!scanning) return;
+                
+                if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                    canvas.height = video.videoHeight;
+                    canvas.width = video.videoWidth;
+                    
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    
+                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const code = jsQR(imageData.data, imageData.width, imageData.height);
+                    
+                    if (code) {
+                        scanResult.textContent = code.data;
+                        copyResultBtn.disabled = false;
+                        
+                        // Draw a box around the QR code for visual feedback
+                        drawQRCodeOutline(code.location);
+                    } else {
+                        scanResult.textContent = "No QR code detected";
+                        copyResultBtn.disabled = true;
+                    }
+                }
+                
+                requestAnimationFrame(tick);
+            }
+            
+            function drawQRCodeOutline(location) {
+                const canvas = document.getElementById('canvas');
+                const ctx = canvas.getContext('2d');
+                
+                // Draw outline
+                ctx.beginPath();
+                ctx.moveTo(location.topLeftCorner.x, location.topLeftCorner.y);
+                ctx.lineTo(location.topRightCorner.x, location.topRightCorner.y);
+                ctx.lineTo(location.bottomRightCorner.x, location.bottomRightCorner.y);
+                ctx.lineTo(location.bottomLeftCorner.x, location.bottomLeftCorner.y);
+                ctx.closePath();
+                
+                ctx.strokeStyle = '#3498db';
+                ctx.lineWidth = 4;
+                ctx.stroke();
+            }
+            
+            copyResultBtn.addEventListener('click', function() {
+                const text = scanResult.textContent;
+                if (text && text !== "No QR code detected" && text !== "Scanner stopped") {
+                    navigator.clipboard.writeText(text)
+                        .then(() => {
+                            const originalText = copyResultBtn.innerHTML;
+                            copyResultBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/></svg> Copied!';
+                            setTimeout(() => {
+                                copyResultBtn.innerHTML = originalText;
+                            }, 2000);
+                        })
+                        .catch(err => {
+                            console.error('Failed to copy: ', err);
+                        });
+                }
+            });
+            
+            // Generate initial QR code on page load
+            generateQRCode();
+        });
+    </script>
+</body>
+</html>
