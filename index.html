@@ -1,30 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ur" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToolStackX.io - Your Daily Tools, All in One Place</title>
+    <title>toolstackx.io - آپ کے روزمرہ کے ٹولز، سب ایک جگہ</title>
+    <meta name="description" content="تیز اور مفت آن لائن ٹولز کا مجموعہ جو آپ کے روزمرہ کے کاموں کو آسان بناتا ہے۔ امیج، ٹیکسٹ، دستاویز، اور دیگر یوٹیلیٹی ٹولز استعمال کریں۔">
     <style>
-        /* --- General Styles & Google-Style Colors --- */
+        /* --- Google-Style Modern Design --- */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Roboto:wght@400;500;700&display=swap');
+
         :root {
             --primary-blue: #4285F4; /* Google Blue */
-            --primary-dark-blue: #3367D6;
-            --secondary-grey: #F1F3F4; /* Google Light Grey */
-            --text-dark: #202124; /* Google Dark Text */
-            --text-light: #5f6368; /* Google Light Text */
-            --background-white: #FFFFFF;
+            --secondary-blue: #EAF1FB;
+            --dark-text: #1F1F1F;
+            --light-text: #5F6368;
+            --background-color: #FFFFFF;
+            --card-background: #F8F9FA;
             --border-color: #DADCE0;
-            --card-shadow: 0 1px 3px rgba(60, 64, 67, 0.15);
-            --card-shadow-hover: 0 4px 6px rgba(60, 64, 67, 0.2);
-            --border-radius: 12px;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            margin: 0;
-            background-color: var(--background-white);
-            color: var(--text-dark);
+            font-family: 'Roboto', 'Noto Nastaliq Urdu', sans-serif;
+            background-color: var(--background-color);
+            color: var(--dark-text);
             line-height: 1.6;
+            direction: ltr; /* Default LTR for layout */
         }
 
         .container {
@@ -33,159 +40,135 @@
             padding: 0 20px;
         }
 
-        h1, h2, h3 {
-            font-weight: 600;
-        }
-
-        a {
-            text-decoration: none;
-            color: var(--primary-blue);
-            transition: color 0.3s ease;
-        }
-
-        a:hover {
-            color: var(--primary-dark-blue);
-        }
-
         /* --- Header --- */
-        .site-header {
-            background-color: var(--background-white);
+        .header {
+            background-color: var(--background-color);
+            box-shadow: 0 1px 4px var(--shadow-color);
             padding: 15px 0;
-            border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 0;
             z-index: 1000;
         }
 
-        .header-container {
+        .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
-            font-size: 1.8em;
+            font-size: 1.8rem;
             font-weight: 700;
-            color: var(--text-dark);
+            color: var(--primary-blue);
+            text-decoration: none;
         }
 
-        .logo a {
-            color: inherit;
-        }
-
-        .main-nav ul {
-            margin: 0;
-            padding: 0;
+        .nav-links {
             list-style: none;
             display: flex;
-            align-items: center;
+            gap: 25px;
         }
 
-        .main-nav li {
-            margin-left: 25px;
-        }
-
-        .main-nav a {
-            color: var(--text-light);
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-text);
             font-weight: 500;
-            font-size: 1.1em;
-            padding-bottom: 5px;
-            border-bottom: 2px solid transparent;
-            transition: all 0.3s ease;
+            transition: color 0.3s ease;
         }
 
-        .main-nav a:hover, .main-nav a.active {
+        .nav-links a:hover {
             color: var(--primary-blue);
-            border-bottom-color: var(--primary-blue);
         }
 
         /* --- Hero Section --- */
-        .hero-section {
+        .hero {
             text-align: center;
             padding: 80px 20px;
-            background-color: var(--secondary-grey);
+            background-color: var(--secondary-blue);
         }
 
-        .hero-section h1 {
-            font-size: 3em;
+        .hero-headline {
+            font-size: 3rem;
+            font-weight: 700;
             margin-bottom: 15px;
-            color: var(--text-dark);
+            color: var(--dark-text);
         }
 
-        .hero-section p {
-            font-size: 1.2em;
-            color: var(--text-light);
+        .hero-subheadline {
+            font-size: 1.2rem;
+            color: var(--light-text);
             max-width: 600px;
             margin: 0 auto 30px;
         }
 
         .cta-button {
             background-color: var(--primary-blue);
-            color: var(--background-white);
+            color: #fff;
             padding: 15px 35px;
             border-radius: 8px;
-            font-size: 1.1em;
-            font-weight: 600;
-            display: inline-block;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
             transition: background-color 0.3s ease, transform 0.2s ease;
+            display: inline-block;
         }
 
         .cta-button:hover {
-            background-color: var(--primary-dark-blue);
+            background-color: #3367D6;
             transform: translateY(-2px);
-            color: var(--background-white);
         }
-
+        
         .hero-icons {
-            margin-top: 40px;
+            margin-top: 30px;
             display: flex;
             justify-content: center;
             gap: 30px;
-            flex-wrap: wrap;
-        }
-        .hero-icons .icon-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.1em;
-            color: var(--text-light);
-        }
-        .hero-icons svg {
-            width: 24px;
-            height: 24px;
-            fill: var(--primary-blue);
+            font-size: 1.8rem;
+            color: var(--primary-blue);
         }
 
         /* --- Search Bar --- */
         .search-section {
             padding: 40px 0;
-            background: #f9f9f9;
-            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            background-color: #fff;
         }
 
-        .search-bar {
+        .search-container {
+            display: flex;
+            justify-content: center;
             max-width: 700px;
             margin: 0 auto;
-            position: relative;
-        }
-
-        .search-bar input {
-            width: 100%;
-            padding: 18px 25px;
             border: 1px solid var(--border-color);
             border-radius: 50px;
-            font-size: 1.1em;
+            overflow: hidden;
+            box-shadow: 0 1px 6px var(--shadow-color);
+        }
+        
+        #searchInput {
+            width: 100%;
+            padding: 15px 25px;
+            font-size: 1.1rem;
+            border: none;
             outline: none;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .search-bar input:focus {
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.2);
+        #searchButton {
+            padding: 0 30px;
+            border: none;
+            background-color: var(--primary-blue);
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #searchButton:hover {
+            background-color: #3367D6;
         }
 
         /* --- Tool Sections --- */
-        .tool-section {
+        .tool-category {
             padding: 60px 0;
         }
 
@@ -194,16 +177,15 @@
             margin-bottom: 40px;
         }
 
-        .section-header h2 {
-            font-size: 2.2em;
-            margin-bottom: 5px;
+        .section-heading {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
         }
 
-        .section-header p {
-            font-size: 1.1em;
-            color: var(--text-light);
-            max-width: 500px;
-            margin: 0 auto;
+        .section-subheading {
+            font-size: 1.1rem;
+            color: var(--light-text);
         }
 
         .tool-grid {
@@ -213,359 +195,385 @@
         }
 
         .tool-card {
-            background-color: var(--background-white);
+            background-color: var(--card-background);
             border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
+            border-radius: 12px;
             padding: 25px;
-            text-align: center;
+            text-align: left;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: var(--card-shadow);
+            display: flex;
+            flex-direction: column;
         }
 
         .tool-card:hover {
             transform: translateY(-5px);
-            box-shadow: var(--card-shadow-hover);
+            box-shadow: 0 4px 12px var(--shadow-color);
         }
 
-        .tool-card .tool-icon {
-            font-size: 2.5em;
+        .tool-card-icon {
+            font-size: 2rem;
+            color: var(--primary-blue);
             margin-bottom: 15px;
         }
-        
+
         .tool-card h3 {
-            font-size: 1.3em;
-            margin-bottom: 10px;
-            color: var(--text-dark);
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            font-weight: 500;
         }
 
         .tool-card p {
-            color: var(--text-light);
+            color: var(--light-text);
+            font-size: 0.95rem;
+            flex-grow: 1;
             margin-bottom: 20px;
-            font-size: 0.95em;
-            height: 40px; /* Consistent height */
         }
 
-        .tool-card .use-tool-btn {
-            background-color: var(--primary-blue);
-            color: var(--background-white);
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-weight: 500;
+        .tool-button {
             display: inline-block;
+            background-color: transparent;
+            color: var(--primary-blue);
+            border: 1px solid var(--primary-blue);
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            text-align: center;
+        }
+
+        .tool-button:hover {
+            background-color: var(--primary-blue);
+            color: #fff;
         }
         
-        .tool-card .use-tool-btn:hover {
-            background-color: var(--primary-dark-blue);
-        }
-
-
         /* --- Footer --- */
-        .site-footer {
-            background-color: var(--secondary-grey);
-            color: var(--text-light);
+        .footer {
+            background-color: var(--card-background);
+            color: var(--light-text);
             padding: 40px 0;
             text-align: center;
             border-top: 1px solid var(--border-color);
         }
-
-        .footer-logo {
-            font-size: 1.5em;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 10px;
-        }
-
-        .footer-tagline {
-            margin-bottom: 20px;
-        }
         
-        .footer-contact, .footer-links {
-            margin-bottom: 20px;
+        .footer .logo {
+            font-size: 1.6rem;
+        }
+
+        .footer p {
+            margin: 10px 0 20px;
         }
         
         .footer-links a {
-            margin: 0 15px;
+            color: var(--light-text);
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-blue);
         }
 
         /* --- Mobile Responsiveness --- */
         @media (max-width: 768px) {
-            .header-container {
+            .navbar {
                 flex-direction: column;
+                gap: 15px;
             }
-            .main-nav ul {
-                margin-top: 15px;
+
+            .hero-headline {
+                font-size: 2.2rem;
             }
-            .main-nav li {
-                margin: 0 10px;
+
+            .hero-subheadline {
+                font-size: 1rem;
             }
-            .hero-section h1 {
-                font-size: 2.2em;
-            }
-            .hero-section p {
-                font-size: 1em;
-            }
-            .tool-grid {
-                grid-template-columns: 1fr;
-            }
-            .footer-links {
-                display: flex;
+            
+            .search-container {
                 flex-direction: column;
-                gap: 10px;
+                border-radius: 12px;
             }
+            #searchInput, #searchButton {
+                border-radius: 0;
+            }
+            #searchInput { border-radius: 12px 12px 0 0; }
+            #searchButton { border-radius: 0 0 12px 12px; padding: 15px; }
         }
     </style>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 
-    <!-- ======================= Top Header ======================= -->
-    <header class="site-header">
-        <div class="container header-container">
-            <div class="logo"><a href="#">toolstackx.io</a></div>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="#" class="active">Home</a></li>
-                    <li><a href="#">Tools</a></li>
-                    <li><a href="mailto:toolstackx.io@gmail.com">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
+    <!-- Top Header -->
+    <header class="header">
+        <nav class="navbar container">
+            <a href="#" class="logo">toolstackx.io</a>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#tools">Tools</a></li>
+                <li><a href="mailto:toolstackx.io@gmail.com">Contact</a></li>
+            </ul>
+        </nav>
     </header>
 
     <main>
-        <!-- ======================= Hero Section ======================= -->
-        <section class="hero-section">
+        <!-- Hero Section -->
+        <section class="hero">
             <div class="container">
-                <h1>Your Daily Tools, All in One Place</h1>
-                <p>Convert, calculate, compress, and simplify your everyday tasks — fast and free.</p>
+                <h1 class="hero-headline">Your Daily Tools, All in One Place</h1>
+                <p class="hero-subheadline">Convert, calculate, compress, and simplify your everyday tasks — fast and free.</p>
                 <a href="#tools" class="cta-button">Explore Tools</a>
                 <div class="hero-icons">
-                    <div class="icon-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19,3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V5C21,3.9,20.1,3,19,3z M19,19H5V5h14V19z M10,14l2,3l2-3l3,4H7L10,14z"></path></svg>
-                        <span>Image</span>
-                    </div>
-                    <div class="icon-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.4,16.6L4.8,12l1.4-1.4l3.2,3.2l7.2-7.2l1.4,1.4L9.4,16.6z"></path></svg>
-                        <span>Text</span>
-                    </div>
-                    <div class="icon-item">
-                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.4 16.6L4.8 12l1.4-1.4 3.2 3.2 7.2-7.2 1.4 1.4-8.6 8.6z" fill-rule="evenodd"/></svg>
-                        <span>Code</span>
-                    </div>
-                    <div class="icon-item">
-                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 16.5v-9l6 4.5-6 4.5zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
-                        <span>Video</span>
-                    </div>
+                    <i class="fas fa-image"></i>
+                    <i class="fas fa-file-alt"></i>
+                    <i class="fas fa-code"></i>
+                    <i class="fas fa-video"></i>
                 </div>
             </div>
         </section>
 
-        <!-- ======================= Search Bar ======================= -->
+        <!-- Search Bar -->
         <section class="search-section">
             <div class="container">
-                <div class="search-bar">
-                    <input type="text" id="toolSearch" placeholder="Search a tool…">
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Search a tool…">
+                    <button id="searchButton"><i class="fas fa-search"></i></button>
                 </div>
             </div>
         </section>
 
+        <!-- Tools Grid Section -->
         <div id="tools" class="container">
 
-            <!-- ======================= Image Tools ======================= -->
-            <section class="tool-section">
+            <!-- Image Tools -->
+            <section class="tool-category">
                 <div class="section-header">
-                    <h2>🖼️ Image Tools</h2>
-                    <p>Edit, convert, and optimize your images with ease.</p>
+                    <h2 class="section-heading">🖼️ Image Tools</h2>
+                    <p class="section-subheading">Easily edit, convert, and optimize your images.</p>
                 </div>
                 <div class="tool-grid">
-                    <div class="tool-card"><div class="tool-icon">🔄</div><h3>Image Converter</h3><p>Convert images to JPG, PNG, WEBP, etc.</p><a href="image-converter.html" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🗜️</div><h3>Image Compressor</h3><p>Reduce image file size without losing quality.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">📏</div><h3>Image Resizer</h3><p>Change the dimensions of your images.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">✂️</div><h3>Image Cropper</h3><p>Crop images to a specific area.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">📄</div><h3>Image to Text (OCR)</h3><p>Extract text from any image.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🔃</div><h3>Image Rotator/Flipper</h3><p>Rotate or flip your images easily.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                </div>
-            </section>
-
-            <!-- ======================= Amazing Tools ======================= -->
-            <section class="tool-section">
-                <div class="section-header">
-                    <h2>🛠️ Amazing Tools</h2>
-                    <p>A diverse collection of powerful and creative utilities.</p>
-                </div>
-                <div class="tool-grid">
-                    <div class="tool-card"><div class="tool-icon">💨</div><h3>Internet Speed Test</h3><p>Check your download and upload speed.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🖼️</div><h3>YouTube Thumbnail Tool</h3><p>Create catchy thumbnails for videos.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">👁️</div><h3>HTML Viewer</h3><p>View and render HTML code instantly.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">📧</div><h3>Emails Extractor</h3><p>Extract email addresses from text.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">✍️</div><h3>Script Writing Tool</h3><p>Format and write scripts professionally.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🗣️</div><h3>Language Learning Tool</h3><p>Interactive tools to learn new languages.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">📖</div><h3>AI Story Writing Tool</h3><p>Generate creative stories with AI.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🔗</div><h3>URL Shortener</h3><p>Create short, shareable links.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🤖</div><h3>AI Content Detector</h3><p>Check if content is AI-generated.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🎨</div><h3>Graphic Designer Tool</h3><p>Simple tools for graphic design tasks.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">✒️</div><h3>Signature Generator</h3><p>Create a digital signature online.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">✨</div><h3>Logo Maker</h3><p>Design a simple logo for your brand.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🔍</div><h3>Upscale Image Editor</h3><p>Increase image resolution with AI.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">📓</div><h3>Modern Digital Diary</h3><p>A secure, private online journal.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">📈</div><h3>Stock Market Simulator</h3><p>Practice trading with virtual money.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">💰</div><h3>Crypto Price Tracker</h3><p>Monitor cryptocurrency prices live.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">✉️</div><h3>Email/Gmail Generator</h3><p>Generate temporary email addresses.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">📊</div><h3>Crypto Portfolio Tracker</h3><p>Track your crypto investments.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">👾</div><h3>Pixel Art Generator</h3><p>Create your own pixel art.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🪄</div><h3>Background Image Remover</h3><p>Remove backgrounds from images instantly.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">✅</div><h3>Grammar Checker</h3><p>Check text for grammar and spelling.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">📑</div><h3>Plagiarism Checker</h3><p>Check documents for originality.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">💧</div><h3>Video Watermark Blur Tool</h3><p>Blur or remove watermarks from videos.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🏢</div><h3>About Us Generator</h3><p>Create an "About Us" page for your site.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">📜</div><h3>Disclaimer Generator</h3><p>Generate a website disclaimer.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🔒</div><h3>Privacy Policy Generator</h3><p>Create a privacy policy for your site.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">⚖️</div><h3>Terms & Condition Generator</h3><p>Generate terms and conditions.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🌐</div><h3>Language Translator</h3><p>Translate text between languages.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-exchange-alt"></i></div><h3>Image Converter</h3><p>Convert images to JPG, PNG, WEBP, etc.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-compress-arrows-alt"></i></div><h3>Image Compressor</h3><p>Reduce image file size without losing quality.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-expand-arrows-alt"></i></div><h3>Image Resizer</h3><p>Change the dimensions of your images.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-crop-alt"></i></div><h3>Image Cropper</h3><p>Crop images to your desired size.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-magic"></i></div><h3>Background Image Remover</h3><p>Automatically remove the background from images.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-sync-alt"></i></div><h3>Image Rotator/Flipper</h3><p>Rotate and flip images horizontally or vertically.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-spell-check"></i></div><h3>Image to Text (OCR)</h3><p>Extract text from images accurately.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-arrow-up"></i></div><h3>Upscale Image Editor</h3><p>Increase image resolution with AI.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-palette"></i></div><h3>Pixel Art Generator</h3><p>Create pixel art from your images.</p><a href="#" class="tool-button">Use Tool</a></div>
                 </div>
             </section>
             
-            <!-- ======================= Document Tools ======================= -->
-            <section class="tool-section">
+            <!-- Amazing Tools -->
+            <section class="tool-category">
                 <div class="section-header">
-                    <h2>📄 Document Tools</h2>
-                    <p>Manage your PDFs and documents effortlessly.</p>
+                    <h2 class="section-heading">🛠️ Amazing Tools</h2>
+                    <p class="section-subheading">A collection of powerful and creative tools for various needs.</p>
                 </div>
                 <div class="tool-grid">
-                    <div class="tool-card"><div class="tool-icon">🔁</div><h3>PDF to Word / Word to PDF</h3><p>Easily convert between PDF and Word.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🗜️</div><h3>PDF Compressor</h3><p>Reduce the file size of your PDFs.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">➕</div><h3>PDF Merger & Splitter</h3><p>Combine or split PDF files.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🔄</div><h3>Document Converter</h3><p>Convert various document formats.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🔐</div><h3>PDF Lock/Unlock</h3><p>Add or remove passwords from PDFs.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🖋️</div><h3>eSign PDF</h3><p>Sign your PDF documents electronically.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-tachometer-alt"></i></div><h3>Internet Speed Test</h3><p>Check your download and upload speed.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fab fa-youtube"></i></div><h3>YouTube Thumbnail Tool</h3><p>Create catchy thumbnails for your videos.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-code"></i></div><h3>HTML Viewer</h3><p>View and test your HTML code live.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-envelope-open-text"></i></div><h3>Emails Extractor</h3><p>Extract email addresses from text.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-pen-alt"></i></div><h3>Script Writing Tool</h3><p>Collaborative scriptwriting and formatting.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-language"></i></div><h3>Language Learning Tool</h3><p>Interactive lessons to learn new languages.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-robot"></i></div><h3>AI Story Writing Tool</h3><p>Generate creative stories with AI assistance.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-link"></i></div><h3>URL Shortener Tool</h3><p>Create short, shareable links.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-shield-alt"></i></div><h3>AI Content Detector</h3><p>Check if content is AI-generated.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-paint-brush"></i></div><h3>Graphic Designer Tool</h3><p>Design stunning graphics online.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-signature"></i></div><h3>Signature Generator</h3><p>Create a stylish digital signature.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-lightbulb"></i></div><h3>Logo Maker Tool</h3><p>Design a professional logo in minutes.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-book-open"></i></div><h3>Modern Digital Diary</h3><p>A secure place for your thoughts and journals.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-chart-line"></i></div><h3>Stock Market Simulator</h3><p>Practice trading with virtual money.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fab fa-bitcoin"></i></div><h3>Crypto Price Tracker</h3><p>Track cryptocurrency prices in real-time.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-wallet"></i></div><h3>Crypto Portfolio Tracker</h3><p>Manage and track your crypto investments.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-at"></i></div><h3>Email/Gmail Generator</h3><p>Generate temporary email addresses.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-check-double"></i></div><h3>Grammar Checker</h3><p>Correct grammar and spelling mistakes.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-copy"></i></div><h3>Plagiarism Checker</h3><p>Check for duplicate content in text.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-video-slash"></i></div><h3>Video Watermark Blur Tool</h3><p>Blur or remove watermarks from videos.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-info-circle"></i></div><h3>About Us Generator</h3><p>Create a professional 'About Us' page.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-exclamation-triangle"></i></div><h3>Disclaimer Generator</h3><p>Generate a disclaimer for your website.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-user-secret"></i></div><h3>Privacy Policy Generator</h3><p>Create a GDPR-compliant privacy policy.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-file-signature"></i></div><h3>Terms & Condition Generator</h3><p>Generate terms and conditions for your site.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-globe-americas"></i></div><h3>Language Translator</h3><p>Translate text between multiple languages.</p><a href="#" class="tool-button">Use Tool</a></div>
                 </div>
             </section>
             
-            <!-- ======================= Calculator Tools ======================= -->
-            <section class="tool-section">
+            <!-- Document Tools -->
+            <section class="tool-category">
                 <div class="section-header">
-                    <h2>🧮 Calculator Tools</h2>
-                    <p>Perform calculations for finance, health, and more.</p>
+                    <h2 class="section-heading">📄 Document Tools</h2>
+                    <p class="section-subheading">Manage your PDFs and documents with ease.</p>
                 </div>
                 <div class="tool-grid">
-                    <div class="tool-card"><div class="tool-icon">🔬</div><h3>Scientific Calculator</h3><p>Advanced calculator for scientific use.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🎂</div><h3>Age Calculator</h3><p>Find out your exact age in detail.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🏃</div><h3>BMI Calculator</h3><p>Calculate your Body Mass Index.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🏠</div><h3>Loan EMI Calculator</h3><p>Calculate your equated monthly installments.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🧾</div><h3>GST Calculator</h3><p>Calculate Goods and Services Tax.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">💹</div><h3>Currency Converter</h3><p>Convert between different currencies.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                </div>
-            </section>
-
-            <!-- ======================= Text Tools ======================= -->
-            <section class="tool-section">
-                <div class="section-header">
-                    <h2>🔤 Text Tools</h2>
-                    <p>Format, analyze, and manipulate your text content.</p>
-                </div>
-                <div class="tool-grid">
-                    <div class="tool-card"><div class="tool-icon">Aa</div><h3>Text Case Converter</h3><p>Change text to uppercase, lowercase, etc.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🔢</div><h3>Word & Character Counter</h3><p>Count words and characters in your text.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🗑️</div><h3>Remove Duplicate Lines</h3><p>Delete repeated lines from a list.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">↕️</div><h3>Text Sorter</h3><p>Sort lines of text alphabetically.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">↩️</div><h3>Text Reverser</h3><p>Reverse characters, words, or lines.</p><a href="Text-Reverser.html" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🛡️</div><h3>Text Encryptor/Decryptor</h3><p>Securely encrypt or decrypt text.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                </div>
-            </section>
-
-            <!-- ======================= Web/Developer Tools ======================= -->
-            <section class="tool-section">
-                <div class="section-header">
-                    <h2>🌐 Web/Developer Tools</h2>
-                    <p>Essential utilities for web developers and programmers.</p>
-                </div>
-                <div class="tool-grid">
-                    <div class="tool-card"><div class="tool-icon">&lt;/&gt;</div><h3>HTML/CSS/JS Minifier</h3><p>Compress your code for faster loading.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">{}</div><h3>JSON Formatter & Validator</h3><p>Format and validate JSON data.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">📦</div><h3>Base64 Encoder/Decoder</h3><p>Encode or decode data in Base64.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🔗</div><h3>URL Encoder/Decoder</h3><p>Encode or decode URL components.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🎨</div><h3>Color Picker & Converter</h3><p>Pick a color and convert its format.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">⚙️</div><h3>Regex Tester</h3><p>Test your regular expressions live.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                </div>
-            </section>
-
-            <!-- ======================= Color Tools ======================= -->
-            <section class="tool-section">
-                <div class="section-header">
-                    <h2>🎨 Color Tools</h2>
-                    <p>Create and manage color palettes for your projects.</p>
-                </div>
-                <div class="tool-grid">
-                    <div class="tool-card"><div class="tool-icon">🖼️</div><h3>Color Picker from Image</h3><p>Extract colors from an uploaded image.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">#️⃣</div><h3>HEX to RGB Converter</h3><p>Convert colors between HEX and RGB.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🌈</div><h3>Gradient Generator</h3><p>Create beautiful CSS color gradients.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon"> контраст</div><h3>Contrast Checker</h3><p>Check color contrast for accessibility.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🎨</div><h3>Palette Generator</h3><p>Generate beautiful color palettes.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">👁️</div><h3>Color Blindness Simulator</h3><p>See your design as others might.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-file-word"></i></div><h3>PDF to Word / Word to PDF</h3><p>Convert documents between PDF and Word.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-file-archive"></i></div><h3>PDF Compressor</h3><p>Reduce the file size of your PDF documents.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-object-group"></i></div><h3>PDF Merger & Splitter</h3><p>Combine multiple PDFs or split one into many.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-file-export"></i></div><h3>Document Converter</h3><p>Convert between various document formats.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-lock"></i></div><h3>PDF Lock/Unlock</h3><p>Add or remove passwords from PDF files.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-pencil-alt"></i></div><h3>eSign PDF</h3><p>Sign your PDF documents electronically.</p><a href="#" class="tool-button">Use Tool</a></div>
                 </div>
             </section>
             
-            <!-- ======================= SEO & Marketing Tools ======================= -->
-            <section class="tool-section">
+            <!-- Calculator Tools -->
+            <section class="tool-category">
                 <div class="section-header">
-                    <h2>🌍 SEO & Marketing Tools</h2>
-                    <p>Optimize your website and marketing efforts.</p>
+                    <h2 class="section-heading">🧮 Calculator Tools</h2>
+                    <p class="section-subheading">A variety of calculators for everyday needs.</p>
                 </div>
                 <div class="tool-grid">
-                    <div class="tool-card"><div class="tool-icon">🔑</div><h3>Keyword Density Checker</h3><p>Analyze keyword density of your text.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🏷️</div><h3>Meta Tag Analyzer</h3><p>Analyze meta tags of a webpage.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🔠</div><h3>Word Counter</h3><p>Count words and characters in text.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-calculator"></i></div><h3>Scientific Calculator</h3><p>Perform advanced mathematical calculations.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-birthday-cake"></i></div><h3>Age Calculator</h3><p>Find out your exact age in years, months, days.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-weight"></i></div><h3>BMI Calculator</h3><p>Calculate your Body Mass Index.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-home"></i></div><h3>Loan EMI Calculator</h3><p>Calculate your equated monthly installments.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-rupee-sign"></i></div><h3>GST Calculator</h3><p>Calculate Goods and Services Tax.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-money-bill-wave"></i></div><h3>Currency Converter</h3><p>Convert between different world currencies.</p><a href="#" class="tool-button">Use Tool</a></div>
+                </div>
+            </section>
+            
+            <!-- Text Tools -->
+            <section class="tool-category">
+                <div class="section-header">
+                    <h2 class="section-heading">🔤 Text Tools</h2>
+                    <p class="section-subheading">Manipulate and format your text effortlessly.</p>
+                </div>
+                <div class="tool-grid">
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-font"></i></div><h3>Text Case Converter</h3><p>Change text to uppercase, lowercase, etc.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-sort-numeric-up"></i></div><h3>Word & Character Counter</h3><p>Count words and characters in your text.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-stream"></i></div><h3>Remove Duplicate Lines</h3><p>Delete duplicate lines from a text block.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-sort-alpha-down"></i></div><h3>Text Sorter</h3><p>Sort lines of text alphabetically.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-retweet"></i></div><h3>Text Reverser</h3><p>Reverse characters, words, or lines.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-key"></i></div><h3>Text Encryptor/Decryptor</h3><p>Encrypt or decrypt text with a password.</p><a href="#" class="tool-button">Use Tool</a></div>
+                </div>
+            </section>
+            
+            <!-- Web/Developer Tools -->
+            <section class="tool-category">
+                <div class="section-header">
+                    <h2 class="section-heading">🌐 Web/Developer Tools</h2>
+                    <p class="section-subheading">Handy tools for web developers and programmers.</p>
+                </div>
+                <div class="tool-grid">
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-file-code"></i></div><h3>HTML/CSS/JS Minifier</h3><p>Minify code to reduce file size and improve speed.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-sitemap"></i></div><h3>JSON Formatter & Validator</h3><p>Format, validate, and beautify JSON data.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-database"></i></div><h3>Base64 Encoder/Decoder</h3><p>Encode or decode data using Base64.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-link"></i></div><h3>URL Encoder/Decoder</h3><p>Encode or decode special characters in URLs.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-eye-dropper"></i></div><h3>Color Picker & Converter</h3><p>Pick a color and convert it to any format.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-terminal"></i></div><h3>Regex Tester</h3><p>Test your regular expressions live.</p><a href="#" class="tool-button">Use Tool</a></div>
+                </div>
+            </section>
+            
+            <!-- Color Tools -->
+            <section class="tool-category">
+                <div class="section-header">
+                    <h2 class="section-heading">🎨 Color Tools</h2>
+                    <p class="section-subheading">Generate, convert, and test color palettes for your designs.</p>
+                </div>
+                <div class="tool-grid">
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-image"></i></div><h3>Color Picker from Image</h3><p>Extract colors from any uploaded image.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-exchange-alt"></i></div><h3>HEX to RGB Converter</h3><p>Convert color codes between HEX and RGB.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-palette"></i></div><h3>Gradient Generator</h3><p>Create beautiful CSS color gradients.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-adjust"></i></div><h3>Contrast Checker</h3><p>Check color contrast for accessibility (WCAG).</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-swatchbook"></i></div><h3>Palette Generator</h3><p>Generate beautiful color palettes instantly.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-eye"></i></div><h3>Color Blindness Simulator</h3><p>See your designs as colorblind users do.</p><a href="#" class="tool-button">Use Tool</a></div>
+                </div>
+            </section>
+            
+            <!-- SEO & Marketing Tools -->
+            <section class="tool-category">
+                <div class="section-header">
+                    <h2 class="section-heading">🌍 SEO & Marketing Tools</h2>
+                    <p class="section-subheading">Tools to help you optimize your online presence.</p>
+                </div>
+                <div class="tool-grid">
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-search"></i></div><h3>Keyword Density Checker</h3><p>Analyze the keyword density of your content.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-tags"></i></div><h3>Meta Tag Analyzer</h3><p>Analyze meta tags of any webpage.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-file-word"></i></div><h3>Word Counter</h3><p>Count words in your articles and posts.</p><a href="#" class="tool-button">Use Tool</a></div>
                 </div>
             </section>
 
-            <!-- ======================= Utility Tools ======================= -->
-            <section class="tool-section">
+            <!-- Utility Tools -->
+            <section class="tool-category">
                 <div class="section-header">
-                    <h2>🛠️ Utility Tools</h2>
-                    <p>Handy utilities for various everyday tasks.</p>
+                    <h2 class="section-heading">🛠️ Utility Tools</h2>
+                    <p class="section-subheading">General purpose utilities for everyday tasks.</p>
                 </div>
                 <div class="tool-grid">
-                    <div class="tool-card"><div class="tool-icon">📱</div><h3>QR Code Generator & Scanner</h3><p>Create and scan QR codes easily.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">║█║</div><h3>Barcode Generator</h3><p>Generate different types of barcodes.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🆔</div><h3>UUID Generator</h3><p>Generate universally unique identifiers.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🔄</div><h3>Unit Converter</h3><p>Convert various units of measurement.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">⏰</div><h3>Time Zone Converter</h3><p>Convert time between different zones.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
-                    <div class="tool-card"><div class="tool-icon">🎲</div><h3>Random Number/Password Gen</h3><p>Generate random numbers or passwords.</p><a href="#" class="use-tool-btn">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-qrcode"></i></div><h3>QR Code Generator & Scanner</h3><p>Create or scan QR codes easily.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-barcode"></i></div><h3>Barcode Generator</h3><p>Generate various types of barcodes.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-fingerprint"></i></div><h3>UUID Generator</h3><p>Generate universally unique identifiers.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-balance-scale"></i></div><h3>Unit Converter</h3><p>Convert between various units of measurement.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-clock"></i></div><h3>Time Zone Converter</h3><p>Convert time between different time zones.</p><a href="#" class="tool-button">Use Tool</a></div>
+                    <div class="tool-card"><div class="tool-card-icon"><i class="fas fa-random"></i></div><h3>Password Generator</h3><p>Generate secure, random passwords.</p><a href="#" class="tool-button">Use Tool</a></div>
                 </div>
             </section>
-
         </div>
     </main>
 
-    <!-- ======================= Footer ======================= -->
-    <footer class="site-footer">
+    <!-- Footer -->
+    <footer class="footer">
         <div class="container">
-            <div class="footer-logo">toolstackx.io</div>
-            <p class="footer-tagline">Simplifying your digital life.</p>
-            <div class="footer-contact">
-                <p>Contact: <a href="mailto:toolstackx.io@gmail.com">toolstackx.io@gmail.com</a></p>
-            </div>
+            <a href="#" class="logo">toolstackx.io</a>
+            <p>Simplifying your digital life.</p>
+            <p>Contact: <a href="mailto:toolstackx.io@gmail.com">toolstackx.io@gmail.com</a></p>
             <div class="footer-links">
-                <a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a>
+                <a href="#">Privacy Policy</a> |
+                <a href="#">Terms of Use</a>
             </div>
         </div>
     </footer>
 
+    <!-- JavaScript for Search Functionality -->
     <script>
-        // JavaScript for live search filtering
-        document.getElementById('toolSearch').addEventListener('keyup', function() {
-            let filter = this.value.toUpperCase();
-            let toolCards = document.querySelectorAll('.tool-card');
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('searchInput');
+            const searchButton = document.getElementById('searchButton');
+            const toolCards = document.querySelectorAll('.tool-card');
+            const toolCategories = document.querySelectorAll('.tool-category');
 
-            toolCards.forEach(card => {
-                let toolName = card.querySelector('h3').textContent || card.querySelector('h3').innerText;
-                if (toolName.toUpperCase().indexOf(filter) > -1) {
-                    card.style.display = "";
-                } else {
-                    card.style.display = "none";
+            function filterTools() {
+                const query = searchInput.value.toLowerCase().trim();
+
+                // If query is empty, show everything and return
+                if (query === '') {
+                    toolCategories.forEach(category => category.style.display = 'block');
+                    toolCards.forEach(card => card.style.display = 'flex');
+                    return;
+                }
+                
+                // Hide all categories initially
+                toolCategories.forEach(category => category.style.display = 'none');
+
+                toolCards.forEach(card => {
+                    const title = card.querySelector('h3').textContent.toLowerCase();
+                    const description = card.querySelector('p').textContent.toLowerCase();
+                    const isVisible = title.includes(query) || description.includes(query);
+                    
+                    if (isVisible) {
+                        card.style.display = 'flex';
+                        // Show the parent category section if it contains a visible card
+                        card.closest('.tool-category').style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            }
+
+            // Filter on button click
+            searchButton.addEventListener('click', filterTools);
+
+            // Filter live as user types
+            searchInput.addEventListener('input', filterTools);
+            
+            // Allow pressing Enter to trigger search
+            searchInput.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // Prevent form submission if it's in a form
+                    filterTools();
                 }
             });
         });
     </script>
-
 </body>
 </html>
