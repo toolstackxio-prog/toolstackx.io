@@ -1,0 +1,264 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Image Rotator — Flipper</title>
+  <meta name="description" content="Modern, mobile-friendly image rotator / flipper. Copy this file as image-rotator/Flipper.html and upload to your GitHub Pages site." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0f1724; --card:#0b1220; --muted:#94a3b8; --accent:#7c3aed; --glass: rgba(255,255,255,0.04);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,Arial; background:linear-gradient(180deg,#071029 0%, #071428 60%); color:#e6eef8; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; padding:28px; display:flex; align-items:center; justify-content:center;
+    }
+    .wrap{width:100%; max-width:980px}.topbar{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:18px}
+.title{display:flex;gap:12px;align-items:center}
+.logo{width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,#5b21b6,#06b6d4);display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:18px;box-shadow:0 6px 20px rgba(12,18,38,.6)}
+h1{font-size:18px;margin:0}
+p.lead{margin:0;color:var(--muted);font-size:13px}
+
+.card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:var(--radius); padding:18px; box-shadow: 0 10px 30px rgba(2,6,23,.6); border:1px solid rgba(255,255,255,0.03)}
+
+/* Stage */
+.stage{display:grid;grid-template-columns:1fr 260px;gap:16px;align-items:start}
+@media (max-width:880px){.stage{grid-template-columns:1fr} .sidebar{order:2}}
+
+.flipper-wrap{position:relative; overflow:visible}
+.flipper{
+  width:100%; height:0; padding-bottom:62%; position:relative; perspective:1600px; border-radius:14px; overflow:visible
+}
+.card-face{
+  position:absolute; inset:0; border-radius:14px; backface-visibility:hidden; transform-style:preserve-3d; overflow:hidden; display:flex; align-items:center; justify-content:center; background:var(--card)
+}
+.img{width:100%; height:100%; object-fit:cover; display:block}
+.front{box-shadow:inset 0 -60px 120px rgba(0,0,0,.25)}
+.back{transform:rotateY(180deg); padding:18px; display:flex;flex-direction:column;justify-content:flex-end; gap:10px}
+
+.flipper-inner{position:absolute;inset:0; transition:transform 700ms cubic-bezier(.2,.9,.2,1); transform-style:preserve-3d}
+.flipper-inner.is-flipped{transform:rotateY(180deg)}
+
+/* Controls */
+.controls{position:absolute; left:12px; top:12px; display:flex; gap:10px; z-index:30}
+.btn{--pad:10px 14px; display:inline-flex; align-items:center; gap:10px; padding:var(--pad); border-radius:10px; border:1px solid rgba(255,255,255,0.06); background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); cursor:pointer; font-weight:600; font-size:13px; color:var(--muted); transition:transform .18s ease, box-shadow .18s ease; backdrop-filter: blur(6px)}
+.btn:active{transform:translateY(2px) scale(.995)}
+.btn-outline{border:1px solid rgba(255,255,255,0.12); color:#eaf2ff}
+
+.btn-icon{width:44px;height:44px;padding:0;border-radius:11px;display:inline-grid;place-items:center}
+.btn-icon svg{width:18px;height:18px;opacity:.95}
+
+.caption{position:absolute; left:12px; bottom:12px; right:12px; display:flex; justify-content:space-between; align-items:center; gap:12px}
+.meta{background:linear-gradient(180deg, rgba(2,6,23,.35), rgba(2,6,23,.5)); padding:10px 12px;border-radius:10px; font-size:13px; color:var(--muted); display:flex; gap:8px; align-items:center}
+
+/* Sidebar */
+.sidebar{padding:14px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.03)}
+.sidebar h3{margin:0 0 8px 0;font-size:15px}
+.thumbs{display:flex;flex-direction:row; gap:8px;flex-wrap:wrap}
+.thumb{width:64px;height:48px;border-radius:8px;overflow:hidden;border:2px solid transparent; cursor:pointer; transition:transform .16s ease, border-color .16s ease}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb.active{border-color:var(--accent); transform:scale(1.04)}
+
+.toggles{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.toggle{display:inline-flex;align-items:center;gap:8px;padding:9px 10px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);cursor:pointer}
+.toggle input{accent-color:var(--accent)}
+
+/* pager */
+.pager{display:flex;gap:8px;align-items:center;justify-content:center;margin-top:12px}
+.dot{width:10px;height:10px;border-radius:999px;background:rgba(255,255,255,0.06);box-shadow:inset 0 -2px rgba(0,0,0,.4)}
+.dot.active{background:linear-gradient(90deg,var(--accent),#06b6d4)}
+
+/* fancy animated CTA */
+.cta{margin-top:14px;display:flex;gap:8px}
+.primary{padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.06); font-weight:700; cursor:pointer; position:relative; overflow:hidden}
+.primary .ring{position:absolute; inset:-60%; transform:rotate(30deg); background:linear-gradient(90deg, rgba(124,58,237,0.18), rgba(6,182,212,0.12)); filter:blur(30px); transition:transform .6s ease}
+.primary:active .ring{transform:translateX(-10%) rotate(30deg)}
+
+/* small helpers */
+.muted{color:var(--muted);font-size:13px}
+.kbd{background:rgba(255,255,255,0.03); padding:6px 8px;border-radius:8px;font-weight:700}
+
+footer.small{margin-top:10px;color:var(--muted);font-size:12px}
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="title">
+        <div class="logo">TSX</div>
+        <div>
+          <h1>Image Rotator — Flipper</h1>
+          <p class="lead">Modern, mobile-friendly image flipper with auto-rotate, thumbnails, swipe & keyboard support.</p>
+        </div>
+      </div>
+      <div class="muted">Use on GitHub Pages: <span class="kbd">/image-rotator/Flipper.html</span></div>
+    </div><div class="card">
+  <div class="stage">
+    <div class="flipper-wrap">
+      <div class="flipper" id="flipper">
+        <div class="flipper-inner" id="flipperInner">
+          <div class="card-face front" id="frontFace">
+            <img class="img" id="mainImage" src="https://picsum.photos/id/1015/1600/1000" alt="Image">
+          </div>
+          <div class="card-face back" id="backFace">
+            <div style="font-size:18px;font-weight:700">Image Details</div>
+            <div class="muted" id="imgDesc">Sample description — change the image list in the HTML to customize.</div>
+            <div style="height:12px"></div>
+            <div class="meta">Resolution: <strong id="imgRes">1600×1000</strong> &nbsp; • &nbsp; Index: <strong id="imgIndex">1</strong></div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="btn btn-icon" id="prevBtn" title="Previous">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+
+          <button class="btn btn-icon" id="flipBtn" title="Flip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 5v14M5 12h14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+
+          <button class="btn btn-icon" id="nextBtn" title="Next">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+
+        </div>
+
+        <div class="caption">
+          <div class="meta"><span id="titleText">Mountain View</span></div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <div class="muted">Auto</div>
+            <div class="pager" id="pager"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="display:flex;gap:8px;margin-top:12px;align-items:center;justify-content:space-between">
+        <div class="muted">Click image or press <span class="kbd">Space</span> to flip</div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-outline" id="playPause">Pause</button>
+          <button class="btn primary" id="downloadBtn">
+            <span class="ring"></span>
+            Download
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <aside class="sidebar">
+      <h3>Thumbnails</h3>
+      <div class="thumbs" id="thumbs"></div>
+
+      <div class="toggles">
+        <label class="toggle"><input type="checkbox" id="autoRotate" checked> Auto-rotate</label>
+        <label class="toggle"><input type="checkbox" id="loop" checked> Loop</label>
+      </div>
+
+      <div style="height:12px"></div>
+      <div class="muted">Keyboard: <span class="kbd">←</span> <span class="kbd">→</span> <span class="kbd">Space</span></div>
+      <footer class="small">Made for <strong>toolstackx.io</strong> — copy to <em>image-rotator/Flipper.html</em></footer>
+    </aside>
+  </div>
+</div>
+
+  </div>  <script>
+    // ====== Configuration: change these image objects to customize ======
+    const IMAGES = [
+      {src:'https://picsum.photos/id/1015/1600/1000', title:'Mountain View', desc:'Tall mountains, serene lake.'},
+      {src:'https://picsum.photos/id/1016/1600/1000', title:'Forest Path', desc:'A misty path through green forest.'},
+      {src:'https://picsum.photos/id/1025/1600/1000', title:'Sea Horizon', desc:'Open sea with golden hour light.'},
+      {src:'https://picsum.photos/id/1005/1600/1000', title:'Desert Dunes', desc:'Wind-sculpted sand dunes.'},
+      {src:'https://picsum.photos/id/1035/1600/1000', title:'City Skyline', desc:'Sunset over glass towers.'}
+    ];
+    // ==================================================================
+
+    const flipperInner = document.getElementById('flipperInner');
+    const mainImage = document.getElementById('mainImage');
+    const titleText = document.getElementById('titleText');
+    const imgDesc = document.getElementById('imgDesc');
+    const imgRes = document.getElementById('imgRes');
+    const imgIndex = document.getElementById('imgIndex');
+    const pager = document.getElementById('pager');
+    const thumbs = document.getElementById('thumbs');
+    const autoRotateChk = document.getElementById('autoRotate');
+    const loopChk = document.getElementById('loop');
+    const playPauseBtn = document.getElementById('playPause');
+    const flipBtn = document.getElementById('flipBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    let idx = 0; let autoId = null; let isFlipped = false; let playing = true; let swipeStartX = null;
+
+    function render(){
+      const img = IMAGES[idx];
+      mainImage.src = img.src; titleText.textContent = img.title; imgDesc.textContent = img.desc; imgIndex.textContent = (idx+1)+' / '+IMAGES.length;
+      // try to show resolution by parsing URL size if available
+      imgRes.textContent = (img.src.match(/\/(\d+)\/(\d+)(?:$|\D)/) || ['','-','-']).slice(1,3).join('×');
+      // pager dots
+      pager.innerHTML = '';
+      IMAGES.forEach((_,i)=>{
+        const d = document.createElement('div'); d.className='dot'+(i===idx? ' active':''); d.addEventListener('click',()=>jump(i)); pager.appendChild(d);
+      });
+      // thumbs
+      thumbs.innerHTML='';
+      IMAGES.forEach((it,i)=>{
+        const t=document.createElement('div'); t.className='thumb'+(i===idx?' active':''); t.innerHTML='<img src="'+it.src+'" alt="t">'; t.addEventListener('click',()=>jump(i)); thumbs.appendChild(t);
+      });
+      // ensure front is visible when image changes
+      if(isFlipped) toggleFlip(false);
+    }
+
+    function jump(i){ idx=i; render(); resetAuto(); }
+    function prev(){ idx = (idx-1 + IMAGES.length) % IMAGES.length; render(); resetAuto(); }
+    function next(){ idx = idx+1; if(idx>=IMAGES.length){ if(loopChk.checked) idx=0; else { idx = IMAGES.length-1; pause(); }} render(); resetAuto(); }
+
+    function toggleFlip(force){ if(typeof force==='boolean') isFlipped=force; else isFlipped = !isFlipped; flipperInner.classList.toggle('is-flipped', isFlipped); }
+
+    flipBtn.addEventListener('click', ()=>{ toggleFlip(); animateButton(flipBtn); });
+    prevBtn.addEventListener('click', ()=>{ prev(); animateButton(prevBtn); });
+    nextBtn.addEventListener('click', ()=>{ next(); animateButton(nextBtn); });
+
+    mainImage.addEventListener('click', ()=>toggleFlip());
+
+    playPauseBtn.addEventListener('click', ()=>{ if(playing) pause(); else play(); animateButton(playPauseBtn); });
+    function play(){ playing=true; playPauseBtn.textContent='Pause'; startAuto(); }
+    function pause(){ playing=false; playPauseBtn.textContent='Play'; stopAuto(); }
+
+    function startAuto(){ stopAuto(); if(!autoRotateChk.checked) return; autoId = setInterval(()=> next(), 3500); }
+    function stopAuto(){ if(autoId) { clearInterval(autoId); autoId=null; } }
+    function resetAuto(){ if(playing) startAuto(); }
+
+    // Small click ripple/transform animation for buttons
+    function animateButton(btn){ btn.animate([{transform:'translateY(0) scale(1)'},{transform:'translateY(-6px) scale(1.02)'},{transform:'translateY(0) scale(1)'}],{duration:420,easing:'cubic-bezier(.2,.9,.2,1)'}); }
+
+    // keyboard
+    document.addEventListener('keydown', (e)=>{
+      if(e.key==='ArrowLeft') prev();
+      if(e.key==='ArrowRight') next();
+      if(e.code==='Space') { e.preventDefault(); toggleFlip(); }
+    });
+
+    // simple touch swipe for mobile
+    const flipper = document.getElementById('flipper');
+    flipper.addEventListener('touchstart',(e)=>{ swipeStartX = e.changedTouches[0].clientX; });
+    flipper.addEventListener('touchend',(e)=>{ if(!swipeStartX) return; const d = e.changedTouches[0].clientX - swipeStartX; if(Math.abs(d) > 40){ if(d>0) prev(); else next(); } swipeStartX=null; });
+
+    // download current image
+    document.getElementById('downloadBtn').addEventListener('click', ()=>{
+      const url = IMAGES[idx].src; const a = document.createElement('a'); a.href=url; a.download = url.split('/').slice(-1)[0] || 'image.jpg'; document.body.appendChild(a); a.click(); a.remove(); animateButton(document.getElementById('downloadBtn'));
+    });
+
+    // init
+    render(); startAuto();
+
+    // small accessibility improvements
+    [prevBtn,nextBtn,flipBtn,playPauseBtn].forEach(b=>b.setAttribute('aria-pressed','false'));
+
+  </script></body>
+</html>
