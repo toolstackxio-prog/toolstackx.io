@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Background Remover - Toolstackx.io</title>
+  <style>
+    * {box-sizing: border-box; margin: 0; padding: 0;}
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #f8fbff, #eaf1fb);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #202124;
+      text-align: center;
+    }
+    h1 {
+      color: #1a73e8;
+      font-weight: 600;
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 400px;
+    }
+    input[type="file"] { display: none; }
+    label {
+      background: #1a73e8;
+      color: #fff;
+      padding: 10px 22px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: 0.3s ease;
+      display: inline-block;
+      margin-bottom: 15px;
+    }
+    label:hover {
+      background: #155ab6;
+      transform: scale(1.05);
+    }
+    button {
+      background: transparent;
+      border: 2px solid #1a73e8;
+      color: #1a73e8;
+      padding: 10px 25px;
+      border-radius: 25px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+    button:hover {
+      background: #1a73e8;
+      color: #fff;
+      transform: scale(1.05);
+    }
+    .loading {
+      display: none;
+      color: #1a73e8;
+      margin-top: 10px;
+      font-weight: 500;
+    }
+    img {
+      margin-top: 15px;
+      max-width: 100%;
+      border-radius: 10px;
+      display: none;
+    }
+    footer {
+      margin-top: 20px;
+      font-size: 0.85rem;
+      color: #5f6368;
+    }
+  </style>
+</head>
+<body>
+  <h1>AI Background Remover</h1>
+  <div class="container">
+    <form id="upload-form">
+      <label for="image-upload">Choose Image</label>
+      <input type="file" id="image-upload" accept="image/*" />
+      <button type="submit">Remove Background</button>
+    </form>
+    <div class="loading">Processing... please wait ⏳</div>
+    <img id="result" alt="Result Image" />
+  </div>
+  <footer>Powered by Toolstackx.io</footer>
+
+  <script>
+    const form = document.getElementById('upload-form');
+    const fileInput = document.getElementById('image-upload');
+    const resultImg = document.getElementById('result');
+    const loadingText = document.querySelector('.loading');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const file = fileInput.files[0];
+      if (!file) return alert('Please choose an image first!');
+
+      loadingText.style.display = 'block';
+      resultImg.style.display = 'none';
+
+      const formData = new FormData();
+      formData.append('image_file', file);
+
+      try {
+        const response = await fetch('/.netlify/functions/remove-bg', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) throw new Error('Background removal failed.');
+
+        const blob = await response.blob();
+        const imageUrl = URL.createObjectURL(blob);
+        resultImg.src = imageUrl;
+        resultImg.style.display = 'block';
+      } catch (err) {
+        alert('Failed to remove background. Please try again.');
+      } finally {
+        loadingText.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
