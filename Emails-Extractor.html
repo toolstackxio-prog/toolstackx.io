@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- SEO Meta Tags for Better Discoverability -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Extractor Tool - Free & Online | ToolStackX</title>
+    <meta name="description" content="A powerful and free online tool to quickly extract all email addresses from any block of text. Just paste your text and get a clean list of emails.">
+    <meta name="keywords" content="email extractor, extract emails, email finder, email grabber, text to email, online tool, toolstackx">
+    <link rel="canonical" href="https://toolstackxio-prog.github.io/toolstackx.io/Emails-Extractor.html">
+
+    <!-- Google Fonts for a Professional UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CSS Variables for a Modern Google-Style Theme --- */
+        :root {
+            --google-blue: #4285F4;
+            --google-red: #DB4437;
+            --google-green: #0F9D58;
+            --google-yellow: #F4B400;
+            --background-color: #f8f9fa;
+            --card-background: #ffffff;
+            --text-primary: #202124;
+            --text-secondary: #5f6368;
+            --border-color: #dfe1e5;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --accent-color: var(--google-blue);
+            --warning-bg: #fffbe6;
+            --warning-border: #ffe58f;
+            --warning-text: #d46b08;
+        }
+
+        /* --- Global Styles & Resets --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        /* --- Main Application Container --- */
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background-color: var(--card-background);
+            border-radius: 16px;
+            box-shadow: 0 8px 24px var(--shadow-color);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Header Section --- */
+        .app-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .app-header .icon {
+            color: var(--accent-color);
+        }
+
+        .app-header h1 {
+            font-size: 1.75rem;
+            font-weight: 600;
+        }
+        
+        /* --- Main Content Layout --- */
+        .main-content {
+            padding: 2rem;
+        }
+        
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .pane h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        /* --- Text Area Styles --- */
+        textarea {
+            width: 100%;
+            height: 350px;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        textarea:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.2);
+        }
+
+        /* --- Action Buttons --- */
+        .actions {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #3367d6;
+            box-shadow: 0 4px 10px rgba(66, 133, 244, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: #f1f3f4;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+        .btn-secondary:hover {
+            background-color: #e8eaed;
+        }
+
+        /* --- Results Pane --- */
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .results-header h2 {
+            margin-bottom: 0;
+        }
+
+        #email-count {
+            font-weight: 500;
+            background-color: #e8f0fe;
+            color: var(--accent-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+        }
+
+        /* --- Ethical Use Warning --- */
+        .warning-box {
+            margin-top: 2rem;
+            padding: 1rem 1.5rem;
+            background-color: var(--warning-bg);
+            border: 1px solid var(--warning-border);
+            border-left: 5px solid var(--google-yellow);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .warning-box .icon {
+            color: var(--warning-text);
+            flex-shrink: 0;
+        }
+        .warning-box p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--warning-text);
+        }
+        .warning-box strong {
+            font-weight: 600;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 900px) {
+            .layout-grid {
+                grid-template-columns: 1fr;
+            }
+            textarea {
+                height: 250px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body { padding: 1rem 0.5rem; }
+            .app-header { padding: 1rem 1.5rem; }
+            .main-content { padding: 1.5rem; }
+            .app-header h1 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="container" role="main">
+        <header class="app-header">
+            <div class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" height="28" viewBox="0 -960 960 960" width="28" fill="currentColor"><path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm320-280L160-640v400h640v-400L480-440Zm0-80 320-200H160l320 200ZM160-640v-80 480-400Z"/></svg>
+            </div>
+            <h1>Email Extractor</h1>
+        </header>
+
+        <section class="main-content">
+            <div class="layout-grid">
+                <!-- Input Pane -->
+                <div class="pane input-pane" role="region" aria-labelledby="input-heading">
+                    <h2 id="input-heading">Paste Your Text Here</h2>
+                    <textarea id="text-input" placeholder="Paste any text containing email addresses..." aria-label="Text Input Area"></textarea>
+                    <div class="actions">
+                        <button id="extract-btn" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20" fill="currentColor"><path d="m480-80-42-43 198-197H120v-60h516L438-577l42-43 280 280-280 280Z"/></svg>
+                            Extract Emails
+                        </button>
+                        <button id="clear-btn" class="btn btn-secondary">Clear</button>
+                    </div>
+                </div>
+
+                <!-- Results Pane -->
+                <div class="pane results-pane" role="region" aria-labelledby="results-heading" aria-live="polite">
+                    <div class="results-header">
+                        <h2 id="results-heading">Extracted Emails</h2>
+                        <span id="email-count">0 Found</span>
+                    </div>
+                    <textarea id="results-output" readonly placeholder="Extracted emails will appear here..." aria-label="Extracted Emails"></textarea>
+                    <div class="actions">
+                        <button id="copy-btn" class="btn btn-secondary">Copy Results</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ethical Use Warning Box -->
+            <div class="warning-box" role="alert">
+                <div class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 -960 960 960" width="32" fill="currentColor"><path d="m40-120 440-760 440 760H40Zm104-60h672L480-740 144-180Zm336-60q17 0 28.5-11.5T520-280q0-17-11.5-28.5T480-320q-17 0-28.5 11.5T440-280q0 17 11.5 28.5T480-240Zm-40-120h80v-200h-80v200Zm40-100Z"/></svg>
+                </div>
+                <p>
+                    <strong>Ethical Use Warning:</strong> This tool is for legitimate data processing only. Please use it responsibly and in full compliance with privacy laws like GDPR and CAN-SPAM. Do not use extracted emails for sending unsolicited messages (spam).
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get references to all necessary DOM elements
+            const textInput = document.getElementById('text-input');
+            const resultsOutput = document.getElementById('results-output');
+            const extractBtn = document.getElementById('extract-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const emailCount = document.getElementById('email-count');
+
+            /**
+             * Extracts unique email addresses from a given string of text.
+             */
+            const extractEmails = () => {
+                const inputText = textInput.value;
+                if (!inputText) {
+                    resultsOutput.value = '';
+                    updateCount(0);
+                    return;
+                }
+
+                // A robust regex to find email addresses
+                const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
+                const foundEmails = inputText.match(emailRegex);
+
+                if (foundEmails) {
+                    // Use a Set to automatically handle duplicates and maintain insertion order
+                    const uniqueEmails = [...new Set(foundEmails)];
+                    resultsOutput.value = uniqueEmails.join('\\n'); // Display one email per line
+                    updateCount(uniqueEmails.length);
+                } else {
+                    resultsOutput.value = '';
+                    updateCount(0);
+                }
+            };
+
+            /**
+             * Copies the content of the results textarea to the clipboard.
+             */
+            const copyResults = () => {
+                if (resultsOutput.value) {
+                    navigator.clipboard.writeText(resultsOutput.value)
+                        .then(() => {
+                            // Provide user feedback on successful copy
+                            copyBtn.textContent = 'Copied!';
+                            setTimeout(() => {
+                                copyBtn.textContent = 'Copy Results';
+                            }, 2000);
+                        })
+                        .catch(err => {
+                            console.error('Failed to copy text: ', err);
+                            alert('Failed to copy text. Please try again.');
+                        });
+                }
+            };
+
+            /**
+             * Clears both input and output text areas and resets the counter.
+             */
+            const clearAll = () => {
+                textInput.value = '';
+                resultsOutput.value = '';
+                updateCount(0);
+            };
+            
+            /**
+             * Updates the email count display.
+             * @param {number} count - The number of unique emails found.
+             */
+            const updateCount = (count) => {
+                 emailCount.textContent = `${count} Found`;
+            };
+
+            // --- Attach Event Listeners ---
+            extractBtn.addEventListener('click', extractEmails);
+            copyBtn.addEventListener('click', copyResults);
+            clearBtn.addEventListener('click', clearAll);
+        });
+    </script>
+
+</body>
+</html>
