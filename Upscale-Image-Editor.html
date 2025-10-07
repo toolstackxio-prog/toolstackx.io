@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Image Upscaler | ToolStackX</title>
+    <style>
+        /* Google Fonts - Roboto */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+        /* Global Styles & Google Color Palette */
+        :root {
+            --google-blue: #4285F4;
+            --google-red: #DB4437;
+            --google-yellow: #F4B400;
+            --google-green: #0F9D58;
+            --background-color: #f5f5f5;
+            --card-background: #ffffff;
+            --text-primary: #202124;
+            --text-secondary: #5f6368;
+            --border-color: #dadce0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Main Container */
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background-color: var(--card-background);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Header */
+        header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-color);
+            background-color: var(--card-background);
+        }
+
+        header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        header h1 .icon {
+            color: var(--google-blue);
+            margin-right: 12px;
+        }
+
+        header p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        /* Main Content Area */
+        main {
+            padding: 24px;
+        }
+
+        /* Upload Section */
+        .upload-section {
+            text-align: center;
+            padding: 40px;
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            background-color: #fafafa;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .upload-section:hover {
+            background-color: #f1f3f4;
+            border-color: var(--google-blue);
+        }
+
+        .upload-section .upload-icon {
+            font-size: 48px;
+            color: var(--google-blue);
+        }
+
+        .upload-section h2 {
+            margin-top: 16px;
+            font-size: 18px;
+            color: var(--text-primary);
+        }
+
+        .upload-section p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        /* Image Display Section */
+        .image-display-section {
+            display: none; /* Initially hidden */
+            margin-top: 24px;
+            text-align: center;
+        }
+
+        .image-wrapper {
+            position: relative;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .image-wrapper .loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--google-blue);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            display: none; /* Initially hidden */
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        #upscaled-image {
+            max-width: 100%;
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        #upscaled-image.loaded {
+            opacity: 1;
+        }
+
+        /* Download Button */
+        .download-section {
+            text-align: center;
+            margin-top: 24px;
+        }
+
+        #download-btn {
+            background-color: var(--google-blue);
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 12px 32px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            opacity: 0.5;
+            pointer-events: none; /* Disabled by default */
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        #download-btn .icon {
+            margin-right: 8px;
+        }
+
+        #download-btn:not([disabled]):hover {
+            background-color: #3367d6;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        #download-btn:not([disabled]) {
+             opacity: 1;
+             pointer-events: auto;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            header, main {
+                padding: 16px;
+            }
+            header h1 {
+                font-size: 22px;
+            }
+            .upload-section {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>
+                <span class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 -960 960 960" width="32" fill="currentColor"><path d="M440-200h80v-167l64 64 56-57-160-160-160 160 57 56 63-63v167ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h480q33 0 56.5 23.5T800-800v640q0 33-23.5 56.5T720-80H240Z"/></svg>
+                </span>
+                AI Image Upscaler
+            </h1>
+            <p>Enhance your image resolution with a single click. Upload a file to begin.</p>
+        </header>
+
+        <main>
+            <!-- Upload Section -->
+            <div class="upload-section" id="upload-area">
+                <input type="file" id="file-input" accept="image/png, image/jpeg, image/webp">
+                <div class="upload-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48" fill="currentColor"><path d="M450-240h60v-150h150v-60H510v-150h-60v150H300v60h150v150ZM120-120q-33 0-56.5-23.5T40-200v-560q0-33 23.5-56.5T120-840h720q33 0 56.5 23.5T920-760v560q0 33-23.5 56.5T840-120H120Zm0-80h720v-560H120v560Zm0 0v-560 560Z"/></svg>
+                </div>
+                <h2>Click to upload an image</h2>
+                <p>Supports: PNG, JPG, WEBP</p>
+            </div>
+
+            <!-- Image Display Section -->
+            <div class="image-display-section" id="image-display">
+                <div class="image-wrapper">
+                    <img id="upscaled-image" src="" alt="Upscaled Image">
+                    <div class="loader" id="loader"></div>
+                </div>
+            </div>
+
+            <!-- Download Section -->
+            <div class="download-section">
+                <button id="download-btn" disabled>
+                     <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="currentColor"><path d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg>
+                     </span>
+                    Download Upscaled Image
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Get DOM elements
+        const uploadArea = document.getElementById('upload-area');
+        const fileInput = document.getElementById('file-input');
+        const imageDisplaySection = document.getElementById('image-display');
+        const upscaledImage = document.getElementById('upscaled-image');
+        const loader = document.getElementById('loader');
+        const downloadBtn = document.getElementById('download-btn');
+        let processedFileUrl = null;
+
+        // Trigger file input when the upload area is clicked
+        uploadArea.addEventListener('click', () => fileInput.click());
+
+        // Handle file selection
+        fileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                handleImage(file);
+            }
+        });
+
+        function handleImage(file) {
+            // Check if the file is an image
+            if (!file.type.startsWith('image/')) {
+                alert('Please upload a valid image file (PNG, JPG, WEBP).');
+                return;
+            }
+
+            // Create a URL for the selected file
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                // Show the image display section
+                uploadArea.style.display = 'none';
+                imageDisplaySection.style.display = 'block';
+
+                // Show loader and hide image initially
+                loader.style.display = 'block';
+                upscaledImage.classList.remove('loaded');
+                upscaledImage.src = '';
+
+                // Disable download button during processing
+                downloadBtn.disabled = true;
+
+                // --- AI Upscaling Simulation ---
+                // In a real application, you would send the 'file' to a server-side AI model here.
+                // For this demonstration, we will simulate a 2-second processing time.
+                setTimeout(() => {
+                    // The "upscaled" result is the same image in this demo.
+                    processedFileUrl = reader.result;
+                    upscaledImage.src = processedFileUrl;
+                    
+                    upscaledImage.onload = () => {
+                         // Hide loader and show image
+                        loader.style.display = 'none';
+                        upscaledImage.classList.add('loaded');
+                    
+                        // Enable the download button
+                        downloadBtn.disabled = false;
+                    };
+                   
+                }, 2000); // 2-second delay to simulate processing
+            };
+        }
+
+        // Handle download button click
+        downloadBtn.addEventListener('click', () => {
+            if (processedFileUrl) {
+                const a = document.createElement('a');
+                a.href = processedFileUrl;
+                a.download = 'upscaled-image.png'; // You can customize the downloaded file name
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+        });
+    </script>
+
+</body>
+</html>
