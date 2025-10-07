@@ -1,317 +1,379 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- SEO Meta Tags for Discoverability -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Thumbnail Downloader | ToolStackX</title>
-    <style>
-        /* Google Fonts - Poppins */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+    <title>YouTube Thumbnail Downloader & Creator | ToolStackX</title>
+    <meta name="description" content="A powerful, free online tool to download any YouTube video thumbnail in high quality (HD, SD) or create your own custom YouTube thumbnail from scratch with our easy-to-use editor.">
+    <meta name="keywords" content="youtube thumbnail downloader, youtube thumbnail creator, custom thumbnail maker, youtube thumbnail grabber, free thumbnail generator, toolstackx">
+    <link rel="canonical" href="https://toolstackxio-prog.github.io/toolstackx.io/YouTube-Thumbnail-Tool.html">
 
-        /* Global Styles & Google Color Palette */
+    <!-- Google Fonts - Poppins for a modern UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* CSS Variables for a Themed, Customizable Design */
         :root {
             --google-blue: #4285F4;
             --google-red: #DB4437;
-            --google-yellow: #F4B400;
             --google-green: #0F9D58;
-            --background-color: #f0f2f5;
+            --google-yellow: #F4B400;
+            --background-gradient: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
             --card-background: #ffffff;
-            --text-primary: #202124;
-            --text-secondary: #5f6368;
-            --border-color: #dadce0;
-            --accent-color: var(--google-blue);
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --border-color: #e5e7eb;
+            --shadow-color: rgba(99, 102, 241, 0.2);
+            --accent-color: #6366f1; /* A modern purple/blue */
         }
 
+        /* Global Styles & Accessibility */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html { scroll-behavior: smooth; }
+
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: var(--background-color);
+            background-image: var(--background-gradient);
             color: var(--text-primary);
             display: flex;
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
-            padding: 20px;
+            padding: 2rem 1rem;
         }
 
-        /* Main Container */
+        /* Main Application Container */
         .container {
             width: 100%;
-            max-width: 900px;
+            max-width: 1100px;
             background-color: var(--card-background);
-            border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
             border: 1px solid var(--border-color);
             overflow: hidden;
+            animation: fadeIn 0.6s ease-in-out;
         }
 
-        /* Header */
-        header {
-            padding: 24px 32px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header Section */
+        .tool-header {
+            padding: 2rem;
             border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: center;
-            gap: 16px;
-            background-color: #f8f9fa;
+            gap: 1rem;
+            background-color: #f9fafb;
         }
-        
-        header .icon {
-            color: var(--google-red);
+        .tool-header .icon { color: var(--google-red); }
+        .tool-header h1 { font-size: 1.75rem; font-weight: 700; }
+
+        /* Tab Navigation for Downloader/Creator */
+        .tabs {
+            display: flex;
+            background-color: #f9fafb;
+            padding: 0 2rem;
+            border-bottom: 1px solid var(--border-color);
         }
-        
-        header h1 {
-            font-size: 26px;
-            font-weight: 700;
+        .tab-button {
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: var(--text-secondary);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .tab-button.active {
+            color: var(--accent-color);
+            border-bottom-color: var(--accent-color);
         }
 
-        /* Main Content Area */
-        main {
-            padding: 32px;
+        /* Tab Content Panels */
+        .tab-panel {
+            display: none;
+            padding: 2rem;
+            animation: slideUp 0.5s ease-out;
         }
-        
-        /* Input Section */
-        .input-section {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
+        .tab-panel.active { display: block; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        
-        #url-input {
-            flex-grow: 1;
-            height: 50px;
-            padding: 0 16px;
-            font-size: 16px;
+
+        /* Shared Styles for Inputs and Buttons */
+        .form-control {
+            width: 100%;
+            height: 52px;
+            padding: 0 1rem;
+            font-size: 1rem;
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            transition: border-color 0.3s, box-shadow 0.3s;
+            border-radius: 10px;
+            transition: all 0.3s ease;
         }
-        
-        #url-input:focus {
+        .form-control:focus {
             outline: none;
             border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.2);
+            box-shadow: 0 0 0 3px var(--shadow-color);
         }
-        
-        #get-thumbnails-btn {
-            height: 50px;
-            padding: 0 24px;
+        .btn {
+            height: 52px;
+            padding: 0 1.75rem;
             background-color: var(--accent-color);
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 500;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s, box-shadow 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            transition: all 0.3s ease;
         }
-        
-        #get-thumbnails-btn:hover {
-            background-color: #3367d6;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        .btn:hover:not(:disabled) {
+            background-color: #4f46e5;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
-        /* Results Section */
-        #results-section {
-            margin-top: 32px;
-        }
-
-        .loader {
-            display: none;
-            margin: 40px auto;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid var(--accent-color);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .error-message {
-            display: none;
-            padding: 16px;
-            background-color: #fdeded;
-            color: var(--google-red);
-            border: 1px solid #f5c2c7;
-            border-radius: 8px;
-            text-align: center;
-        }
-        
+        /* --- DOWNLOADER STYLES --- */
+        #url-form { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+        #url-input { flex-grow: 1; }
         .thumbnails-grid {
+            margin-top: 2rem;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 24px;
+            gap: 1.5rem;
         }
-        
         .thumbnail-card {
-            background-color: var(--card-background);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            transition: box-shadow 0.3s, transform 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
         }
-        
-        .thumbnail-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        
-        .thumbnail-card img {
-            width: 100%;
-            display: block;
-            background-color: #eee;
-        }
-        
-        .thumbnail-info {
-            padding: 16px;
-        }
-        
-        .thumbnail-info h3 {
-            font-size: 16px;
-            margin-bottom: 4px;
-        }
-        
-        .thumbnail-info p {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-bottom: 16px;
-        }
-        
-        .download-link {
-            display: block;
-            width: 100%;
-            text-align: center;
-            padding: 10px;
-            background-color: var(--google-green);
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: background-color 0.3s;
-        }
+        .thumbnail-card:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
+        .thumbnail-card img { width: 100%; display: block; aspect-ratio: 16/9; object-fit: cover; }
+        .thumbnail-info { padding: 1rem; }
+        .thumbnail-info h3 { font-size: 1.1rem; margin-bottom: 0.25rem; }
+        .thumbnail-info p { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem; }
+        .download-link { display: block; text-align: center; padding: 0.75rem; background-color: var(--google-green); color: white; text-decoration: none; border-radius: 8px; font-weight: 500; }
 
-        .download-link:hover {
-            background-color: #0c8448;
+        /* --- CREATOR STYLES --- */
+        .creator-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
         }
+        .creator-controls .control-group { margin-bottom: 1.5rem; }
+        .control-group label { display: block; font-weight: 500; margin-bottom: 0.5rem; }
+        .control-group input[type="color"] { height: 40px; padding: 4px; }
+        .control-group select, .control-group textarea { width: 100%; padding: 0.5rem; border-radius: 8px; border: 1px solid var(--border-color); }
+        .control-group textarea { resize: vertical; min-height: 80px; }
+        .font-style-buttons { display: flex; gap: 0.5rem; }
+        .font-style-buttons button { flex: 1; padding: 0.5rem; border: 1px solid var(--border-color); background: #fff; border-radius: 8px; cursor: pointer; }
+        .font-style-buttons button.active { background-color: #e0e7ff; color: var(--accent-color); border-color: var(--accent-color); }
+
+        .canvas-workspace {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9fafb;
+            border-radius: 16px;
+            padding: 1rem;
+        }
+        #thumbnail-canvas {
+            width: 100%;
+            max-width: 640px; /* 1280/2 */
+            aspect-ratio: 16 / 9;
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            background-color: #fff;
+            cursor: grab;
+        }
+        .creator-actions { margin-top: 1rem; display: flex; gap: 1rem; }
+
+        /* General Status & Loader Styles */
+        .status-message, .loader { margin-top: 2rem; text-align: center; }
+        .loader { display: none; margin: 2rem auto; border: 5px solid #f3f3f3; border-top: 5px solid var(--accent-color); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         /* Responsive Design */
+        @media (max-width: 900px) {
+            .creator-layout { grid-template-columns: 1fr; }
+            .canvas-workspace { order: -1; margin-bottom: 2rem; }
+        }
         @media (max-width: 600px) {
-            main {
-                padding: 20px;
-            }
-            header h1 {
-                font-size: 22px;
-            }
-            .input-section {
-                flex-direction: column;
-            }
-            #url-input, #get-thumbnails-btn {
-                width: 100%;
-            }
+            body { padding: 1rem 0.5rem; }
+            .tool-header, .tab-panel { padding: 1.5rem; }
+            #url-form { flex-direction: column; }
+            #url-input, .btn { width: 100%; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
+    <main class="container">
+        <header class="tool-header">
             <div class="icon">
-                <svg xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 -960 960 960" width="32" fill="currentColor"><path d="M480-120q-151 0-255.5-104.5T120-480q0-151 104.5-255.5T480-840q151 0 255.5 104.5T840-480q0 151-104.5 255.5T480-120Zm0-80q54 0 102.5-22T669-291l-98-98q-11 5-21.5 7.5T528-378q-45 0-76.5-31.5T420-486v-68l-96-96q-14 34-21.5 71.5T300-480q0 117 81.5 198.5T578-200q-32 0-63-9.5T452-240l-66 66q31 16 64 24t68 8Zm189-189-98-98q5-11 7.5-21.5T600-442q0-45-31.5-76.5T492-550v-68l96-96q34 14 62.5 35.5T711-580q33 54 33 111Zm-111-23-62-62q15-20 23.5-44t8.5-49q0-54-32-94l-50-50q-40-32-94-32t-94 32l-50 50q-32 40-32 94 0 25 8.5 49t23.5 44l-62 62-56-56 383-383 56 56-62 62Zm-44-118q21 0 35.5-14.5T660-502q0-21-14.5-35.5T610-552q-21 0-35.5 14.5T560-502q0 21 14.5 35.5T610-452Z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 -960 960 960" width="32" fill="currentColor"><path d="m480-160-58-58 126-126-126-126 58-58 126 126 126-126 58 58-126 126 126 126-58 58-126-126-126 126ZM200-80q-33 0-56.5-23.5T120-160v-640q0-33 23.5-56.5T200-880h560q33 0 56.5 23.5T840-800v640q0 33-23.5 56.5T760-80H200Zm0-80h560v-640H200v640Z"/></svg>
             </div>
-            <h1>YouTube Thumbnail Downloader</h1>
+            <h1>YouTube Thumbnail Tool</h1>
         </header>
-        <main>
-            <div class="input-section">
-                <input type="text" id="url-input" placeholder="Paste YouTube video URL here...">
-                <button id="get-thumbnails-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20" fill="currentColor"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
-                    Get Thumbnails
-                </button>
-            </div>
 
-            <div id="results-section">
-                <div class="loader" id="loader"></div>
-                <div class="error-message" id="error-message"></div>
-                <div class="thumbnails-grid" id="thumbnails-container">
-                    <!-- Thumbnails will be injected here by JavaScript -->
+        <nav class="tabs" role="tablist">
+            <button role="tab" aria-selected="true" class="tab-button active" data-tab="downloader">Downloader</button>
+            <button role="tab" aria-selected="false" class="tab-button" data-tab="creator">Creator</button>
+        </nav>
+
+        <!-- DOWNLOADER TAB PANEL -->
+        <section id="downloader" role="tabpanel" class="tab-panel active">
+            <h2>Download Thumbnail from URL</h2>
+            <form id="url-form" action="javascript:void(0);">
+                <input type="text" id="url-input" class="form-control" placeholder="Paste YouTube video URL here..." aria-label="YouTube Video URL">
+                <button type="submit" id="get-thumb-btn" class="btn">Get Thumbnails</button>
+            </form>
+            <div class="loader" id="downloader-loader"></div>
+            <div id="downloader-results" class="thumbnails-grid"></div>
+        </section>
+
+        <!-- CREATOR TAB PANEL -->
+        <section id="creator" role="tabpanel" class="tab-panel">
+            <div class="creator-layout">
+                <aside class="creator-controls">
+                    <h3>Customize Your Thumbnail</h3>
+                    
+                    <div class="control-group">
+                        <label for="bg-color">Background Color</label>
+                        <input type="color" id="bg-color" class="form-control" value="#6366f1">
+                    </div>
+
+                    <div class="control-group">
+                        <label for="bg-image-upload">Background Image</label>
+                        <input type="file" id="bg-image-upload" accept="image/*">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="main-text">Main Text</label>
+                        <textarea id="main-text" class="form-control" rows="3">Your Awesome Title!</textarea>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="font-size">Font Size</label>
+                        <input type="range" id="font-size" min="20" max="200" value="100">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="font-color">Font Color</label>
+                        <input type="color" id="font-color" class="form-control" value="#ffffff">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="font-family">Font Family</label>
+                        <select id="font-family" class="form-control">
+                            <option value="Poppins">Poppins</option>
+                            <option value="Impact">Impact</option>
+                            <option value="Arial Black">Arial Black</option>
+                            <option value="Comic Sans MS">Comic Sans MS</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Font Style & Alignment</label>
+                        <div class="font-style-buttons">
+                           <button id="font-bold"><b>B</b></button>
+                           <button id="font-italic"><i>I</i></button>
+                           <button id="align-left">L</button>
+                           <button id="align-center" class="active">C</button>
+                           <button id="align-right">R</button>
+                        </div>
+                    </div>
+                </aside>
+                <div class="canvas-workspace">
+                    <canvas id="thumbnail-canvas" width="1280" height="720"></canvas>
+                    <div class="creator-actions">
+                        <button id="clear-canvas-btn" class="btn" style="background-color: var(--text-secondary);">Clear</button>
+                        <button id="download-canvas-btn" class="btn" style="background-color: var(--google-green);">Download Thumbnail</button>
+                    </div>
                 </div>
             </div>
-        </main>
-    </div>
+        </section>
+    </main>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // --- GLOBAL & TAB SWITCHING LOGIC ---
+            const tabs = document.querySelectorAll('.tab-button');
+            const panels = document.querySelectorAll('.tab-panel');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => {
+                        t.classList.remove('active');
+                        t.setAttribute('aria-selected', 'false');
+                    });
+                    tab.classList.add('active');
+                    tab.setAttribute('aria-selected', 'true');
+
+                    panels.forEach(panel => {
+                        panel.classList.remove('active');
+                        if (panel.id === tab.dataset.tab) {
+                            panel.classList.add('active');
+                        }
+                    });
+                });
+            });
+
+            // --- YOUTUBE THUMBNAIL DOWNLOADER LOGIC ---
+            const urlForm = document.getElementById('url-form');
+            const getThumbBtn = document.getElementById('get-thumb-btn');
             const urlInput = document.getElementById('url-input');
-            const getBtn = document.getElementById('get-thumbnails-btn');
-            const loader = document.getElementById('loader');
-            const errorMessage = document.getElementById('error-message');
-            const thumbnailsContainer = document.getElementById('thumbnails-container');
+            const downloaderLoader = document.getElementById('downloader-loader');
+            const downloaderResults = document.getElementById('downloader-results');
 
-            getBtn.addEventListener('click', fetchThumbnails);
-
-            function fetchThumbnails() {
+            urlForm.addEventListener('submit', () => {
                 const url = urlInput.value.trim();
-                if (!url) {
-                    showError("Please paste a YouTube URL.");
-                    return;
-                }
-
                 const videoId = extractVideoId(url);
+
                 if (!videoId) {
-                    showError("Invalid YouTube URL. Please check the URL and try again.");
+                    downloaderResults.innerHTML = `<p class="status-message">Invalid YouTube URL. Please check and try again.</p>`;
                     return;
                 }
 
-                // Clear previous results and show loader
-                hideError();
-                thumbnailsContainer.innerHTML = '';
-                loader.style.display = 'block';
-
-                // Simulate a network delay
-                setTimeout(() => {
+                downloaderLoader.style.display = 'block';
+                downloaderResults.innerHTML = '';
+                
+                setTimeout(() => { // Simulate fetch
                     displayThumbnails(videoId);
-                    loader.style.display = 'none';
+                    downloaderLoader.style.display = 'none';
                 }, 500);
-            }
+            });
 
             function extractVideoId(url) {
-                let videoId = null;
-                const regexes = [
-                    /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^&]+)/,
-                    /(?:https?:\/\/)?(?:www\.)?youtu\.be\/([^?]+)/,
-                    /(?:https?:\/\/)?(?:www\.)?youtube\.com\/embed\/([^?]+)/,
-                    /(?:https?:\/\/)?(?:www\.)?youtube\.com\/v\/([^?]+)/
-                ];
-
-                for (const regex of regexes) {
-                    const match = url.match(regex);
-                    if (match && match[1]) {
-                        videoId = match[1];
-                        break;
-                    }
-                }
-                return videoId;
+                const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+                const match = url.match(regex);
+                return match ? match[1] : null;
             }
 
             function displayThumbnails(videoId) {
                 const qualities = [
-                    { name: 'Max Resolution', res: '1920x1080', file: 'maxresdefault.jpg' },
-                    { name: 'High Quality', res: '1280x720', file: 'sddefault.jpg' },
-                    { name: 'Medium Quality', res: '480x360', file: 'hqdefault.jpg' },
-                    { name: 'Standard Quality', res: '640x480', file: '0.jpg'},
-                    { name: 'Default', res: '120x90', file: 'default.jpg' }
+                    { name: 'Max Resolution (HD)', file: 'maxresdefault.jpg' },
+                    { name: 'High Quality (SD)', file: 'sddefault.jpg' },
+                    { name: 'Medium Quality', file: 'hqdefault.jpg' },
+                    { name: 'Standard Quality', file: '0.jpg'}
                 ];
 
                 let html = '';
@@ -319,29 +381,146 @@
                     const imageUrl = `https://img.youtube.com/vi/${videoId}/${q.file}`;
                     html += `
                         <div class="thumbnail-card">
-                            <img src="${imageUrl}" alt="${q.name}" loading="lazy">
+                            <img src="${imageUrl}" alt="${q.name}" loading="lazy" onerror="this.parentElement.style.display='none'">
                             <div class="thumbnail-info">
                                 <h3>${q.name}</h3>
-                                <p>Resolution: ${q.res}</p>
                                 <a href="${imageUrl}" download="thumbnail-${videoId}-${q.file}" class="download-link">Download</a>
                             </div>
-                        </div>
-                    `;
+                        </div>`;
                 });
-                thumbnailsContainer.innerHTML = html;
+                downloaderResults.innerHTML = html;
             }
 
-            function showError(message) {
-                thumbnailsContainer.innerHTML = '';
-                errorMessage.textContent = message;
-                errorMessage.style.display = 'block';
+
+            // --- CUSTOM THUMBNAIL CREATOR LOGIC ---
+            const canvas = document.getElementById('thumbnail-canvas');
+            const ctx = canvas.getContext('2d');
+            let bgImage = null;
+
+            // Control Elements
+            const controls = {
+                bgColor: document.getElementById('bg-color'),
+                bgImageUpload: document.getElementById('bg-image-upload'),
+                mainText: document.getElementById('main-text'),
+                fontSize: document.getElementById('font-size'),
+                fontColor: document.getElementById('font-color'),
+                fontFamily: document.getElementById('font-family'),
+                fontBold: document.getElementById('font-bold'),
+                fontItalic: document.getElementById('font-italic'),
+                alignLeft: document.getElementById('align-left'),
+                alignCenter: document.getElementById('align-center'),
+                alignRight: document.getElementById('align-right'),
+                clearBtn: document.getElementById('clear-canvas-btn'),
+                downloadBtn: document.getElementById('download-canvas-btn'),
+            };
+
+            // Main draw function, called whenever a control changes
+            function drawCanvas() {
+                // 1. Clear canvas and draw background
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                if (bgImage) {
+                    ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+                } else {
+                    ctx.fillStyle = controls.bgColor.value;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                }
+                
+                // 2. Prepare text properties
+                const isBold = controls.fontBold.classList.contains('active');
+                const isItalic = controls.fontItalic.classList.contains('active');
+                let fontStyle = '';
+                if (isItalic) fontStyle += 'italic ';
+                if (isBold) fontStyle += 'bold ';
+                
+                ctx.font = `${fontStyle} ${controls.fontSize.value}px ${controls.fontFamily.value}`;
+                ctx.fillStyle = controls.fontColor.value;
+
+                // 3. Set alignment
+                if (controls.alignLeft.classList.contains('active')) {
+                    ctx.textAlign = 'left';
+                } else if (controls.alignCenter.classList.contains('active')) {
+                    ctx.textAlign = 'center';
+                } else {
+                    ctx.textAlign = 'right';
+                }
+
+                // 4. Draw text with wrapping
+                const text = controls.mainText.value;
+                const lines = text.split('\n');
+                const lineHeight = parseInt(controls.fontSize.value, 10) * 1.2;
+                const totalTextHeight = lines.length * lineHeight;
+                let startY = (canvas.height - totalTextHeight) / 2 + (lineHeight * 0.8);
+
+                lines.forEach(line => {
+                    let x;
+                    if (ctx.textAlign === 'left') x = 50;
+                    else if (ctx.textAlign === 'center') x = canvas.width / 2;
+                    else x = canvas.width - 50;
+                    
+                    ctx.fillText(line, x, startY);
+                    startY += lineHeight;
+                });
             }
 
-            function hideError() {
-                errorMessage.style.display = 'none';
-            }
+            // Event Listeners for all controls
+            Object.values(controls).forEach(control => {
+                if (control.id !== 'bg-image-upload' && !control.id.includes('btn')) {
+                    control.addEventListener('input', drawCanvas);
+                    control.addEventListener('change', drawCanvas); // For select/color
+                }
+            });
+
+            // Specific listeners for buttons and file uploads
+            controls.bgImageUpload.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        bgImage = new Image();
+                        bgImage.onload = drawCanvas;
+                        bgImage.src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Toggle active class for style buttons
+            [controls.fontBold, controls.fontItalic].forEach(btn => {
+                btn.addEventListener('click', () => {
+                    btn.classList.toggle('active');
+                    drawCanvas();
+                });
+            });
+
+            // Handle alignment buttons (only one can be active)
+            const alignBtns = [controls.alignLeft, controls.alignCenter, controls.alignRight];
+            alignBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    alignBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    drawCanvas();
+                });
+            });
+
+            controls.downloadBtn.addEventListener('click', () => {
+                const link = document.createElement('a');
+                link.download = 'custom-thumbnail.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+            
+            controls.clearBtn.addEventListener('click', () => {
+                // Reset state and redraw
+                controls.mainText.value = 'Your Awesome Title!';
+                controls.bgColor.value = '#6366f1';
+                bgImage = null;
+                controls.bgImageUpload.value = ''; // Clear file input
+                drawCanvas();
+            });
+
+            // Initial draw
+            drawCanvas();
         });
     </script>
-
 </body>
 </html>
