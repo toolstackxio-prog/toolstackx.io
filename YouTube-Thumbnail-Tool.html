@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Thumbnail Downloader | ToolStackX</title>
+    <style>
+        /* Google Fonts - Poppins */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
+        /* Global Styles & Google Color Palette */
+        :root {
+            --google-blue: #4285F4;
+            --google-red: #DB4437;
+            --google-yellow: #F4B400;
+            --google-green: #0F9D58;
+            --background-color: #f0f2f5;
+            --card-background: #ffffff;
+            --text-primary: #202124;
+            --text-secondary: #5f6368;
+            --border-color: #dadce0;
+            --accent-color: var(--google-blue);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Main Container */
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background-color: var(--card-background);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        /* Header */
+        header {
+            padding: 24px 32px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background-color: #f8f9fa;
+        }
+        
+        header .icon {
+            color: var(--google-red);
+        }
+        
+        header h1 {
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        /* Main Content Area */
+        main {
+            padding: 32px;
+        }
+        
+        /* Input Section */
+        .input-section {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        #url-input {
+            flex-grow: 1;
+            height: 50px;
+            padding: 0 16px;
+            font-size: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        #url-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.2);
+        }
+        
+        #get-thumbnails-btn {
+            height: 50px;
+            padding: 0 24px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        #get-thumbnails-btn:hover {
+            background-color: #3367d6;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        /* Results Section */
+        #results-section {
+            margin-top: 32px;
+        }
+
+        .loader {
+            display: none;
+            margin: 40px auto;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--accent-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            display: none;
+            padding: 16px;
+            background-color: #fdeded;
+            color: var(--google-red);
+            border: 1px solid #f5c2c7;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .thumbnails-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+        }
+        
+        .thumbnail-card {
+            background-color: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+        
+        .thumbnail-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .thumbnail-card img {
+            width: 100%;
+            display: block;
+            background-color: #eee;
+        }
+        
+        .thumbnail-info {
+            padding: 16px;
+        }
+        
+        .thumbnail-info h3 {
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        
+        .thumbnail-info p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+        
+        .download-link {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            background-color: var(--google-green);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .download-link:hover {
+            background-color: #0c8448;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            main {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 22px;
+            }
+            .input-section {
+                flex-direction: column;
+            }
+            #url-input, #get-thumbnails-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 -960 960 960" width="32" fill="currentColor"><path d="M480-120q-151 0-255.5-104.5T120-480q0-151 104.5-255.5T480-840q151 0 255.5 104.5T840-480q0 151-104.5 255.5T480-120Zm0-80q54 0 102.5-22T669-291l-98-98q-11 5-21.5 7.5T528-378q-45 0-76.5-31.5T420-486v-68l-96-96q-14 34-21.5 71.5T300-480q0 117 81.5 198.5T578-200q-32 0-63-9.5T452-240l-66 66q31 16 64 24t68 8Zm189-189-98-98q5-11 7.5-21.5T600-442q0-45-31.5-76.5T492-550v-68l96-96q34 14 62.5 35.5T711-580q33 54 33 111Zm-111-23-62-62q15-20 23.5-44t8.5-49q0-54-32-94l-50-50q-40-32-94-32t-94 32l-50 50q-32 40-32 94 0 25 8.5 49t23.5 44l-62 62-56-56 383-383 56 56-62 62Zm-44-118q21 0 35.5-14.5T660-502q0-21-14.5-35.5T610-552q-21 0-35.5 14.5T560-502q0 21 14.5 35.5T610-452Z"/></svg>
+            </div>
+            <h1>YouTube Thumbnail Downloader</h1>
+        </header>
+        <main>
+            <div class="input-section">
+                <input type="text" id="url-input" placeholder="Paste YouTube video URL here...">
+                <button id="get-thumbnails-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20" fill="currentColor"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
+                    Get Thumbnails
+                </button>
+            </div>
+
+            <div id="results-section">
+                <div class="loader" id="loader"></div>
+                <div class="error-message" id="error-message"></div>
+                <div class="thumbnails-grid" id="thumbnails-container">
+                    <!-- Thumbnails will be injected here by JavaScript -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlInput = document.getElementById('url-input');
+            const getBtn = document.getElementById('get-thumbnails-btn');
+            const loader = document.getElementById('loader');
+            const errorMessage = document.getElementById('error-message');
+            const thumbnailsContainer = document.getElementById('thumbnails-container');
+
+            getBtn.addEventListener('click', fetchThumbnails);
+
+            function fetchThumbnails() {
+                const url = urlInput.value.trim();
+                if (!url) {
+                    showError("Please paste a YouTube URL.");
+                    return;
+                }
+
+                const videoId = extractVideoId(url);
+                if (!videoId) {
+                    showError("Invalid YouTube URL. Please check the URL and try again.");
+                    return;
+                }
+
+                // Clear previous results and show loader
+                hideError();
+                thumbnailsContainer.innerHTML = '';
+                loader.style.display = 'block';
+
+                // Simulate a network delay
+                setTimeout(() => {
+                    displayThumbnails(videoId);
+                    loader.style.display = 'none';
+                }, 500);
+            }
+
+            function extractVideoId(url) {
+                let videoId = null;
+                const regexes = [
+                    /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^&]+)/,
+                    /(?:https?:\/\/)?(?:www\.)?youtu\.be\/([^?]+)/,
+                    /(?:https?:\/\/)?(?:www\.)?youtube\.com\/embed\/([^?]+)/,
+                    /(?:https?:\/\/)?(?:www\.)?youtube\.com\/v\/([^?]+)/
+                ];
+
+                for (const regex of regexes) {
+                    const match = url.match(regex);
+                    if (match && match[1]) {
+                        videoId = match[1];
+                        break;
+                    }
+                }
+                return videoId;
+            }
+
+            function displayThumbnails(videoId) {
+                const qualities = [
+                    { name: 'Max Resolution', res: '1920x1080', file: 'maxresdefault.jpg' },
+                    { name: 'High Quality', res: '1280x720', file: 'sddefault.jpg' },
+                    { name: 'Medium Quality', res: '480x360', file: 'hqdefault.jpg' },
+                    { name: 'Standard Quality', res: '640x480', file: '0.jpg'},
+                    { name: 'Default', res: '120x90', file: 'default.jpg' }
+                ];
+
+                let html = '';
+                qualities.forEach(q => {
+                    const imageUrl = `https://img.youtube.com/vi/${videoId}/${q.file}`;
+                    html += `
+                        <div class="thumbnail-card">
+                            <img src="${imageUrl}" alt="${q.name}" loading="lazy">
+                            <div class="thumbnail-info">
+                                <h3>${q.name}</h3>
+                                <p>Resolution: ${q.res}</p>
+                                <a href="${imageUrl}" download="thumbnail-${videoId}-${q.file}" class="download-link">Download</a>
+                            </div>
+                        </div>
+                    `;
+                });
+                thumbnailsContainer.innerHTML = html;
+            }
+
+            function showError(message) {
+                thumbnailsContainer.innerHTML = '';
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+            }
+
+            function hideError() {
+                errorMessage.style.display = 'none';
+            }
+        });
+    </script>
+
+</body>
+</html>
