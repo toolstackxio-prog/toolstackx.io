@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- SEO Meta Tags for Better Discoverability -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Story Writing Tool - Generate Creative Stories | ToolStackX</title>
+    <meta name="description" content="A free AI-powered story writing tool that helps you generate unique plot ideas, characters, and complete story narratives based on your prompts. Perfect for authors and creatives.">
+    <meta name="keywords" content="ai story writer, story generator, plot generator, creative writing tool, ai author, toolstackx">
+    <link rel="canonical" href="https://toolstackxio-prog.github.io/toolstackx.io/AI-Story-Writing-Tool.html">
+
+    <!-- Google Fonts for a Polished UI and Readability -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CSS Variables for a Modern Google-Style Theme --- */
+        :root {
+            --google-blue: #4285F4;
+            --google-red: #DB4437;
+            --google-green: #0F9D58;
+            --background-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --card-background: #ffffff;
+            --text-primary: #202124;
+            --text-secondary: #5f6368;
+            --border-color: #dfe1e5;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --accent-color: var(--google-blue);
+            --font-ui: 'Poppins', sans-serif;
+            --font-story: 'Lora', serif;
+        }
+
+        /* --- Global Styles & Resets --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-ui);
+            background-image: var(--background-gradient);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        /* --- Main Application Container --- */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background-color: var(--card-background);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px var(--shadow-color);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Header Section --- */
+        .app-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background-color: #f8f9fa;
+        }
+        .app-header .icon { color: var(--accent-color); }
+        .app-header h1 { font-size: 1.75rem; font-weight: 600; }
+
+        /* --- Main Content Layout (Controls + Story Output) --- */
+        .app-main {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            min-height: 70vh;
+        }
+
+        /* --- Controls Panel (Left Side) --- */
+        .controls-panel {
+            padding: 2rem;
+            border-right: 1px solid var(--border-color);
+            overflow-y: auto;
+        }
+
+        .control-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .control-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            font-size: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-family: var(--font-ui);
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.2);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            background-color: var(--accent-color);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .generate-btn:hover:not(:disabled) {
+            background-color: #3367d6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
+        }
+        .generate-btn:disabled {
+            background-color: #a0aec0;
+            cursor: not-allowed;
+        }
+
+        /* --- Story Output Panel (Right Side) --- */
+        .story-panel {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .story-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn-secondary {
+            padding: 0.6rem 1.2rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            background-color: #f1f3f4;
+            transition: background-color 0.2s;
+        }
+        .btn-secondary:hover { background-color: #e8eaed; }
+        #word-count {
+             margin-left: auto;
+             align-self: center;
+             color: var(--text-secondary);
+             font-weight: 500;
+        }
+        
+        #story-output {
+            flex-grow: 1;
+            font-family: var(--font-story);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #333;
+            overflow-y: auto;
+            white-space: pre-wrap; /* Preserves formatting */
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+        
+        .loader-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        .loader-overlay p { margin-top: 1rem; font-weight: 500; color: var(--text-secondary); }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Utility Class */
+        .hidden { display: none !important; }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 900px) {
+            .app-main {
+                grid-template-columns: 1fr;
+            }
+            .controls-panel {
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+        }
+        @media (max-width: 600px) {
+            body { padding: 1rem 0.5rem; }
+            .app-header { padding: 1rem 1.5rem; }
+            .controls-panel, .story-panel { padding: 1.5rem; }
+            .app-header h1 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header class="app-header">
+            <div class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" height="28" viewBox="0 -960 960 960" width="28" fill="currentColor"><path d="M200-200h280v-80H200v80Zm0-160h440v-80H200v80Zm0-160h440v-80H200v80ZM160-80q-33 0-56.5-23.5T80-160v-640q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L160-80Z"/></svg>
+            </div>
+            <h1>AI Story Writer</h1>
+        </header>
+
+        <main class="app-main">
+            <!-- Controls Panel -->
+            <aside class="controls-panel">
+                <h3>Story Ingredients</h3>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 4px; margin-bottom: 1.5rem;">Provide some details, and let the AI weave a tale for you.</p>
+
+                <div class="control-group">
+                    <label for="story-prompt">Story Prompt</label>
+                    <textarea id="story-prompt" class="form-control" placeholder="e.g., A detective finds a mysterious clock that can stop time..."></textarea>
+                </div>
+
+                <div class="control-group">
+                    <label for="genre">Genre</label>
+                    <select id="genre" class="form-control">
+                        <option value="fantasy">Fantasy</option>
+                        <option value="sci-fi">Science Fiction</option>
+                        <option value="mystery">Mystery</option>
+                        <option value="adventure">Adventure</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="style">Writing Style</label>
+                    <select id="style" class="form-control">
+                        <option value="descriptive">Descriptive</option>
+                        <option value="fast-paced">Fast-Paced</option>
+                        <option value="poetic">Poetic</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="characters">Main Characters (comma-separated)</label>
+                    <input type="text" id="characters" class="form-control" placeholder="e.g., Elara, Jax, Professor Finch">
+                </div>
+
+                <button id="generate-btn" class="generate-btn" disabled>Generate Story</button>
+            </aside>
+
+            <!-- Story Output Panel -->
+            <section class="story-panel">
+                <div class="story-actions">
+                    <button id="copy-btn" class="btn-secondary">Copy Story</button>
+                    <button id="clear-btn" class="btn-secondary">Clear</button>
+                    <span id="word-count">Words: 0</span>
+                </div>
+                <div id="story-output" aria-live="polite">Your generated story will appear here...</div>
+                
+                <div id="loader" class="loader-overlay hidden">
+                    <div class="spinner"></div>
+                    <p>AI is writing your story...</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DOM ELEMENTS ---
+            const promptInput = document.getElementById('story-prompt');
+            const generateBtn = document.getElementById('generate-btn');
+            const storyOutput = document.getElementById('story-output');
+            const loader = document.getElementById('loader');
+            const copyBtn = document.getElementById('copy-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const wordCountEl = document.getElementById('word-count');
+
+            // --- SIMULATED AI CONTENT ---
+            const storySnippets = {
+                fantasy: {
+                    openings: [
+                        "In the shadow of the Dragon's Tooth mountains, where ancient magic slumbered, {CHAR1} discovered a map unlike any other.",
+                        "The kingdom of Eldoria hadn't seen a sunrise in a century. It was up to {CHAR1}, a young mage with a forbidden power, to bring back the light.",
+                        "Whispers of a lost city filled the taverns, but only {CHAR1} was brave enough to seek it, guided by a cryptic prophecy."
+                    ],
+                    middles: [
+                        "Their journey led them through the Whispering Woods, where the trees spoke in riddles and shadows danced with malice. Here, they met {CHAR2}, a rogue with a mysterious past.",
+                        "To forge the celestial key, they needed the heart of a fallen star. The quest took them to the highest peaks, where they battled celestial guardians and faced their deepest fears.",
+                        "The artifact pulsed with dark energy. {CHAR2} warned against its use, but {CHAR1} saw it as their only chance to defeat the encroaching darkness."
+                    ],
+                    endings: [
+                        "With the final incantation spoken, the land healed, and the sun rose once more. {CHAR1} and {CHAR2} were hailed as heroes, their names forever etched in the annals of Eldoria.",
+                        "The treasure was not gold or jewels, but knowledge. The lost city held the secrets of the ancients, and a new era of enlightenment began.",
+                        "Victory came at a great cost. The darkness was vanquished, but the world was forever changed, and the heroes were left to build a new future from the ashes."
+                    ]
+                },
+                'sci-fi': {
+                    openings: [
+                        "The crimson dust of Mars settled on the viewport of the Starseeker. Captain {CHAR1} knew this mission was different; the distress signal was from a ship lost a hundred years ago.",
+                        "In the neon-drenched streets of Neo-Kyoto, {CHAR1}, a cybernetically enhanced detective, took on a case that would unravel the city's deepest conspiracy.",
+                        "The alien artifact hummed on the lab table. {CHAR1} touched its surface and was instantly flooded with visions of a thousand galaxies, and a warning."
+                    ],
+                    middles: [
+                        "They jumped through hyperspace, dodging asteroid fields and bounty hunters sent by the ruthless corporation. Their only ally was {CHAR2}, a renegade AI with a peculiar sense of humor.",
+                        "The data logs revealed the truth: the 'lost' colony had not vanished, but evolved. They had become something more than human, and they did not wish to be found.",
+                        "{CHAR1} and {CHAR2} had to infiltrate the Citadel, a fortress floating in the gas clouds of Jupiter, to broadcast the truth to the entire solar system."
+                    ],
+                    endings: [
+                        "The signal was sent. The corporation's lies were exposed, and a revolution sparked across the colonies. Freedom, finally, was within their grasp.",
+                        "The artifact was a seed. By planting it, they gave birth to a new world, a bridge between humanity and the stars.",
+                        "They made it back to Earth, but it was no longer their home. They had seen too much, traveled too far. Their adventure would continue, out there, in the endless dark."
+                    ]
+                },
+                mystery: {
+                    openings: [
+                        "Detective {CHAR1} arrived at the fog-shrouded mansion to find a scene of impossible chaos. The victim was in a locked room, with no weapon in sight.",
+                        "The antique clock ticked ominously. {CHAR1} knew it held the key to the disappearance of the city's most famous philanthropist, but how?",
+                        "A single, mud-stained playing card was the only clue left at the scene. For {CHAR1}, it was a signature, a challenge from the elusive phantom known only as 'The Dealer'."
+                    ],
+                    middles: [
+                        "Every clue led to a dead end, every witness had a secret. {CHAR1} had to rely on their wits and the help of {CHAR2}, a resourceful journalist who always seemed to be one step ahead.",
+                        "The investigation led them deep into the city's underbelly, a world of secret societies and forgotten histories. The clock was not a timepiece, but a cipher.",
+                        "Following the trail of cards, {CHAR1} realized this was no random crime. It was a perfectly orchestrated puzzle, and they were the final piece."
+                    ],
+                    endings: [
+                        "In a tense confrontation under the old pier, the killer was revealed. It was someone no one suspected, hiding in plain sight all along.",
+                        "The mystery was solved, but the truth was a bitter pill. Justice was served, but the city would never be the same.",
+                        "The final card was played. {CHAR1} had won the game, unmasking The Dealer and closing the case that had haunted the city for a decade."
+                    ]
+                }
+            };
+
+            // --- FUNCTIONS ---
+            function validateInput() {
+                generateBtn.disabled = promptInput.value.trim().length === 0;
+            }
+
+            function generateStory() {
+                loader.classList.remove('hidden');
+                storyOutput.textContent = ''; // Clear previous story
+                
+                // Simulate AI processing time
+                setTimeout(() => {
+                    const genre = document.getElementById('genre').value;
+                    const style = document.getElementById('style').value;
+                    let characters = document.getElementById('characters').value.split(',').map(c => c.trim());
+                    
+                    // Fallback characters
+                    if (characters.length === 0 || characters[0] === '') characters = ['Alex', 'Sam', 'Dr. Evelyn Reed'];
+                    
+                    const snippets = storySnippets[genre] || storySnippets.adventure; // Default to adventure if genre not found
+                    
+                    const opening = getRandomSnippet(snippets.openings);
+                    const middle = getRandomSnippet(snippets.middles);
+                    const ending = getRandomSnippet(snippets.endings);
+
+                    let story = [opening, middle, ending].join('\n\n');
+                    
+                    // Replace character placeholders
+                    story = story.replace(/{CHAR1}/g, characters[0] || 'the protagonist');
+                    story = story.replace(/{CHAR2}/g, characters[1] || 'a mysterious stranger');
+                    story = story.replace(/{CHAR3}/g, characters[2] || 'an old mentor');
+
+                    storyOutput.textContent = story;
+                    updateWordCount();
+                    loader.classList.add('hidden');
+                }, 2500); // 2.5 second delay
+            }
+            
+            function getRandomSnippet(arr) {
+                return arr[Math.floor(Math.random() * arr.length)];
+            }
+
+            function copyStory() {
+                if (storyOutput.textContent && storyOutput.textContent !== "Your generated story will appear here...") {
+                    navigator.clipboard.writeText(storyOutput.textContent).then(() => {
+                        copyBtn.textContent = 'Copied!';
+                        setTimeout(() => copyBtn.textContent = 'Copy Story', 2000);
+                    });
+                }
+            }
+            
+            function clearStory() {
+                storyOutput.textContent = 'Your generated story will appear here...';
+                updateWordCount();
+            }
+
+            function updateWordCount() {
+                const text = storyOutput.textContent;
+                if (text === 'Your generated story will appear here...') {
+                    wordCountEl.textContent = 'Words: 0';
+                    return;
+                }
+                const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+                wordCountEl.textContent = `Words: ${words.length}`;
+            }
+
+            // --- EVENT LISTENERS ---
+            promptInput.addEventListener('input', validateInput);
+            generateBtn.addEventListener('click', generateStory);
+            copyBtn.addEventListener('click', copyStory);
+            clearBtn.addEventListener('click', clearStory);
+
+            // Initial call to set button state
+            validateInput();
+        });
+    </script>
+</body>
+</html>
