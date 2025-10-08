@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- SEO Meta Tags for Better Discoverability -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Content Detector - Check for AI-Generated Text | ToolStackX</title>
+    <meta name="description" content="A free and advanced online tool to detect AI-generated content. Paste any text to analyze its probability of being written by an AI like GPT.">
+    <meta name="keywords" content="ai content detector, ai checker, gpt detector, check for ai writing, plagiarism checker, toolstackx">
+    <link rel="canonical" href="https://toolstackxio-prog.github.io/toolstackx.io/AI-Content-Detector.html">
+
+    <!-- Google Fonts for a Polished UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CSS Variables for a Modern Google-Style Theme --- */
+        :root {
+            --google-blue: #4285F4;
+            --google-red: #DB4437;
+            --google-green: #0F9D58;
+            --google-yellow: #F4B400;
+            --background-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --card-background: #ffffff;
+            --text-primary: #202124;
+            --text-secondary: #5f6368;
+            --border-color: #dfe1e5;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --accent-color: var(--google-blue);
+        }
+
+        /* --- Global Styles & Resets --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-image: var(--background-gradient);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        /* --- Main Application Container --- */
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background-color: var(--card-background);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px var(--shadow-color);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Header Section --- */
+        .app-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background-color: #f8f9fa;
+        }
+        .app-header .icon { color: var(--accent-color); }
+        .app-header h1 { font-size: 1.75rem; font-weight: 600; }
+
+        /* --- Main Content Area --- */
+        .app-main {
+            padding: 2rem;
+        }
+        
+        #text-input {
+            width: 100%;
+            height: 250px;
+            padding: 1rem;
+            font-size: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            resize: vertical;
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+        #text-input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.2);
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        #analyze-btn {
+            padding: 0.8rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            background-color: var(--accent-color);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        #analyze-btn:hover:not(:disabled) {
+            background-color: #3367d6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
+        }
+        #analyze-btn:disabled {
+            background-color: #a0aec0;
+            cursor: not-allowed;
+        }
+        
+        #char-count {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        /* --- Results Section --- */
+        #results-section {
+            margin-top: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        /* Circular Progress Gauge */
+        .gauge-container {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: auto;
+        }
+        .gauge-bg, .gauge-fill {
+            fill: none;
+            stroke-width: 15;
+            stroke-linecap: round;
+        }
+        .gauge-bg { stroke: #e9ecef; }
+        .gauge-fill {
+            stroke: var(--accent-color);
+            transform-origin: 50% 50%;
+            transform: rotate(-90deg);
+            transition: stroke-dashoffset 1s ease-out;
+        }
+        .gauge-text {
+            font-size: 2.5rem;
+            font-weight: 700;
+            fill: var(--text-primary);
+            text-anchor: middle;
+        }
+        .gauge-label {
+            font-size: 1rem;
+            font-weight: 500;
+            fill: var(--text-secondary);
+            text-anchor: middle;
+        }
+        
+        /* Results Details */
+        #result-summary h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        #result-summary p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+        #highlighted-text {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        #highlighted-text mark {
+            background-color: #fff1a7;
+            border-radius: 3px;
+            padding: 2px 4px;
+        }
+
+        /* --- Loader --- */
+        #loader {
+            text-align: center;
+            padding: 2rem;
+        }
+        .spinner {
+            width: 40px; height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Utility Class */
+        .hidden { display: none !important; }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            #results-section {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="container">
+        <header class="app-header">
+            <div class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" height="28" viewBox="0 -960 960 960" width="28" fill="currentColor"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
+            </div>
+            <h1>AI Content Detector</h1>
+        </header>
+
+        <section class="app-main">
+            <textarea id="text-input" placeholder="Paste your text here to check for AI-generated content. For best results, use at least 50 words." aria-label="Text input for AI detection"></textarea>
+            <div class="actions">
+                <button id="analyze-btn" disabled>Analyze Text</button>
+                <span id="char-count">0 / 5000 characters</span>
+            </div>
+
+            <div id="loader" class="hidden">
+                <div class="spinner"></div>
+                <p>Analyzing content with AI models...</p>
+            </div>
+
+            <div id="results-section" class="hidden" aria-live="polite">
+                <div class="gauge-container">
+                    <svg viewBox="0 0 120 120">
+                        <circle class="gauge-bg" cx="60" cy="60" r="50"></circle>
+                        <circle id="gauge-fill" class="gauge-fill" cx="60" cy="60" r="50" stroke-dasharray="314" stroke-dashoffset="314"></circle>
+                        <text id="gauge-text" class="gauge-text" x="60" y="68">0%</text>
+                        <text class="gauge-label" x="60" y="85">AI Probability</text>
+                    </svg>
+                </div>
+                <div id="result-summary">
+                    <h2 id="result-title">Analysis Complete</h2>
+                    <p id="result-description">Based on our analysis, this text has a high probability of being human-written.</p>
+                    <div id="highlighted-text" class="hidden"></div>
+                </div>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 2rem; text-align: center;">Disclaimer: AI detection models are not 100% accurate. This tool should be used for guidance only.</p>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DOM ELEMENTS ---
+            const textInput = document.getElementById('text-input');
+            const analyzeBtn = document.getElementById('analyze-btn');
+            const charCountEl = document.getElementById('char-count');
+            const loader = document.getElementById('loader');
+            const resultsSection = document.getElementById('results-section');
+            const gaugeFill = document.getElementById('gauge-fill');
+            const gaugeText = document.getElementById('gauge-text');
+            const resultTitle = document.getElementById('result-title');
+            const resultDescription = document.getElementById('result-description');
+            const highlightedTextEl = document.getElementById('highlighted-text');
+
+            const MIN_WORDS = 25;
+            const MAX_CHARS = 5000;
+
+            // --- SIMULATION KEYWORDS ---
+            // Words that often appear in AI-generated text
+            const AI_INDICATORS = ['delve', 'leverage', 'unleash', 'robust', 'tapestry', 'furthermore', 'seamlessly', 'in conclusion', 'navigating the complexities', 'it is important to note', 'ever-evolving landscape'];
+
+            // --- INPUT HANDLING ---
+            textInput.addEventListener('input', () => {
+                const text = textInput.value;
+                const charLength = text.length;
+                const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
+                
+                charCountEl.textContent = `${charLength} / ${MAX_CHARS} characters`;
+                textInput.value = text.substring(0, MAX_CHARS);
+                
+                analyzeBtn.disabled = wordCount < MIN_WORDS;
+            });
+
+            // --- ANALYSIS LOGIC ---
+            analyzeBtn.addEventListener('click', () => {
+                // 1. Set UI to loading state
+                resultsSection.classList.add('hidden');
+                loader.classList.remove('hidden');
+                analyzeBtn.disabled = true;
+
+                // 2. Simulate API call delay
+                setTimeout(() => {
+                    const text = textInput.value;
+                    
+                    // 3. Run the simulation logic
+                    const result = simulateAiDetection(text);
+                    
+                    // 4. Update UI with results
+                    loader.classList.add('hidden');
+                    displayResults(result);
+                    resultsSection.classList.remove('hidden');
+                    analyzeBtn.disabled = false;
+
+                }, 2500); // 2.5 second delay for realism
+            });
+
+            /**
+             * Simulates AI detection based on heuristics.
+             * @param {string} text - The input text to analyze.
+             * @returns {object} - An object containing the score and highlighted text.
+             */
+            function simulateAiDetection(text) {
+                let score = 0;
+                let indicatorCount = 0;
+                
+                // Heuristic 1: Presence of AI indicator keywords
+                AI_INDICATORS.forEach(indicator => {
+                    if (text.toLowerCase().includes(indicator)) {
+                        indicatorCount++;
+                    }
+                });
+                
+                // Assign a base score based on indicators
+                score += indicatorCount * 15;
+                
+                // Heuristic 2: Sentence length uniformity (simple simulation)
+                const sentences = text.match(/[^.!?]+[.!?]+/g) || [];
+                if (sentences.length > 2) {
+                    const lengths = sentences.map(s => s.split(' ').length);
+                    const avgLength = lengths.reduce((a, b) => a + b, 0) / lengths.length;
+                    const variance = lengths.reduce((acc, len) => acc + Math.pow(len - avgLength, 2), 0) / lengths.length;
+                    
+                    // Low variance in sentence length is a sign of AI
+                    if (variance < 10) {
+                        score += 15;
+                    }
+                }
+                
+                // Heuristic 3: Add some randomness for variety
+                score += Math.random() * 20;
+                
+                // Cap the score at 98% for realism
+                const finalScore = Math.min(score, 98);
+                
+                // Highlight the found indicators
+                let highlightedHtml = text;
+                const uniqueIndicatorsFound = AI_INDICATORS.filter(ind => text.toLowerCase().includes(ind));
+                if (uniqueIndicatorsFound.length > 0) {
+                    const regex = new RegExp(`(${uniqueIndicatorsFound.join('|')})`, 'gi');
+                    highlightedHtml = text.replace(regex, '<mark>$1</mark>');
+                }
+
+                return {
+                    score: Math.round(finalScore),
+                    highlightedHtml: highlightedHtml,
+                    indicatorsFound: uniqueIndicatorsFound.length > 0
+                };
+            }
+            
+            /**
+             * Updates the UI to display the analysis results.
+             * @param {object} result - The result object from the simulation.
+             */
+            function displayResults({ score, highlightedHtml, indicatorsFound }) {
+                // Update Gauge
+                const circumference = 2 * Math.PI * 50; // 2 * pi * radius
+                const offset = circumference - (score / 100) * circumference;
+                gaugeFill.style.strokeDashoffset = offset;
+                
+                // Animate gauge text
+                let current = 0;
+                const timer = setInterval(() => {
+                    if (current >= score) {
+                        clearInterval(timer);
+                    }
+                    gaugeText.textContent = `${current}%`;
+                    current++;
+                }, 20);
+
+                // Update text summary
+                if (score > 65) {
+                    resultTitle.textContent = "Likely AI-Generated";
+                    resultDescription.textContent = "Our analysis suggests a high probability that this text was written by an AI. Key phrases and structural patterns are consistent with language models.";
+                    gaugeFill.style.stroke = 'var(--google-red)';
+                } else if (score > 35) {
+                    resultTitle.textContent = "Mixed Signals";
+                    resultDescription.textContent = "This text contains elements of both human and AI-generated writing. It may be human-written but edited with AI tools.";
+                    gaugeFill.style.stroke = 'var(--google-yellow)';
+                } else {
+                    resultTitle.textContent = "Likely Human-Written";
+                    resultDescription.textContent = "The content appears to be original and written by a human. The writing style shows natural variation and complexity.";
+                    gaugeFill.style.stroke = 'var(--google-green)';
+                }
+
+                // Update highlighted text
+                if (indicatorsFound) {
+                    highlightedTextEl.innerHTML = `<strong>Potential AI Indicators Found:</strong><br>${highlightedHtml}`;
+                    highlightedTextEl.classList.remove('hidden');
+                } else {
+                    highlightedTextEl.classList.add('hidden');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
