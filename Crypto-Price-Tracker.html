@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- SEO Meta Tags for Better Discoverability -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Crypto Price Tracker - Real-Time Cryptocurrency Data | ToolStackX</title>
+    <meta name="description" content="A free and real-time cryptocurrency price tracker. Monitor the latest prices, market caps, and 24h changes for Bitcoin, Ethereum, and other top crypto assets.">
+    <meta name="keywords" content="crypto price tracker, cryptocurrency prices, bitcoin price, ethereum price, live crypto data, toolstackx">
+    <link rel="canonical" href="https://toolstackxio-prog.github.io/toolstackx.io/Crypto-Price-Tracker.html">
+
+    <!-- Google Fonts for a Polished UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CSS Variables for a Modern Google-Style Theme --- */
+        :root {
+            --google-blue: #4285F4;
+            --google-red: #DB4437;
+            --google-green: #0F9D58;
+            --background-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --card-background: #ffffff;
+            --text-primary: #202124;
+            --text-secondary: #5f6368;
+            --border-color: #dfe1e5;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --accent-color: var(--google-blue);
+            --font-ui: 'Poppins', sans-serif;
+            --font-mono: 'Roboto Mono', monospace;
+        }
+
+        /* --- Global Styles & Resets --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-ui);
+            background-image: var(--background-gradient);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        /* --- Main Application Container --- */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background-color: var(--card-background);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px var(--shadow-color);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            animation: fadeIn 0.6s ease-out;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- Header Section --- */
+        .app-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .header-left { display: flex; align-items: center; gap: 1rem; }
+        .header-left h1 { font-size: 1.75rem; font-weight: 600; }
+        #last-updated { font-size: 0.9rem; color: var(--text-secondary); }
+
+        /* --- Crypto Table --- */
+        .table-container {
+            width: 100%;
+            overflow-x: auto; /* for smaller screens */
+        }
+        .crypto-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .crypto-table th, .crypto-table td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .crypto-table thead {
+            background-color: #f8f9fa;
+        }
+        .crypto-table th {
+            font-weight: 500;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        .crypto-table tbody tr {
+            transition: background-color 0.2s;
+        }
+        .crypto-table tbody tr:hover {
+            background-color: #f5f5f5;
+        }
+        .coin-info { display: flex; align-items: center; gap: 1rem; }
+        .coin-info img { width: 32px; height: 32px; }
+        .coin-info .symbol { font-weight: 600; }
+        .coin-info .name { font-size: 0.9rem; color: var(--text-secondary); }
+        
+        .price, .market-cap { font-family: var(--font-mono); font-weight: 500; }
+        .price-change { font-family: var(--font-mono); font-weight: 500; }
+        .price-change.up { color: var(--google-green); }
+        .price-change.down { color: var(--google-red); }
+
+        /* Sparkline Chart */
+        .sparkline { max-width: 150px; height: 50px; }
+
+        /* Loader */
+        .loader-row {
+            text-align: center;
+        }
+        .spinner {
+            width: 30px; height: 30px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .crypto-table th:nth-child(4), .crypto-table td:nth-child(4), /* Market Cap */
+            .crypto-table th:nth-child(5), .crypto-table td:nth-child(5)  /* 24h Volume */
+            { display: none; }
+            .crypto-table th, .crypto-table td { padding: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="container">
+        <header class="app-header">
+            <div class="header-left">
+                <h1>Crypto Price Tracker</h1>
+            </div>
+            <div id="last-updated">Updating...</div>
+        </header>
+
+        <div class="table-container">
+            <table class="crypto-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Coin</th>
+                        <th>Price</th>
+                        <th>24h Change</th>
+                        <th>Market Cap</th>
+                        <th>7d Chart</th>
+                    </tr>
+                </thead>
+                <tbody id="crypto-table-body">
+                    <!-- Loader row -->
+                    <tr class="loader-row">
+                        <td colspan="6">
+                            <div class="spinner"></div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- API & CONFIG ---
+            // Using the free CoinGecko API
+            const API_URL = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=24h';
+
+            // --- DOM REFERENCES ---
+            const tableBody = document.getElementById('crypto-table-body');
+            const lastUpdatedEl = document.getElementById('last-updated');
+            
+            let dataCache = [];
+
+            /**
+             * Formats large numbers into a more readable format (e.g., 1.2T, 250.5B, 10.1M).
+             * @param {number} num - The number to format.
+             * @returns {string} - The formatted number string.
+             */
+            const formatNumber = (num) => {
+                if (num >= 1e12) return `$${(num / 1e12).toFixed(2)}T`;
+                if (num >= 1e9) return `$${(num / 1e9).toFixed(2)}B`;
+                if (num >= 1e6) return `$${(num / 1e6).toFixed(2)}M`;
+                return `$${num.toLocaleString()}`;
+            };
+            
+            /**
+             * Creates and renders the sparkline chart for the 7-day price history.
+             * @param {HTMLElement} canvasEl - The canvas element to draw on.
+             * @param {number[]} data - The array of historical price data.
+             * @param {boolean} isUp - Whether the price change is positive.
+             */
+            const renderSparkline = (canvasEl, data, isUp) => {
+                const ctx = canvasEl.getContext('2d');
+                const gradient = ctx.createLinearGradient(0, 0, 0, 50);
+                const color = isUp ? 'rgba(15, 157, 88, ' : 'rgba(219, 68, 55, ';
+                
+                gradient.addColorStop(0, color + '0.2)');
+                gradient.addColorStop(1, color + '0)');
+
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: Array(data.length).fill(''),
+                        datasets: [{
+                            data: data,
+                            borderColor: isUp ? 'var(--google-green)' : 'var(--google-red)',
+                            backgroundColor: gradient,
+                            fill: true,
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false }, tooltip: { enabled: false } },
+                        scales: {
+                            x: { display: false },
+                            y: { display: false }
+                        }
+                    }
+                });
+            };
+
+            /**
+             * Renders the main crypto table with the fetched data.
+             * @param {Array} coins - The array of coin data from the API.
+             */
+            const renderTable = (coins) => {
+                tableBody.innerHTML = ''; // Clear previous data or loader
+                
+                coins.forEach(coin => {
+                    const priceChange = coin.price_change_percentage_24h;
+                    const isUp = priceChange >= 0;
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${coin.market_cap_rank}</td>
+                        <td>
+                            <div class="coin-info">
+                                <img src="${coin.image}" alt="${coin.name} logo">
+                                <div>
+                                    <div class="symbol">${coin.symbol.toUpperCase()}</div>
+                                    <div class="name">${coin.name}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="price">$${coin.current_price.toLocaleString()}</td>
+                        <td class="price-change ${isUp ? 'up' : 'down'}">${priceChange.toFixed(2)}%</td>
+                        <td class="market-cap">${formatNumber(coin.market_cap)}</td>
+                        <td><canvas class="sparkline" width="150" height="50"></canvas></td>
+                    `;
+                    tableBody.appendChild(row);
+                    
+                    // Render the sparkline chart after the row is in the DOM
+                    const canvas = row.querySelector('.sparkline');
+                    if (coin.sparkline_in_7d && coin.sparkline_in_7d.price) {
+                        renderSparkline(canvas, coin.sparkline_in_7d.price, isUp);
+                    }
+                });
+            };
+
+            /**
+             * Fetches the latest crypto data from the API.
+             */
+            const fetchData = async () => {
+                try {
+                    const response = await fetch(API_URL);
+                    if (!response.ok) {
+                        throw new Error(`API error: ${response.statusText}`);
+                    }
+                    const data = await response.json();
+                    dataCache = data;
+                    renderTable(dataCache);
+                    lastUpdatedEl.textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
+                } catch (error) {
+                    console.error("Failed to fetch crypto data:", error);
+                    tableBody.innerHTML = `<tr class="loader-row"><td colspan="6">Failed to load data. Please try again later.</td></tr>`;
+                    lastUpdatedEl.textContent = 'Update failed';
+                }
+            };
+            
+            // --- INITIALIZATION ---
+            function init() {
+                fetchData();
+                // Auto-refresh data every 60 seconds (60000 milliseconds)
+                setInterval(fetchData, 60000);
+            }
+            
+            init();
+        });
+    </script>
+</body>
+</html>
