@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- SEO Meta Tags for Better Discoverability -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Digital Diary - Your Private Online Journal | ToolStackX</title>
+    <meta name="description" content="A beautiful, secure, and private digital diary. Write your thoughts and memories in an elegant online journal. All data is saved securely in your browser.">
+    <meta name="keywords" content="digital diary, online journal, private diary, daily journal, writing tool, personal diary, toolstackx">
+    <link rel="canonical" href="https://toolstackxio-prog.github.io/toolstackx.io/Modern-Digital-Diary.html">
+
+    <!-- Google Fonts for a Polished UI and Readability -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CSS Variables for a Modern Google-Style Theme --- */
+        :root {
+            --google-blue: #4285F4;
+            --google-red: #DB4437;
+            --background-color: #f5f7fa;
+            --panel-bg: #ffffff;
+            --editor-bg: #fdfdfd;
+            --text-primary: #202124;
+            --text-secondary: #5f6368;
+            --border-color: #dfe1e5;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --accent-color: var(--google-blue);
+            --font-ui: 'Poppins', sans-serif;
+            --font-diary: 'Lora', serif;
+        }
+
+        /* --- Global Styles & Resets --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; overflow: hidden; }
+
+        body {
+            font-family: var(--font-ui);
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.6s ease-out;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- Main Application Layout --- */
+        .app-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            grid-template-rows: 60px 1fr;
+            grid-template-areas:
+                "header header"
+                "sidebar editor";
+            height: 100vh;
+        }
+
+        /* --- Header --- */
+        .app-header {
+            grid-area: header;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 1.5rem; background-color: var(--panel-bg);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .header-left { display: flex; align-items: center; gap: 1rem; }
+        .header-left h1 { font-size: 1.5rem; font-weight: 600; }
+        .btn {
+            padding: 0.6rem 1.2rem; border-radius: 8px; font-size: 0.9rem; font-weight: 500;
+            cursor: pointer; border: 1px solid var(--border-color);
+            background-color: #fff; transition: all 0.2s ease;
+        }
+        .btn:hover { background-color: #f1f3f4; }
+        .btn-primary { background-color: var(--accent-color); color: white; border-color: var(--accent-color); }
+        .btn-primary:hover { background-color: #3367d6; }
+
+        /* --- Sidebar (Entry List) --- */
+        .sidebar {
+            grid-area: sidebar;
+            background-color: var(--panel-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex; flex-direction: column;
+        }
+        .sidebar-header { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color); }
+        .sidebar-header h2 { font-size: 1.1rem; }
+        #entry-list {
+            list-style: none;
+            overflow-y: auto; flex-grow: 1;
+        }
+        .entry-item {
+            padding: 1rem 1.5rem; cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s;
+        }
+        .entry-item:hover { background-color: #f8f9fa; }
+        .entry-item.active { background-color: #e8f0fe; }
+        .entry-date { font-weight: 500; display: block; }
+        .entry-snippet {
+            font-size: 0.9rem; color: var(--text-secondary);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;
+        }
+
+        /* --- Editor Panel --- */
+        .editor-panel {
+            grid-area: editor;
+            display: flex; flex-direction: column;
+            background-color: var(--editor-bg);
+        }
+        .editor-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0.75rem 2rem; background-color: #fff;
+            border-bottom: 1px solid var(--border-color);
+        }
+        #current-entry-date { font-weight: 500; color: var(--text-secondary); }
+        .editor-main { flex-grow: 1; display: flex; }
+        #editor-content {
+            flex-grow: 1; border: none; outline: none; resize: none;
+            padding: 2rem 3rem;
+            font-family: var(--font-diary);
+            font-size: 1.1rem; line-height: 1.8;
+            color: #333;
+        }
+        .editor-footer {
+            padding: 0.5rem 2rem; font-size: 0.9rem;
+            color: var(--text-secondary); background-color: #fff;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        /* Placeholder for empty state */
+        #empty-state {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; height: 100%; padding: 2rem;
+        }
+        #empty-state h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        
+        .hidden { display: none !important; }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .app-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: 60px 1fr;
+                grid-template-areas: "header" "editor";
+            }
+            .sidebar {
+                position: absolute; left: 0; top: 60px; bottom: 0;
+                width: 280px; transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                z-index: 20;
+            }
+            .sidebar.open { transform: translateX(0); box-shadow: 5px 0 15px rgba(0,0,0,0.1); }
+            /* Add menu button to header for mobile */
+            .menu-btn { display: block !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-left">
+                <button id="menu-btn" class="btn hidden" style="padding: 0.6rem;">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
+                </button>
+                <h1>Digital Diary</h1>
+            </div>
+            <button id="new-entry-btn" class="btn btn-primary">New Entry</button>
+        </header>
+
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>My Entries</h2>
+            </div>
+            <ul id="entry-list"></ul>
+        </aside>
+
+        <main class="editor-panel">
+            <div id="editor-view">
+                <div class="editor-header">
+                    <span id="current-entry-date"></span>
+                    <button id="delete-entry-btn" class="btn" style="background-color: #fce8e6; color: var(--google-red);">Delete</button>
+                </div>
+                <div class="editor-main">
+                    <textarea id="editor-content" placeholder="Start writing your thoughts..."></textarea>
+                </div>
+                <div class="editor-footer">
+                    <span id="word-count">Words: 0</span>
+                </div>
+            </div>
+            <div id="empty-state" class="hidden">
+                <h2>Welcome to Your Digital Diary</h2>
+                <p>Click "New Entry" to begin your journey.</p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DOM ELEMENTS ---
+            const elements = {};
+            document.querySelectorAll('[id]').forEach(el => elements[el.id.replace(/-[a-z]/g, m => m[1].toUpperCase())] = el);
+
+            // --- STATE MANAGEMENT ---
+            let entries = [];
+            let currentEntryId = null;
+
+            // --- CORE FUNCTIONS ---
+            function saveEntries() {
+                localStorage.setItem('digital-diary-entries', JSON.stringify(entries));
+            }
+
+            function loadEntries() {
+                const savedEntries = localStorage.getItem('digital-diary-entries');
+                entries = savedEntries ? JSON.parse(savedEntries) : [];
+                entries.sort((a, b) => b.id - a.id); // Sort newest first
+            }
+
+            function renderEntryList() {
+                elements.entryList.innerHTML = '';
+                if (entries.length === 0) {
+                    return;
+                }
+                entries.forEach(entry => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'entry-item';
+                    listItem.dataset.id = entry.id;
+                    if (entry.id === currentEntryId) {
+                        listItem.classList.add('active');
+                    }
+                    
+                    const snippet = entry.content.substring(0, 40).replace(/\n/g, ' ') + '...';
+                    
+                    listItem.innerHTML = `
+                        <span class="entry-date">${entry.date}</span>
+                        <span class="entry-snippet">${entry.content ? snippet : 'New Entry...'}</span>
+                    `;
+                    listItem.addEventListener('click', () => displayEntry(entry.id));
+                    elements.entryList.appendChild(listItem);
+                });
+            }
+
+            function displayEntry(id) {
+                const entry = entries.find(e => e.id === id);
+                if (!entry) {
+                    showEmptyState();
+                    return;
+                }
+
+                currentEntryId = id;
+                elements.editorView.classList.remove('hidden');
+                elements.emptyState.classList.add('hidden');
+                
+                elements.editorContent.value = entry.content;
+                elements.currentEntryDate.textContent = entry.date;
+                updateWordCount();
+                renderEntryList(); // To update the 'active' class
+            }
+            
+            function showEmptyState() {
+                currentEntryId = null;
+                elements.editorView.classList.add('hidden');
+                elements.emptyState.classList.remove('hidden');
+            }
+
+            function createNewEntry() {
+                const now = new Date();
+                const newEntry = {
+                    id: now.getTime(),
+                    date: now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
+                    content: ''
+                };
+                entries.unshift(newEntry); // Add to the beginning
+                saveEntries();
+                displayEntry(newEntry.id);
+            }
+
+            function deleteCurrentEntry() {
+                if (!currentEntryId) return;
+                if (confirm('Are you sure you want to delete this entry forever?')) {
+                    entries = entries.filter(e => e.id !== currentEntryId);
+                    saveEntries();
+                    renderEntryList();
+                    // Display the next available entry or empty state
+                    if (entries.length > 0) {
+                        displayEntry(entries[0].id);
+                    } else {
+                        showEmptyState();
+                    }
+                }
+            }
+
+            function updateWordCount() {
+                const text = elements.editorContent.value;
+                const wordCount = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+                elements.wordCount.textContent = `Words: ${wordCount}`;
+            }
+
+            // --- EVENT LISTENERS ---
+            elements.newEntryBtn.addEventListener('click', createNewEntry);
+            elements.deleteEntryBtn.addEventListener('click', deleteCurrentEntry);
+
+            elements.editorContent.addEventListener('input', () => {
+                if (!currentEntryId) return;
+                const entry = entries.find(e => e.id === currentEntryId);
+                if (entry) {
+                    entry.content = elements.editorContent.value;
+                    // Auto-save with a slight delay (debounce) could be added here,
+                    // but for simplicity, we'll save instantly.
+                    saveEntries();
+                    updateWordCount();
+                    // Also update the snippet in the list without a full re-render for performance
+                    const listItem = elements.entryList.querySelector(`[data-id='${currentEntryId}'] .entry-snippet`);
+                    if (listItem) {
+                        listItem.textContent = entry.content.substring(0, 40).replace(/\n/g, ' ') + '...';
+                    }
+                }
+            });
+
+            elements.menuBtn.addEventListener('click', () => {
+                elements.sidebar.classList.toggle('open');
+            });
+            
+            // Close sidebar if clicking outside of it on mobile
+            document.body.addEventListener('click', (e) => {
+                if (window.innerWidth <= 768 && elements.sidebar.classList.contains('open')) {
+                    if (!elements.sidebar.contains(e.target) && !elements.menuBtn.contains(e.target)) {
+                        elements.sidebar.classList.remove('open');
+                    }
+                }
+            });
+
+            // --- INITIALIZATION ---
+            function init() {
+                loadEntries();
+                renderEntryList();
+                if (entries.length > 0) {
+                    displayEntry(entries[0].id);
+                } else {
+                    showEmptyState();
+                }
+            }
+            
+            init();
+        });
+    </script>
+</body>
+</html>
