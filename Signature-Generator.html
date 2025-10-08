@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- SEO Meta Tags for Better Discoverability -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Signature Generator - Create Your Signature Online | ToolStackX</title>
+    <meta name="description" content="A free and beautiful online tool to create your perfect signature. Type it with elegant fonts or draw it by hand on a digital canvas, then download it as a high-quality image.">
+    <meta name="keywords" content="signature generator, create signature, online signature maker, draw signature, type signature, toolstackx">
+    <link rel="canonical" href="https://toolstackxio-prog.github.io/toolstackx.io/Signature-Generator.html">
+
+    <!-- Google Fonts for UI and beautiful script fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Parisienne&family=Dancing+Script:wght@700&family=Caveat:wght@600&family=Pacifico&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CSS Variables for a Modern Google-Style Theme --- */
+        :root {
+            --google-blue: #4285F4;
+            --google-red: #DB4437;
+            --google-green: #0F9D58;
+            --background-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --card-background: #ffffff;
+            --text-primary: #202124;
+            --text-secondary: #5f6368;
+            --border-color: #dfe1e5;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --accent-color: var(--google-blue);
+        }
+
+        /* --- Global Styles & Resets --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-image: var(--background-gradient);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        /* --- Main Application Container --- */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background-color: var(--card-background);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px var(--shadow-color);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Header Section --- */
+        .app-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex; align-items: center; gap: 1rem;
+        }
+        .app-header .icon { color: var(--accent-color); }
+        .app-header h1 { font-size: 1.75rem; font-weight: 600; }
+
+        /* --- Tab Navigation --- */
+        .tabs {
+            display: flex;
+            background-color: #f8f9fa;
+        }
+        .tab-button {
+            flex: 1; padding: 1rem;
+            font-size: 1rem; font-weight: 600;
+            cursor: pointer; border: none; background: none;
+            color: var(--text-secondary);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .tab-button.active { color: var(--accent-color); border-bottom-color: var(--accent-color); }
+
+        /* --- Tab Content Panels --- */
+        .tab-panel { display: none; padding: 2rem; animation: slideUp 0.5s ease-out; }
+        .tab-panel.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- Shared Control Styles --- */
+        .controls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .control-group label { display: block; font-weight: 500; margin-bottom: 0.5rem; }
+        .form-control { width: 100%; padding: 0.75rem; font-size: 1rem; border: 1px solid var(--border-color); border-radius: 10px; }
+        .form-control[type="color"] { padding: 4px; height: 48px; }
+
+        /* --- "Type" Signature Panel --- */
+        #type-input { height: 56px; }
+        #signature-previews {
+            margin-top: 2rem;
+            display: grid; grid-template-columns: 1fr; gap: 1rem;
+        }
+        .preview-card {
+            padding: 2rem; border: 1px solid var(--border-color); border-radius: 12px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .preview-card .signature-text { min-height: 40px; } /* Prevent layout shift */
+        .download-sig-btn {
+            background: none; border: none; cursor: pointer; padding: 0.5rem;
+            border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+            transition: background-color 0.2s;
+        }
+        .download-sig-btn:hover { background-color: #f1f3f4; }
+
+        /* --- "Draw" Signature Panel --- */
+        #draw-canvas {
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            cursor: crosshair;
+            touch-action: none; /* for better mobile drawing */
+        }
+        .canvas-actions { margin-top: 1rem; display: flex; gap: 1rem; }
+        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 10px; font-size: 1rem; font-weight: 500; cursor: pointer; }
+        .btn-secondary { background-color: #f1f3f4; color: var(--text-secondary); }
+        .btn-primary { background-color: var(--accent-color); color: white; }
+
+        .hidden { display: none; }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 600px) {
+            body { padding: 1rem 0.5rem; }
+            .app-header { padding: 1rem 1.5rem; }
+            .tab-panel { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="container">
+        <header class="app-header">
+            <div class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" height="28" viewBox="0 -960 960 960" width="28" fill="currentColor"><path d="m280-201-49-49 329-329-113-113q-24-24-24-56.5t24-56.5q24-24 56.5-24t56.5 24l226 226q12 12 18 28t6 32q0 16-6 32t-18 28L541-115q-24 24-56.5 24T428-115q-24-24-24-56.5t24-56.5l113-113-261 261Z"/></svg>
+            </div>
+            <h1>Signature Generator</h1>
+        </header>
+
+        <nav class="tabs" role="tablist">
+            <button role="tab" aria-selected="true" class="tab-button active" data-tab="type">Type Signature</button>
+            <button role="tab" aria-selected="false" class="tab-button" data-tab="draw">Draw Signature</button>
+        </nav>
+
+        <!-- "Type Signature" Panel -->
+        <section id="type" role="tabpanel" class="tab-panel active">
+            <div class="control-group">
+                <label for="type-input">Enter Your Name</label>
+                <input type="text" id="type-input" class="form-control" placeholder="e.g., John Doe">
+            </div>
+            <div class="controls-grid">
+                <div class="control-group">
+                    <label for="type-color">Color</label>
+                    <input type="color" id="type-color" class="form-control" value="#000000">
+                </div>
+                <div class="control-group">
+                    <label for="type-size">Font Size</label>
+                    <input type="range" id="type-size" min="20" max="80" value="48">
+                </div>
+            </div>
+            <div id="signature-previews">
+                <!-- Previews will be generated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- "Draw Signature" Panel -->
+        <section id="draw" role="tabpanel" class="tab-panel">
+            <canvas id="draw-canvas" width="720" height="250"></canvas>
+            <div class="controls-grid">
+                <div class="control-group">
+                    <label for="draw-color">Pen Color</label>
+                    <input type="color" id="draw-color" class="form-control" value="#000000">
+                </div>
+                <div class="control-group">
+                    <label for="draw-thickness">Pen Thickness</label>
+                    <input type="range" id="draw-thickness" min="1" max="10" value="3">
+                </div>
+            </div>
+            <div class="canvas-actions">
+                <button id="clear-canvas-btn" class="btn btn-secondary">Clear</button>
+                <button id="download-draw-btn" class="btn btn-primary">Download Signature</button>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- TAB SWITCHING LOGIC ---
+            const tabs = document.querySelectorAll('.tab-button');
+            const panels = document.querySelectorAll('.tab-panel');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    panels.forEach(panel => panel.classList.toggle('active', panel.id === tab.dataset.tab));
+                });
+            });
+
+            // --- "TYPE SIGNATURE" LOGIC ---
+            const typeInput = document.getElementById('type-input');
+            const typeColor = document.getElementById('type-color');
+            const typeSize = document.getElementById('type-size');
+            const previewsContainer = document.getElementById('signature-previews');
+            
+            const fonts = ['Parisienne', 'Dancing Script', 'Caveat', 'Pacifico', 'Poppins'];
+
+            const updateTypedPreviews = () => {
+                const name = typeInput.value || typeInput.placeholder;
+                const color = typeColor.value;
+                const size = typeSize.value;
+                previewsContainer.innerHTML = '';
+
+                fonts.forEach(font => {
+                    const card = document.createElement('div');
+                    card.className = 'preview-card';
+                    
+                    const text = document.createElement('span');
+                    text.className = 'signature-text';
+                    text.textContent = name;
+                    text.style.fontFamily = font;
+                    text.style.color = color;
+                    text.style.fontSize = `${size}px`;
+                    
+                    const downloadBtn = document.createElement('button');
+                    downloadBtn.className = 'download-sig-btn';
+                    downloadBtn.title = `Download in ${font}`;
+                    downloadBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="#5f6368"><path d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg>`;
+                    
+                    downloadBtn.onclick = () => downloadTypedSignature(name, font, color, size);
+                    
+                    card.appendChild(text);
+                    card.appendChild(downloadBtn);
+                    previewsContainer.appendChild(card);
+                });
+            };
+
+            const downloadTypedSignature = (text, font, color, size) => {
+                const tempCanvas = document.createElement('canvas');
+                const ctx = tempCanvas.getContext('2d');
+                ctx.font = `${size}px ${font}`;
+                
+                // Measure text to size canvas correctly
+                const metrics = ctx.measureText(text);
+                tempCanvas.width = metrics.width + 40; // Add padding
+                tempCanvas.height = parseInt(size, 10) * 2;
+                
+                // Re-apply font settings after resize
+                ctx.font = `${size}px ${font}`;
+                ctx.fillStyle = color;
+                ctx.textBaseline = 'middle';
+                ctx.textAlign = 'center';
+                
+                ctx.fillText(text, tempCanvas.width / 2, tempCanvas.height / 2);
+                
+                const link = document.createElement('a');
+                link.download = `signature-${font.replace(/\s+/g, '-')}.png`;
+                link.href = tempCanvas.toDataURL('image/png', 1.0);
+                link.click();
+            };
+
+            [typeInput, typeColor, typeSize].forEach(el => el.addEventListener('input', updateTypedPreviews));
+            
+            // --- "DRAW SIGNATURE" LOGIC ---
+            const canvas = document.getElementById('draw-canvas');
+            const ctx = canvas.getContext('2d');
+            const drawColor = document.getElementById('draw-color');
+            const drawThickness = document.getElementById('draw-thickness');
+            const clearCanvasBtn = document.getElementById('clear-canvas-btn');
+            const downloadDrawBtn = document.getElementById('download-draw-btn');
+
+            let isDrawing = false;
+            let lastX = 0, lastY = 0;
+
+            function getMousePos(e) {
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+                const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+                return {
+                    x: (clientX - rect.left) * scaleX,
+                    y: (clientY - rect.top) * scaleY
+                };
+            }
+
+            function draw(e) {
+                if (!isDrawing) return;
+                e.preventDefault();
+                const { x, y } = getMousePos(e);
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                [lastX, lastY] = [x, y];
+            }
+            
+            function startDrawing(e) {
+                isDrawing = true;
+                const { x, y } = getMousePos(e);
+                [lastX, lastY] = [x, y];
+            }
+
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', () => isDrawing = false);
+            canvas.addEventListener('mouseout', () => isDrawing = false);
+
+            canvas.addEventListener('touchstart', startDrawing);
+            canvas.addEventListener('touchmove', draw);
+            canvas.addEventListener('touchend', () => isDrawing = false);
+
+            const updateDrawStyle = () => {
+                ctx.strokeStyle = drawColor.value;
+                ctx.lineWidth = drawThickness.value;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+            };
+
+            clearCanvasBtn.addEventListener('click', () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            });
+            
+            downloadDrawBtn.addEventListener('click', () => {
+                const link = document.createElement('a');
+                link.download = 'drawn-signature.png';
+                link.href = canvas.toDataURL('image/png', 1.0);
+                link.click();
+            });
+
+            [drawColor, drawThickness].forEach(el => el.addEventListener('input', updateDrawStyle));
+
+            // Initial calls
+            updateTypedPreviews();
+            updateDrawStyle();
+        });
+    </script>
+</body>
+</html>
