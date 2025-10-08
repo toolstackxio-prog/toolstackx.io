@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- SEO Meta Tags for Better Discoverability -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Online Logo Maker - Design Your Custom Logo | ToolStackX</title>
+    <meta name="description" content="A free, powerful, and easy-to-use online logo maker. Design and customize a beautiful logo for your brand with icons, fonts, and colors, then download it in high-quality PNG or SVG formats.">
+    <meta name="keywords" content="logo maker, logo creator, design logo, free logo generator, online logo tool, toolstackx">
+    <link rel="canonical" href="https://toolstackxio-prog.github.io/toolstackx.io/Logo-Maker-Tool.html">
+
+    <!-- Google Fonts for a Polished UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@700&family=Playfair+Display:wght@700&family=Roboto+Mono&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CSS Variables for a Modern Google-Style Theme --- */
+        :root {
+            --google-blue: #4285F4;
+            --google-red: #DB4437;
+            --google-green: #0F9D58;
+            --background-color: #f5f7fa;
+            --editor-bg: #eef2f9;
+            --panel-bg: #ffffff;
+            --text-primary: #202124;
+            --text-secondary: #5f6368;
+            --border-color: #dfe1e5;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --accent-color: var(--google-blue);
+        }
+
+        /* --- Global Styles & Resets --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; overflow: hidden; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Main Application Layout --- */
+        .app-container {
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            grid-template-rows: 60px 1fr;
+            grid-template-areas:
+                "header header header"
+                "controls canvas templates";
+            height: 100vh;
+        }
+
+        /* --- Header --- */
+        .app-header {
+            grid-area: header;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.5rem;
+            background-color: var(--panel-bg);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 10;
+        }
+        .header-left { display: flex; align-items: center; gap: 1rem; }
+        .header-left h1 { font-size: 1.5rem; font-weight: 600; }
+        .btn-group { display: flex; gap: 0.75rem; }
+        .btn {
+            padding: 0.6rem 1.2rem; border-radius: 8px; font-size: 0.9rem; font-weight: 500;
+            cursor: pointer; border: 1px solid var(--border-color);
+            background-color: #fff; transition: all 0.2s ease;
+        }
+        .btn:hover { background-color: #f1f3f4; }
+        .btn-primary { background-color: var(--accent-color); color: white; border-color: var(--accent-color); }
+        .btn-primary:hover { background-color: #3367d6; }
+
+        /* --- Panel Styles (Controls & Templates) --- */
+        .panel {
+            background-color: var(--panel-bg);
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+        .controls-panel { grid-area: controls; border-right: 1px solid var(--border-color); }
+        .templates-panel { grid-area: templates; border-left: 1px solid var(--border-color); }
+
+        .panel-section { margin-bottom: 1.5rem; }
+        .panel-section h3 { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; }
+        .prop-group { margin-bottom: 1rem; }
+        .prop-group label { display: block; font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--text-secondary); }
+        .prop-group input, .prop-group select {
+            width: 100%; padding: 0.5rem; border-radius: 6px; border: 1px solid var(--border-color);
+            font-family: 'Poppins', sans-serif; font-size: 0.9rem;
+        }
+        .prop-group input[type="color"] { padding: 2px; height: 38px; }
+
+        /* Icon Library */
+        #icon-library {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem;
+            border: 1px solid var(--border-color); border-radius: 6px; padding: 0.5rem;
+        }
+        .icon-choice {
+            padding: 0.5rem; border-radius: 4px; cursor: pointer; transition: background-color 0.2s;
+            border: 2px solid transparent;
+        }
+        .icon-choice:hover { background-color: #f1f3f4; }
+        .icon-choice.selected { background-color: #e8f0fe; border-color: var(--accent-color); }
+        .icon-choice svg { width: 100%; height: auto; }
+        
+        /* Template Previews */
+        .template-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .template-preview {
+            border: 1px solid var(--border-color); border-radius: 8px;
+            padding: 1rem; cursor: pointer; transition: all 0.2s;
+        }
+        .template-preview:hover { box-shadow: 0 4px 12px var(--shadow-color); transform: translateY(-2px); }
+        .template-preview svg { width: 100%; height: auto; }
+
+        /* --- Canvas Area (Center) --- */
+        .canvas-area {
+            grid-area: canvas;
+            background-color: var(--editor-bg);
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: auto;
+        }
+        #logo-preview {
+            width: 300px;
+            height: 300px;
+            background-color: #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        #logo-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 1024px) {
+            .app-container {
+                grid-template-columns: 300px 1fr;
+                grid-template-areas: "header header" "controls canvas" "templates canvas";
+            }
+            .templates-panel { border-left: none; border-top: 1px solid var(--border-color); }
+        }
+        @media (max-width: 768px) {
+            .app-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: 60px auto 1fr auto;
+                grid-template-areas: "header" "controls" "canvas" "templates";
+                height: auto;
+            }
+            body { overflow: auto; }
+            .panel { border: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-left"><h1>Logo Maker</h1></div>
+            <div class="btn-group">
+                <button id="download-svg-btn" class="btn">Download SVG</button>
+                <button id="download-png-btn" class="btn btn-primary">Download PNG</button>
+            </div>
+        </header>
+
+        <aside class="panel controls-panel">
+            <div class="panel-section">
+                <h3>Text</h3>
+                <div class="prop-group">
+                    <label for="text-input">Company Name</label>
+                    <input type="text" id="text-input" value="Your Brand">
+                </div>
+                <div class="prop-group">
+                    <label for="font-family">Font</label>
+                    <select id="font-family">
+                        <option value="Poppins">Poppins</option>
+                        <option value="Montserrat">Montserrat</option>
+                        <option value="Playfair Display">Playfair Display</option>
+                        <option value="Roboto Mono">Roboto Mono</option>
+                    </select>
+                </div>
+                <div class="prop-group">
+                    <label for="font-size">Font Size</label>
+                    <input type="range" id="font-size" min="10" max="100" value="48">
+                </div>
+                <div class="prop-group">
+                    <label for="text-color">Text Color</label>
+                    <input type="color" id="text-color" value="#202124">
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3>Icon</h3>
+                <div id="icon-library"></div>
+                <div class="prop-group" style="margin-top: 1rem;">
+                    <label for="icon-size">Icon Size</label>
+                    <input type="range" id="icon-size" min="20" max="150" value="80">
+                </div>
+                <div class="prop-group">
+                    <label for="icon-color">Icon Color</label>
+                    <input type="color" id="icon-color" value="#4285F4">
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3>Layout & Background</h3>
+                <div class="prop-group">
+                    <label for="layout-select">Layout</label>
+                    <select id="layout-select">
+                        <option value="top">Icon on Top</option>
+                        <option value="left">Icon on Left</option>
+                        <option value="right">Icon on Right</option>
+                    </select>
+                </div>
+                <div class="prop-group">
+                    <label for="bg-shape">Background Shape</label>
+                    <select id="bg-shape">
+                        <option value="none">None</option>
+                        <option value="circle">Circle</option>
+                        <option value="square">Square</option>
+                    </select>
+                </div>
+                <div class="prop-group">
+                    <label for="bg-color">Background Color</label>
+                    <input type="color" id="bg-color" value="#FFFFFF">
+                </div>
+            </div>
+        </aside>
+
+        <main class="canvas-area">
+            <div id="logo-preview">
+                <svg id="logo-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+            </div>
+        </main>
+
+        <aside class="panel templates-panel">
+            <h3>Templates</h3>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: -12px; margin-bottom: 1rem;">Click one to get started!</p>
+            <div class="template-grid" id="template-grid"></div>
+        </aside>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- ICON DATA (Embed SVG paths directly) ---
+            const ICONS = {
+                rocket: `<path d="M14 22c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zM6 22c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2z"/><path d="m14.2 2-2.7 7h1.2c.5 0 1 .2 1.4.6l3.3 4.1c.3.4.4.9.4 1.4V19h2v-4.1c0-.9-.3-1.8-1-2.4l-3.3-4.1c-.2-.2-.5-.4-.8-.4h-1L12 2h2.2zM8.8 9H7.5L4.8 2h2.2L8 5.7c.2.5.4 1 .5 1.5l.3 1.8z"/><path d="M18.8 11.2c.4 0 .8-.1 1.2-.3 1.2-.6 1.9-1.8 1.9-3.1 0-1.8-1.5-3.3-3.3-3.3-1.6 0-2.9 1.1-3.2 2.6-.4 1.4.3 2.8 1.6 3.4.2.1.5.2.8.2zM9 13H5c-1.7 0-3 1.3-3 3v1h10v-1c0-1.7-1.3-3-3-3z"/>`,
+                globe: `<path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zM10 20.9c-3.9-1.8-6.5-5.6-6.5-9.9C3.5 6.5 6.5 3.5 10 3.5v17.4zm2-17.4c3.5 0 6.5 3 6.5 7.5s-3 7.5-6.5 7.5V3.5z"/>`,
+                leaf: `<path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z"/><path d="M14.2 7.6c-.2-.2-.5-.3-.7-.1l-4.5 2.5c-.3.2-.5.5-.5.8s.2.6.5.8l4.5 2.5c.2.1.5.1.7-.1.2-.2.3-.5.1-.7l-2.5-4.5c-.2-.3-.2-.6 0-.9l2.5-4.5c.2-.2.1-.5-.1-.7z"/>`,
+                star: `<path d="M12 17.3l-5.8 3.5 1.5-6.8-5.1-4.4 6.9-.6L12 2l2.5 6.9 6.9.6-5.1 4.4 1.5 6.8z"/>`
+            };
+            const FONT_FAMILIES = { 'Poppins': "'Poppins', sans-serif", 'Montserrat': "'Montserrat', sans-serif", 'Playfair Display': "'Playfair Display', serif", 'Roboto Mono': "'Roboto Mono', monospace" };
+            
+            // --- TEMPLATE DATA ---
+            const TEMPLATES = [
+                { name: 'Tech Rocket', text: 'SpaceX', fontFamily: 'Montserrat', fontSize: 40, textColor: '#FFFFFF', icon: 'rocket', iconSize: 90, iconColor: '#FFFFFF', layout: 'top', bgShape: 'circle', bgColor: '#0A1931' },
+                { name: 'Eco Globe', text: 'Greenly', fontFamily: 'Poppins', fontSize: 48, textColor: '#0F9D58', icon: 'globe', iconSize: 70, iconColor: '#0F9D58', layout: 'left', bgShape: 'none', bgColor: '#FFFFFF' },
+                { name: 'Elegant Leaf', text: 'Natura', fontFamily: 'Playfair Display', fontSize: 52, textColor: '#3A5A40', icon: 'leaf', iconSize: 60, iconColor: '#588157', layout: 'top', bgShape: 'square', bgColor: '#DAD7CD' },
+                { name: 'Bold Star', text: 'Stellar', fontFamily: 'Montserrat', fontSize: 50, textColor: '#F4B400', icon: 'star', iconSize: 80, iconColor: '#202124', layout: 'right', bgShape: 'none', bgColor: '#FFFFFF' }
+            ];
+
+            // --- DOM REFERENCES ---
+            const controls = {};
+            document.querySelectorAll('[id]').forEach(el => controls[el.id.replace(/-[a-z]/g, m => m[1].toUpperCase())] = el);
+            
+            let state = { selectedIcon: 'rocket' };
+
+            // --- INITIALIZATION ---
+            function init() {
+                populateIconLibrary();
+                populateTemplates();
+                addEventListeners();
+                applyTemplate(TEMPLATES[0]); // Load the first template by default
+                renderLogo();
+            }
+
+            function populateIconLibrary() {
+                controls.iconLibrary.innerHTML = Object.keys(ICONS).map(key => `
+                    <div class="icon-choice" data-icon="${key}" title="${key}">
+                        <svg viewBox="0 0 24 24">${ICONS[key]}</svg>
+                    </div>
+                `).join('');
+                controls.iconLibrary.querySelector(`[data-icon="${state.selectedIcon}"]`).classList.add('selected');
+            }
+            
+            function populateTemplates() {
+                controls.templateGrid.innerHTML = TEMPLATES.map((t, i) => `
+                    <div class="template-preview" data-template-index="${i}" title="${t.name}">
+                        <svg viewBox="0 0 100 100">${generateLogoSVG(t)}</svg>
+                    </div>
+                `).join('');
+            }
+            
+            function addEventListeners() {
+                Object.values(controls).forEach(el => {
+                    if (el.tagName === 'INPUT' || el.tagName === 'SELECT') {
+                        el.addEventListener('input', renderLogo);
+                    }
+                });
+                controls.iconLibrary.addEventListener('click', e => {
+                    const choice = e.target.closest('.icon-choice');
+                    if (choice) {
+                        state.selectedIcon = choice.dataset.icon;
+                        controls.iconLibrary.querySelector('.selected')?.classList.remove('selected');
+                        choice.classList.add('selected');
+                        renderLogo();
+                    }
+                });
+                controls.templateGrid.addEventListener('click', e => {
+                    const choice = e.target.closest('.template-preview');
+                    if(choice) applyTemplate(TEMPLATES[choice.dataset.templateIndex]);
+                });
+                controls.downloadSvgBtn.addEventListener('click', downloadSVG);
+                controls.downloadPngBtn.addEventListener('click', downloadPNG);
+            }
+
+            function applyTemplate(template) {
+                controls.textInput.value = template.text;
+                controls.fontFamily.value = template.fontFamily;
+                controls.fontSize.value = template.fontSize;
+                controls.textColor.value = template.textColor;
+                state.selectedIcon = template.icon;
+                controls.iconSize.value = template.iconSize;
+                controls.iconColor.value = template.iconColor;
+                controls.layoutSelect.value = template.layout;
+                controls.bgShape.value = template.bgShape;
+                controls.bgColor.value = template.bgColor;
+
+                controls.iconLibrary.querySelector('.selected')?.classList.remove('selected');
+                controls.iconLibrary.querySelector(`[data-icon="${state.selectedIcon}"]`).classList.add('selected');
+                renderLogo();
+            }
+
+            // --- CORE RENDER FUNCTION ---
+            function renderLogo() {
+                const values = {
+                    text: controls.textInput.value,
+                    fontFamily: controls.fontFamily.value,
+                    fontSize: controls.fontSize.value,
+                    textColor: controls.textColor.value,
+                    icon: state.selectedIcon,
+                    iconSize: controls.iconSize.value,
+                    iconColor: controls.iconColor.value,
+                    layout: controls.layoutSelect.value,
+                    bgShape: controls.bgShape.value,
+                    bgColor: controls.bgColor.value
+                };
+                
+                controls.logoSvg.innerHTML = generateLogoSVG(values);
+                controls.logoPreview.style.backgroundColor = values.bgShape === 'none' ? '#fff' : values.bgColor;
+            }
+
+            function generateLogoSVG(v) {
+                const font = FONT_FAMILIES[v.fontFamily];
+                const bgShapeSvg = {
+                    circle: `<circle cx="50%" cy="50%" r="48%" fill="${v.bgColor}" />`,
+                    square: `<rect width="100%" height="100%" fill="${v.bgColor}" />`,
+                    none: ''
+                }[v.bgShape];
+
+                let iconX = '50%', iconY = '35%', textX = '50%', textY = '75%';
+                if (v.layout === 'left') {
+                    iconX = '35%'; iconY = '50%'; textX = '65%'; textY = '50%';
+                } else if (v.layout === 'right') {
+                    iconX = '65%'; iconY = '50%'; textX = '35%'; textY = '50%';
+                }
+                
+                return `
+                    ${bgShapeSvg}
+                    <g transform="translate(${iconX} ${iconY})">
+                        <svg x="-${v.iconSize/2}" y="-${v.iconSize/2}" width="${v.iconSize}" height="${v.iconSize}" viewBox="0 0 24 24" fill="${v.iconColor}">${ICONS[v.icon]}</svg>
+                    </g>
+                    <text x="${textX}" y="${textY}" fill="${v.textColor}" font-family="${font}" font-size="${v.fontSize}" text-anchor="middle" dominant-baseline="middle">${v.text}</text>
+                `;
+            }
+
+            // --- DOWNLOAD FUNCTIONS ---
+            function downloadSVG() {
+                const svgData = new XMLSerializer().serializeToString(controls.logoSvg);
+                const blob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                triggerDownload(url, 'logo.svg');
+            }
+
+            function downloadPNG() {
+                const svgData = new XMLSerializer().serializeToString(controls.logoSvg);
+                const img = new Image();
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = 500;
+                canvas.height = 500;
+
+                const blob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+
+                img.onload = () => {
+                    ctx.drawImage(img, 0, 0, 500, 500);
+                    URL.revokeObjectURL(url);
+                    triggerDownload(canvas.toDataURL('image/png'), 'logo.png');
+                };
+                img.src = url;
+            }
+
+            function triggerDownload(href, name) {
+                const link = document.createElement('a');
+                link.href = href;
+                link.download = name;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
+            init();
+        });
+    </script>
+</body>
+</html>
