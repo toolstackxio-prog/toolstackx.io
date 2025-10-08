@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- SEO Meta Tags for Better Discoverability -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Graphic Designer Tool - Create Beautiful Designs | ToolStackX</title>
+    <meta name="description" content="A free, powerful, and intuitive online graphic design tool. Create social media posts, logos, and other graphics with text, shapes, images, and filters.">
+    <meta name="keywords" content="graphic design tool, online editor, image editor, design maker, free design tool, canva alternative, toolstackx">
+    <link rel="canonical" href="https://toolstackxio-prog.github.io/toolstackx.io/Graphic-Designer-Tool.html">
+
+    <!-- Google Fonts for a Polished UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Fabric.js Library - The engine for our canvas editor -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+
+    <style>
+        /* --- CSS Variables for a Modern Google-Style Theme --- */
+        :root {
+            --google-blue: #4285F4;
+            --google-red: #DB4437;
+            --google-green: #0F9D58;
+            --background-color: #f5f7fa;
+            --editor-bg: #eef2f9;
+            --panel-bg: #ffffff;
+            --text-primary: #202124;
+            --text-secondary: #5f6368;
+            --border-color: #dfe1e5;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --accent-color: var(--google-blue);
+        }
+
+        /* --- Global Styles & Resets --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; overflow: hidden; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Main Application Layout --- */
+        .app-container {
+            display: grid;
+            grid-template-columns: 80px 1fr 300px;
+            grid-template-rows: 60px 1fr;
+            grid-template-areas:
+                "header header header"
+                "toolbar canvas properties";
+            height: 100vh;
+        }
+
+        /* --- Header --- */
+        .app-header {
+            grid-area: header;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.5rem;
+            background-color: var(--panel-bg);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .header-left { display: flex; align-items: center; gap: 1rem; }
+        .header-left h1 { font-size: 1.5rem; font-weight: 600; }
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.9rem; font-weight: 500;
+            cursor: pointer; border: 1px solid var(--border-color);
+            background-color: #fff; transition: all 0.2s ease;
+        }
+        .btn:hover { background-color: #f1f3f4; }
+        .btn-primary { background-color: var(--accent-color); color: white; border-color: var(--accent-color); }
+        .btn-primary:hover { background-color: #3367d6; }
+
+        /* --- Toolbar (Left) --- */
+        .toolbar {
+            grid-area: toolbar;
+            background-color: var(--panel-bg);
+            border-right: 1px solid var(--border-color);
+            padding-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .tool-btn {
+            background: none; border: none; cursor: pointer;
+            padding: 0.75rem; border-radius: 10px;
+            width: 60px; height: 60px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 4px; font-size: 0.75rem; color: var(--text-secondary);
+            transition: background-color 0.2s;
+        }
+        .tool-btn svg { fill: var(--text-secondary); }
+        .tool-btn:hover { background-color: #e8f0fe; }
+        #image-upload-input { display: none; }
+
+        /* --- Canvas Area (Center) --- */
+        .canvas-area {
+            grid-area: canvas;
+            background-color: var(--editor-bg);
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: auto;
+        }
+        .canvas-container {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* --- Properties Panel (Right) --- */
+        .properties-panel {
+            grid-area: properties;
+            background-color: var(--panel-bg);
+            border-left: 1px solid var(--border-color);
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+        .panel-section { margin-bottom: 1.5rem; }
+        .panel-section h3 {
+            font-size: 1rem; font-weight: 600; margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;
+        }
+        .prop-group { margin-bottom: 1rem; }
+        .prop-group label { display: block; font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--text-secondary); }
+        .prop-group input[type="color"], .prop-group input[type="number"], .prop-group input[type="range"], .prop-group select {
+            width: 100%; padding: 0.5rem; border-radius: 6px; border: 1px solid var(--border-color);
+        }
+        .prop-group input[type="color"] { padding: 2px; height: 38px; }
+
+        .hidden { display: none; }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 1024px) {
+            .app-container {
+                grid-template-columns: 80px 1fr;
+                grid-template-areas:
+                    "header header"
+                    "toolbar canvas"
+                    "toolbar properties";
+                grid-template-rows: 60px 2fr 1fr;
+            }
+            .properties-panel { border-left: none; border-top: 1px solid var(--border-color); }
+        }
+        @media (max-width: 768px) {
+            .app-container {
+                grid-template-columns: 1fr;
+                grid-template-areas:
+                    "header"
+                    "canvas"
+                    "toolbar"
+                    "properties";
+                grid-template-rows: 60px 1fr auto auto;
+            }
+            .toolbar { flex-direction: row; justify-content: space-around; border-right: none; border-top: 1px solid var(--border-color); padding: 0.5rem 0; }
+            .properties-panel { max-height: 250px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-left">
+                <h1>Designer Tool</h1>
+            </div>
+            <div class="header-right">
+                <button id="clear-btn" class="btn">Clear Canvas</button>
+                <button id="export-png-btn" class="btn btn-primary">Download as PNG</button>
+            </div>
+        </header>
+
+        <aside class="toolbar">
+            <button id="add-text-btn" class="tool-btn" title="Add Text">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M120-200v-80h200v-400H160v-80h400v80H400v400h200v80H120Zm440 0v-200L440-520v-80h400v80L720-400v200h-80v-200l-40-40-40 40v200h-80Z"/></svg>
+                <span>Text</span>
+            </button>
+            <button id="add-rect-btn" class="tool-btn" title="Add Rectangle">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M120-120v-720h720v720H120Zm80-80h560v-560H200v560Z"/></svg>
+                <span>Rectangle</span>
+            </button>
+            <button id="add-circle-btn" class="tool-btn" title="Add Circle">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M480-120q-150 0-255-105T120-480q0-150 105-255T480-840q150 0 255 105T840-480q0 150-105 255T480-120Zm0-80q117 0 198.5-81.5T760-480q0-117-81.5-198.5T480-760q-117 0-198.5 81.5T200-480q0 117 81.5 198.5T480-200Z"/></svg>
+                <span>Circle</span>
+            </button>
+            <label for="image-upload-input" id="upload-image-btn" class="tool-btn" title="Upload Image">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm40-80h480L570-480 450-320l-90-120-120 160Zm-40 80v-560 560Z"/></svg>
+                <span>Image</span>
+            </label>
+            <input type="file" id="image-upload-input" accept="image/*">
+        </aside>
+
+        <main class="canvas-area">
+            <div class="canvas-container">
+                <canvas id="c"></canvas>
+            </div>
+        </main>
+
+        <aside class="properties-panel">
+            <div id="canvas-props" class="panel-section">
+                <h3>Canvas</h3>
+                <div class="prop-group">
+                    <label for="canvas-bg-color">Background Color</label>
+                    <input type="color" id="canvas-bg-color" value="#ffffff">
+                </div>
+            </div>
+
+            <div id="text-props" class="panel-section hidden">
+                <h3>Text</h3>
+                <div class="prop-group"><label>Content</label><textarea id="text-content-input" rows="3"></textarea></div>
+                <div class="prop-group"><label>Font Family</label><select id="font-family-select"><option>Arial</option><option>Poppins</option><option>Verdana</option><option>Georgia</option><option>Courier New</option></select></div>
+                <div class="prop-group"><label>Font Size</label><input type="number" id="font-size-input" value="40"></div>
+                <div class="prop-group"><label>Color</label><input type="color" id="text-color-input"></div>
+            </div>
+            
+            <div id="shape-props" class="panel-section hidden">
+                <h3>Shape</h3>
+                <div class="prop-group"><label>Fill Color</label><input type="color" id="shape-fill-color-input"></div>
+                <div class="prop-group"><label>Stroke Color</label><input type="color" id="shape-stroke-color-input"></div>
+                <div class="prop-group"><label>Stroke Width</label><input type="range" id="shape-stroke-width-input" min="0" max="30" value="1"></div>
+            </div>
+            
+            <div id="image-props" class="panel-section hidden">
+                <h3>Image</h3>
+                <div class="prop-group"><label>Opacity</label><input type="range" id="image-opacity-input" min="0" max="1" step="0.01" value="1"></div>
+                <!-- More filters can be added here -->
+            </div>
+            
+            <div id="common-props" class="panel-section hidden">
+                <h3>Actions</h3>
+                <div class="prop-group"><button id="bring-front-btn" class="btn">Bring to Front</button></div>
+                <div class="prop-group"><button id="send-back-btn" class="btn">Send to Back</button></div>
+                <div class="prop-group"><button id="delete-btn" class="btn" style="background-color: #fce8e6; color: var(--google-red);">Delete Selected</button></div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- INITIALIZE CANVAS ---
+            const canvas = new fabric.Canvas('c', {
+                width: 800,
+                height: 600,
+                backgroundColor: '#ffffff'
+            });
+
+            // --- DOM ELEMENT REFERENCES ---
+            const propsPanels = {
+                text: document.getElementById('text-props'),
+                shape: document.getElementById('shape-props'),
+                image: document.getElementById('image-props'),
+                common: document.getElementById('common-props')
+            };
+            const inputs = {
+                canvasBg: document.getElementById('canvas-bg-color'),
+                textContent: document.getElementById('text-content-input'),
+                fontFamily: document.getElementById('font-family-select'),
+                fontSize: document.getElementById('font-size-input'),
+                textColor: document.getElementById('text-color-input'),
+                shapeFill: document.getElementById('shape-fill-color-input'),
+                shapeStroke: document.getElementById('shape-stroke-color-input'),
+                shapeStrokeWidth: document.getElementById('shape-stroke-width-input'),
+                imageOpacity: document.getElementById('image-opacity-input')
+            };
+
+            // --- UPDATE PROPERTIES PANEL LOGIC ---
+            const updatePropertiesPanel = () => {
+                const activeObject = canvas.getActiveObject();
+                // Hide all panels first
+                Object.values(propsPanels).forEach(panel => panel.classList.add('hidden'));
+
+                if (!activeObject) return;
+
+                propsPanels.common.classList.remove('hidden');
+
+                if (activeObject.type === 'i-text') {
+                    propsPanels.text.classList.remove('hidden');
+                    inputs.textContent.value = activeObject.get('text');
+                    inputs.fontFamily.value = activeObject.get('fontFamily');
+                    inputs.fontSize.value = activeObject.get('fontSize');
+                    inputs.textColor.value = activeObject.get('fill');
+                } else if (['rect', 'circle'].includes(activeObject.type)) {
+                    propsPanels.shape.classList.remove('hidden');
+                    inputs.shapeFill.value = activeObject.get('fill');
+                    inputs.shapeStroke.value = activeObject.get('stroke');
+                    inputs.shapeStrokeWidth.value = activeObject.get('strokeWidth');
+                } else if (activeObject.type === 'image') {
+                    propsPanels.image.classList.remove('hidden');
+                    inputs.imageOpacity.value = activeObject.get('opacity');
+                }
+            };
+
+            canvas.on('selection:created', updatePropertiesPanel);
+            canvas.on('selection:updated', updatePropertiesPanel);
+            canvas.on('selection:cleared', updatePropertiesPanel);
+
+            // --- TOOLBAR ACTIONS ---
+            document.getElementById('add-text-btn').addEventListener('click', () => {
+                const text = new fabric.IText('Your Text Here', {
+                    left: 100, top: 100, fontFamily: 'Poppins', fontSize: 40, fill: '#000000'
+                });
+                canvas.add(text);
+            });
+
+            document.getElementById('add-rect-btn').addEventListener('click', () => {
+                const rect = new fabric.Rect({
+                    left: 150, top: 150, width: 200, height: 150, fill: '#4285F4', stroke: '#000', strokeWidth: 1
+                });
+                canvas.add(rect);
+            });
+
+            document.getElementById('add-circle-btn').addEventListener('click', () => {
+                const circle = new fabric.Circle({
+                    left: 200, top: 200, radius: 75, fill: '#0F9D58', stroke: '#000', strokeWidth: 1
+                });
+                canvas.add(circle);
+            });
+
+            document.getElementById('image-upload-input').addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (f) => {
+                    fabric.Image.fromURL(f.target.result, (img) => {
+                        img.scaleToWidth(300);
+                        canvas.add(img);
+                    });
+                };
+                reader.readAsDataURL(file);
+                e.target.value = ''; // Reset input
+            });
+
+            // --- PROPERTIES PANEL EVENT LISTENERS ---
+            inputs.canvasBg.addEventListener('input', (e) => canvas.setBackgroundColor(e.target.value, canvas.renderAll.bind(canvas)));
+            
+            const updateActiveObjectProp = (prop, value) => {
+                const activeObject = canvas.getActiveObject();
+                if (activeObject) {
+                    activeObject.set(prop, value);
+                    canvas.renderAll();
+                }
+            };
+
+            inputs.textContent.addEventListener('input', (e) => updateActiveObjectProp('text', e.target.value));
+            inputs.fontFamily.addEventListener('change', (e) => updateActiveObjectProp('fontFamily', e.target.value));
+            inputs.fontSize.addEventListener('input', (e) => updateActiveObjectProp('fontSize', parseInt(e.target.value, 10)));
+            inputs.textColor.addEventListener('input', (e) => updateActiveObjectProp('fill', e.target.value));
+            
+            inputs.shapeFill.addEventListener('input', (e) => updateActiveObjectProp('fill', e.target.value));
+            inputs.shapeStroke.addEventListener('input', (e) => updateActiveObjectProp('stroke', e.target.value));
+            inputs.shapeStrokeWidth.addEventListener('input', (e) => updateActiveObjectProp('strokeWidth', parseInt(e.target.value, 10)));
+            
+            inputs.imageOpacity.addEventListener('input', (e) => updateActiveObjectProp('opacity', parseFloat(e.target.value)));
+
+            // --- COMMON ACTIONS ---
+            document.getElementById('bring-front-btn').addEventListener('click', () => {
+                const activeObject = canvas.getActiveObject();
+                if (activeObject) canvas.bringToFront(activeObject);
+            });
+            document.getElementById('send-back-btn').addEventListener('click', () => {
+                const activeObject = canvas.getActiveObject();
+                if (activeObject) canvas.sendToBack(activeObject);
+            });
+            document.getElementById('delete-btn').addEventListener('click', () => {
+                const activeObject = canvas.getActiveObject();
+                if (activeObject) canvas.remove(activeObject);
+            });
+
+            // --- HEADER ACTIONS ---
+            document.getElementById('clear-btn').addEventListener('click', () => {
+                if(confirm('Are you sure you want to clear the canvas?')) {
+                    canvas.clear();
+                    // Re-add the background color
+                    canvas.setBackgroundColor(inputs.canvasBg.value, canvas.renderAll.bind(canvas));
+                }
+            });
+
+            document.getElementById('export-png-btn').addEventListener('click', () => {
+                const dataURL = canvas.toDataURL({
+                    format: 'png',
+                    quality: 1.0
+                });
+                const link = document.createElement('a');
+                link.download = 'my-design.png';
+                link.href = dataURL;
+                link.click();
+            });
+            
+            // --- KEYBOARD SHORTCUTS ---
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Delete' || e.key === 'Backspace') {
+                    const activeObject = canvas.getActiveObject();
+                    if (activeObject) canvas.remove(activeObject);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
