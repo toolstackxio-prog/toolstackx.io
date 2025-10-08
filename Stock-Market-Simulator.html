@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- SEO Meta Tags for Better Discoverability -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Market Simulator - Virtual Trading Game | ToolStackX</title>
+    <meta name="description" content="A free, realistic stock market simulator. Practice trading with virtual money, track your portfolio, watch real-time stock charts, and react to market news.">
+    <meta name="keywords" content="stock market simulator, virtual trading, paper trading, stock game, investment simulator, toolstackx">
+    <link rel="canonical" href="https://toolstackxio-prog.github.io/toolstackx.io/Stock-Market-Simulator.html">
+
+    <!-- Google Fonts for a Polished UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Chart.js Library for Stock Charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* --- CSS Variables for a Modern Google-Style Theme --- */
+        :root {
+            --google-blue: #4285F4;
+            --google-red: #DB4437;
+            --google-green: #0F9D58;
+            --background-color: #f5f7fa;
+            --panel-bg: #ffffff;
+            --text-primary: #202124;
+            --text-secondary: #5f6368;
+            --border-color: #dfe1e5;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --accent-color: var(--google-blue);
+            --font-ui: 'Poppins', sans-serif;
+            --font-mono: 'Roboto Mono', monospace;
+        }
+
+        /* --- Global Styles & Resets --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; overflow: hidden; }
+
+        body {
+            font-family: var(--font-ui);
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            animation: fadeIn 0.6s ease-out;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- Main Application Layout --- */
+        .app-container {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            grid-template-rows: 60px 1fr;
+            grid-template-areas:
+                "header header"
+                "main sidebar";
+            height: 100vh;
+        }
+
+        /* --- Header --- */
+        .app-header {
+            grid-area: header;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 1.5rem; background-color: var(--panel-bg);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .header-left { display: flex; align-items: center; gap: 1rem; }
+        .header-left h1 { font-size: 1.5rem; font-weight: 600; }
+        .portfolio-summary { display: flex; gap: 1.5rem; align-items: center; font-size: 0.9rem; }
+        .summary-item { display: flex; flex-direction: column; text-align: right; }
+        .summary-item .label { color: var(--text-secondary); font-size: 0.8rem; }
+        .summary-item .value { font-weight: 600; font-family: var(--font-mono); }
+
+        /* --- Main Content (Market and Chart) --- */
+        .main-content {
+            grid-area: main;
+            display: grid;
+            grid-template-rows: auto 1fr;
+            overflow: hidden;
+        }
+        .market-overview {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .stock-table {
+            width: 100%; border-collapse: collapse;
+        }
+        .stock-table th, .stock-table td {
+            padding: 0.75rem; text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .stock-table th { font-weight: 500; color: var(--text-secondary); font-size: 0.9rem; }
+        .stock-table tbody tr { cursor: pointer; transition: background-color 0.2s; }
+        .stock-table tbody tr:hover, .stock-table tbody tr.active { background-color: #e8f0fe; }
+        .stock-price { font-weight: 500; font-family: var(--font-mono); }
+        .price-change { font-family: var(--font-mono); }
+        .price-change.up { color: var(--google-green); }
+        .price-change.down { color: var(--google-red); }
+        .chart-container {
+            padding: 1.5rem;
+            position: relative;
+        }
+        
+        /* --- Sidebar (Portfolio & Trading) --- */
+        .sidebar {
+            grid-area: sidebar;
+            background-color: var(--panel-bg);
+            border-left: 1px solid var(--border-color);
+            display: flex; flex-direction: column;
+        }
+        .panel { padding: 1.5rem; }
+        .panel h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .portfolio-list { flex-grow: 1; overflow-y: auto; list-style: none; }
+        .portfolio-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0.75rem 0; border-bottom: 1px solid #f0f0f0;
+        }
+        .portfolio-item:last-child { border-bottom: none; }
+        .item-info .symbol { font-weight: 600; }
+        .item-info .shares { font-size: 0.9rem; color: var(--text-secondary); }
+        .item-value { text-align: right; font-family: var(--font-mono); }
+        
+        .trade-panel {
+            border-top: 1px solid var(--border-color);
+        }
+        .trade-form .form-group { margin-bottom: 1rem; }
+        .trade-form label { display: block; font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .trade-form input {
+            width: 100%; padding: 0.75rem; border-radius: 8px;
+            border: 1px solid var(--border-color); font-size: 1rem;
+        }
+        .trade-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .btn {
+            width: 100%; padding: 0.8rem; border-radius: 8px; font-size: 1rem;
+            font-weight: 600; cursor: pointer; border: none; transition: all 0.2s;
+        }
+        .buy-btn { background-color: var(--google-green); color: white; }
+        .sell-btn { background-color: var(--google-red); color: white; }
+        .btn:disabled { background-color: #a0aec0; cursor: not-allowed; }
+
+        /* News Ticker */
+        .news-ticker {
+            background-color: var(--text-primary); color: #fff;
+            padding: 0.5rem; overflow: hidden; white-space: nowrap;
+        }
+        .news-item { display: inline-block; padding-left: 100%; animation: ticker 20s linear infinite; }
+        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 900px) {
+            .app-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto 1fr;
+                grid-template-areas: "header" "sidebar" "main";
+                height: auto;
+            }
+            body { overflow: auto; }
+            .sidebar { border-left: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-left"><h1>Stock Simulator</h1></div>
+            <div class="portfolio-summary">
+                <div class="summary-item">
+                    <span class="label">Portfolio Value</span>
+                    <span id="portfolio-value" class="value">$100,000.00</span>
+                </div>
+                <div class="summary-item">
+                    <span class="label">Available Cash</span>
+                    <span id="cash-value" class="value">$100,000.00</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="market-overview">
+                <table class="stock-table">
+                    <thead>
+                        <tr><th>Symbol</th><th>Name</th><th>Price</th><th>Change</th></tr>
+                    </thead>
+                    <tbody id="stock-market-list"></tbody>
+                </table>
+            </div>
+            <div class="chart-container">
+                <canvas id="stock-chart"></canvas>
+            </div>
+            <div class="news-ticker">
+                <span id="news-item" class="news-item">Market is stable. Tech stocks show promising growth.</span>
+            </div>
+        </main>
+
+        <aside class="sidebar">
+            <div class="panel" style="flex-grow: 1; display: flex; flex-direction: column;">
+                <h2>My Portfolio</h2>
+                <ul id="portfolio-list" class="portfolio-list">
+                    <!-- Portfolio items will be added here -->
+                </ul>
+            </div>
+            <div id="trade-panel" class="panel trade-panel">
+                <h2 id="trade-symbol">Select a Stock</h2>
+                <form id="trade-form" class="trade-form" action="javascript:void(0);">
+                    <div class="form-group">
+                        <label for="quantity">Quantity</label>
+                        <input type="number" id="quantity" min="1" placeholder="0">
+                    </div>
+                    <div class="trade-actions">
+                        <button id="buy-btn" class="btn buy-btn" disabled>Buy</button>
+                        <button id="sell-btn" class="btn sell-btn" disabled>Sell</button>
+                    </div>
+                </form>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- INITIAL DATA & STATE ---
+            let stocks = [
+                { symbol: 'TECH', name: 'Innovate Corp', price: 150.00, history: [150], sector: 'tech' },
+                { symbol: 'HLTH', name: 'LifeCare Inc.', price: 280.50, history: [280.50], sector: 'health' },
+                { symbol: 'FIN', name: 'Global Bank', price: 85.25, history: [85.25], sector: 'finance' },
+                { symbol: 'NRG', name: 'Future Energy', price: 120.75, history: [120.75], sector: 'energy' }
+            ];
+            let newsFeed = [
+                { text: "Innovate Corp (TECH) unveils groundbreaking AI chip.", effect: { sector: 'tech', impact: 1.1 } },
+                { text: "Global Bank (FIN) faces new regulations, investors are cautious.", effect: { sector: 'finance', impact: 0.95 } },
+                { text: "LifeCare Inc. (HLTH) announces successful trial for new drug.", effect: { sector: 'health', impact: 1.15 } },
+                { text: "Future Energy (NRG) reports lower than expected profits.", effect: { sector: 'energy', impact: 0.9 } }
+            ];
+            let portfolio = {
+                cash: 100000,
+                holdings: {}
+            };
+            let activeStock = null;
+            let chart;
+
+            // --- DOM REFERENCES ---
+            const elements = {};
+            document.querySelectorAll('[id]').forEach(el => elements[el.id.replace(/-[a-z]/g, m => m[1].toUpperCase())] = el);
+
+            // --- CORE SIMULATION ENGINE ---
+            function updateMarket() {
+                stocks.forEach(stock => {
+                    const volatility = 0.02; // 2% max change per tick
+                    const changePercent = (Math.random() * volatility * 2) - volatility;
+                    let newPrice = stock.price * (1 + changePercent);
+                    newPrice = Math.max(newPrice, 1.00); // Floor price
+                    stock.price = newPrice;
+                    stock.history.push(newPrice);
+                    if (stock.history.length > 30) stock.history.shift(); // Keep history to 30 points
+                });
+                renderMarketList();
+                renderPortfolio();
+                if (activeStock) {
+                    updateChart(activeStock);
+                    updateTradePanel(activeStock);
+                }
+            }
+            
+            function triggerNewsEvent() {
+                const event = newsFeed[Math.floor(Math.random() * newsFeed.length)];
+                elements.newsItem.textContent = event.text;
+                stocks.forEach(stock => {
+                    if (stock.sector === event.effect.sector) {
+                        stock.price *= event.effect.impact;
+                    }
+                });
+            }
+
+            // --- RENDER FUNCTIONS ---
+            function renderMarketList() {
+                let html = '';
+                stocks.forEach(stock => {
+                    const change = stock.price - stock.history[stock.history.length - 2] || 0;
+                    const changeClass = change >= 0 ? 'up' : 'down';
+                    const activeClass = activeStock?.symbol === stock.symbol ? 'active' : '';
+                    html += `
+                        <tr data-symbol="${stock.symbol}" class="${activeClass}">
+                            <td><strong>${stock.symbol}</strong></td>
+                            <td>${stock.name}</td>
+                            <td class="stock-price">$${stock.price.toFixed(2)}</td>
+                            <td class="price-change ${changeClass}">${change.toFixed(2)}</td>
+                        </tr>
+                    `;
+                });
+                elements.stockMarketList.innerHTML = html;
+            }
+
+            function renderPortfolio() {
+                let html = '';
+                let totalHoldingsValue = 0;
+                for (const symbol in portfolio.holdings) {
+                    const holding = portfolio.holdings[symbol];
+                    const stock = stocks.find(s => s.symbol === symbol);
+                    const value = holding.shares * stock.price;
+                    totalHoldingsValue += value;
+                    html += `
+                        <li class="portfolio-item">
+                            <div class="item-info">
+                                <span class="symbol">${symbol}</span>
+                                <span class="shares">${holding.shares} shares</span>
+                            </div>
+                            <div class="item-value">
+                                <span>$${value.toFixed(2)}</span>
+                            </div>
+                        </li>
+                    `;
+                }
+                elements.portfolioList.innerHTML = html || '<li>Your portfolio is empty.</li>';
+                const portfolioValue = portfolio.cash + totalHoldingsValue;
+                elements.portfolioValue.textContent = `$${portfolioValue.toFixed(2)}`;
+                elements.cashValue.textContent = `$${portfolio.cash.toFixed(2)}`;
+            }
+
+            function initChart() {
+                const ctx = elements.stockChart.getContext('2d');
+                chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            label: 'Stock Price',
+                            data: [],
+                            borderColor: 'var(--accent-color)',
+                            backgroundColor: 'rgba(66, 133, 244, 0.1)',
+                            fill: true,
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: { y: { ticks: { callback: value => '$' + value.toFixed(2) } } }
+                    }
+                });
+            }
+
+            function updateChart(stock) {
+                chart.data.labels = Array(stock.history.length).fill('');
+                chart.data.datasets[0].data = stock.history;
+                chart.data.datasets[0].label = `${stock.symbol} Price`;
+                chart.update();
+            }
+
+            function updateTradePanel(stock) {
+                elements.tradeSymbol.textContent = `Trade ${stock.symbol}`;
+                const quantity = parseInt(elements.quantity.value, 10);
+                const cost = quantity * stock.price;
+                elements.buyBtn.disabled = !quantity || cost > portfolio.cash;
+                elements.sellBtn.disabled = !quantity || !portfolio.holdings[stock.symbol] || quantity > portfolio.holdings[stock.symbol].shares;
+            }
+            
+            // --- TRADE LOGIC ---
+            function buyStock() {
+                const quantity = parseInt(elements.quantity.value, 10);
+                if (!activeStock || !quantity || quantity <= 0) return;
+                
+                const cost = activeStock.price * quantity;
+                if (cost > portfolio.cash) {
+                    alert("Not enough cash!");
+                    return;
+                }
+                
+                portfolio.cash -= cost;
+                if (!portfolio.holdings[activeStock.symbol]) {
+                    portfolio.holdings[activeStock.symbol] = { shares: 0 };
+                }
+                portfolio.holdings[activeStock.symbol].shares += quantity;
+                
+                savePortfolio();
+                renderPortfolio();
+                updateTradePanel(activeStock);
+            }
+            
+            function sellStock() {
+                const quantity = parseInt(elements.quantity.value, 10);
+                if (!activeStock || !quantity || quantity <= 0) return;
+                
+                const holding = portfolio.holdings[activeStock.symbol];
+                if (!holding || quantity > holding.shares) {
+                    alert("You don't own enough shares!");
+                    return;
+                }
+                
+                const earnings = activeStock.price * quantity;
+                portfolio.cash += earnings;
+                holding.shares -= quantity;
+                if (holding.shares === 0) {
+                    delete portfolio.holdings[activeStock.symbol];
+                }
+                
+                savePortfolio();
+                renderPortfolio();
+                updateTradePanel(activeStock);
+            }
+
+            // --- LOCAL STORAGE ---
+            function savePortfolio() {
+                localStorage.setItem('stock-sim-portfolio', JSON.stringify(portfolio));
+            }
+            
+            function loadPortfolio() {
+                const saved = localStorage.getItem('stock-sim-portfolio');
+                if (saved) {
+                    portfolio = JSON.parse(saved);
+                }
+            }
+
+            // --- EVENT LISTENERS ---
+            elements.stockMarketList.addEventListener('click', (e) => {
+                const row = e.target.closest('tr');
+                if (row) {
+                    activeStock = stocks.find(s => s.symbol === row.dataset.symbol);
+                    renderMarketList();
+                    updateChart(activeStock);
+                    updateTradePanel(activeStock);
+                }
+            });
+            
+            elements.quantity.addEventListener('input', () => activeStock && updateTradePanel(activeStock));
+            elements.buyBtn.addEventListener('click', buyStock);
+            elements.sellBtn.addEventListener('click', sellStock);
+
+            // --- INITIALIZATION ---
+            function init() {
+                loadPortfolio();
+                renderMarketList();
+                renderPortfolio();
+                initChart();
+                
+                // Start the simulation
+                setInterval(updateMarket, 2000); // Update every 2 seconds
+                setInterval(triggerNewsEvent, 15000); // News every 15 seconds
+            }
+
+            init();
+        });
+    </script>
+</body>
+</html>
