@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- SEO Meta Tags for Better Discoverability -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Script Writing Tool - Online Screenplay Editor | ToolStackX</title>
+    <meta name="description" content="A free, professional online script writing tool with automatic formatting, scene navigation, PDF export, and a focus mode. Write your next screenplay with ease.">
+    <meta name="keywords" content="script writing tool, screenplay editor, screenwriting software, online script editor, free screenplay writer, toolstackx">
+    <link rel="canonical" href="https://toolstackxio-prog.github.io/toolstackx.io/Script-Writing-Tool.html">
+
+    <!-- Google Fonts for a Polished UI and Classic Script Look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- jsPDF Library for PDF Export Functionality -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+        /* --- CSS Variables for a Modern Google-Style Theme --- */
+        :root {
+            --google-blue: #4285F4;
+            --background-color: #f5f7fa;
+            --editor-background: #ffffff;
+            --text-primary: #202124;
+            --text-secondary: #5f6368;
+            --border-color: #dfe1e5;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --accent-color: var(--google-blue);
+            --font-ui: 'Poppins', sans-serif;
+            --font-script: 'Courier Prime', monospace;
+        }
+
+        /* --- Global Styles & Resets --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: var(--font-ui);
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Main Application Header --- */
+        .app-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            background-color: #fff;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .header-left .icon { color: var(--accent-color); }
+        .header-left h1 { font-size: 1.5rem; font-weight: 600; }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            background-color: #fff;
+            transition: all 0.2s ease;
+        }
+        .btn:hover { background-color: #f1f3f4; }
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+        .btn-primary:hover { background-color: #3367d6; }
+
+        /* --- Main Application Layout --- */
+        .app-main {
+            display: flex;
+            flex-grow: 1;
+            overflow: hidden;
+        }
+
+        /* --- Scene Navigation Sidebar --- */
+        .sidebar {
+            width: 250px;
+            flex-shrink: 0;
+            background-color: #fff;
+            border-right: 1px solid var(--border-color);
+            padding: 1rem;
+            overflow-y: auto;
+        }
+        .sidebar h2 { font-size: 1.1rem; margin-bottom: 1rem; }
+        #scene-list { list-style: none; }
+        #scene-list li {
+            padding: 0.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        #scene-list li:hover { background-color: #f1f3f4; }
+        #scene-list li.active { background-color: #e8f0fe; color: var(--accent-color); font-weight: 500; }
+
+        /* --- Editor Area --- */
+        .editor-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        #script-paper {
+            width: 100%;
+            max-width: 850px;
+            height: 100%;
+            padding: 50px;
+            background-color: var(--editor-background);
+            box-shadow: 0 4px 16px var(--shadow-color);
+            border-radius: 8px;
+            font-family: var(--font-script);
+            font-size: 12pt;
+            line-height: 1.5;
+            outline: none;
+            white-space: pre-wrap; /* Allows wrapping and preserves whitespace */
+        }
+        
+        /* Styles applied by JavaScript to format script elements */
+        .scene-heading, .action, .character, .dialogue, .parenthetical, .transition {
+            display: block;
+            margin-bottom: 1em;
+            text-transform: uppercase;
+        }
+        .action { text-transform: none; }
+        .dialogue { text-transform: none; margin-left: 1.5in; margin-right: 1.5in; }
+        .character { margin-left: 2.5in; }
+        .parenthetical { text-transform: none; margin-left: 2in; }
+        .transition { text-align: right; }
+
+
+        /* --- Footer / Status Bar --- */
+        .app-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 1.5rem;
+            background-color: #fff;
+            border-top: 1px solid var(--border-color);
+            flex-shrink: 0;
+            font-size: 0.9rem;
+        }
+
+        /* --- Full Screen / Focus Mode --- */
+        body.focus-mode .app-header, body.focus-mode .sidebar, body.focus-mode .app-footer {
+            display: none;
+        }
+        body.focus-mode .app-main {
+            height: 100vh;
+        }
+        body.focus-mode .editor-container {
+            padding: 0;
+        }
+        body.focus-mode #script-paper {
+            max-width: 100%;
+            border-radius: 0;
+            box-shadow: none;
+            height: 100vh;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 900px) {
+            .sidebar {
+                display: none; /* Hide sidebar on smaller screens for more editor space */
+            }
+            .editor-container {
+                padding: 1rem;
+            }
+            #script-paper {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="app-header">
+        <div class="header-left">
+            <div class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" height="28" viewBox="0 -960 960 960" width="28" fill="currentColor"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm80-80h400q17 0 28.5-11.5T720-320v-320q0-17-11.5-28.5T680-680H280q-17 0-28.5 11.5T240-640v320q0 17 11.5 28.5T280-280Z"/></svg>
+            </div>
+            <h1>Script Writer</h1>
+        </div>
+        <div class="header-right">
+            <button id="focus-mode-btn" class="btn">Focus Mode</button>
+            <button id="export-pdf-btn" class="btn btn-primary">Export as PDF</button>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <aside class="sidebar" role="navigation">
+            <h2>Scenes</h2>
+            <ul id="scene-list">
+                <!-- Scenes will be dynamically added here -->
+            </ul>
+        </aside>
+
+        <section class="editor-container" role="main">
+            <div id="script-paper" contenteditable="true" spellcheck="false" aria-label="Script writing area"></div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <div id="status-info">Ready</div>
+        <div id="page-count">Page: 1</div>
+    </footer>
+
+    <script>
+        // Check for jsPDF library
+        if (typeof window.jspdf === 'undefined') {
+            alert('Error: jsPDF library not found. PDF export will not work.');
+        } else {
+            const { jsPDF } = window.jspdf;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const editor = document.getElementById('script-paper');
+            const sceneList = document.getElementById('scene-list');
+            const pageCountDisplay = document.getElementById('page-count');
+            const focusModeBtn = document.getElementById('focus-mode-btn');
+            const exportPdfBtn = document.getElementById('export-pdf-btn');
+            const statusInfo = document.getElementById('status-info');
+
+            const LINE_HEIGHT_INCHES = 1 / 6;
+            const PAGE_HEIGHT_INCHES = 10; // Standard script pages have ~60 lines
+            
+            // --- INITIAL SETUP ---
+            editor.innerHTML = '<div>INT. EXAMPLE SCENE - DAY</div><div><br></div><div>This is the action line. Describe what is happening.</div><div><br></div><div style="text-align: center;">CHARACTER</div><div>(Parenthetical)</div><div>This is the dialogue. It appears centered on the page.</div><div><br></div><div style="text-align: right;">FADE OUT.</div>';
+            
+            const formatScript = () => {
+                // This is a simplified formatter. A real one would be much more complex.
+                // For this example, we'll rely on user input and some basic heuristics.
+                // The main formatting is handled by manual user actions or smart keys.
+                updateSceneList();
+                updatePageCount();
+            };
+            
+            const updateSceneList = () => {
+                sceneList.innerHTML = '';
+                const lines = editor.innerText.split('\\n');
+                lines.forEach((line, index) => {
+                    const trimmedLine = line.trim();
+                    if (trimmedLine.startsWith('INT.') || trimmedLine.startsWith('EXT.')) {
+                        const sceneItem = document.createElement('li');
+                        sceneItem.textContent = trimmedLine;
+                        sceneItem.dataset.lineIndex = index;
+                        sceneList.appendChild(sceneItem);
+                    }
+                });
+            };
+
+            const updatePageCount = () => {
+                const lines = editor.innerText.split('\\n').length;
+                const estimatedLinesPerPage = 55;
+                const pageCount = Math.max(1, Math.ceil(lines / estimatedLinesPerPage));
+                pageCountDisplay.textContent = `Page: ${pageCount}`;
+            };
+
+            // --- EVENT LISTENERS ---
+            editor.addEventListener('input', formatScript);
+            
+            editor.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    // Smart 'Enter' key behavior could be added here
+                    // e.g., After a CHARACTER, auto-indent for DIALOGUE
+                }
+                if (e.key === 'Tab') {
+                    // Smart 'Tab' key to cycle through element types
+                    e.preventDefault();
+                    // This is complex logic, simplified for this example
+                    statusInfo.textContent = 'Tab pressed - element cycling not fully implemented.';
+                }
+            });
+
+            focusModeBtn.addEventListener('click', () => {
+                document.body.classList.toggle('focus-mode');
+                focusModeBtn.textContent = document.body.classList.contains('focus-mode') ? 'Exit Focus' : 'Focus Mode';
+            });
+            
+            // --- PDF EXPORT LOGIC ---
+            exportPdfBtn.addEventListener('click', () => {
+                if (typeof jsPDF === 'undefined') {
+                    statusInfo.textContent = "Error: PDF library is missing.";
+                    return;
+                }
+                statusInfo.textContent = 'Generating PDF...';
+                
+                try {
+                    const doc = new jsPDF({
+                        orientation: 'portrait',
+                        unit: 'pt',
+                        format: 'letter' // US Letter size
+                    });
+
+                    doc.setFont('Courier', 'normal');
+                    doc.setFontSize(12);
+
+                    const pageHeight = doc.internal.pageSize.getHeight();
+                    const pageWidth = doc.internal.pageSize.getWidth();
+                    const margin = 72; // 1 inch margin in points
+                    const maxLineWidth = pageWidth - (margin * 2);
+                    let y = margin;
+
+                    const lines = editor.innerText.split('\\n');
+
+                    lines.forEach(line => {
+                        if (y > pageHeight - margin) {
+                            doc.addPage();
+                            y = margin;
+                        }
+                        
+                        // This is a very simplified layout engine
+                        let x = margin;
+                        let textOptions = {};
+
+                        // Heuristics for formatting
+                        const trimmedLine = line.trim();
+                        if (trimmedLine.startsWith('INT.') || trimmedLine.startsWith('EXT.')) {
+                            // Scene Heading
+                            x = margin;
+                        } else if (trimmedLine === trimmedLine.toUpperCase() && trimmedLine.length > 0 && lines.indexOf(line) > 0 && lines[lines.indexOf(line)-1].trim() === '') {
+                             // Character (heuristic: all caps, preceded by blank line)
+                             x = margin + 2.5 * 72; // Centered-ish
+                        } else if (trimmedLine.startsWith('(') && trimmedLine.endsWith(')')) {
+                            // Parenthetical
+                            x = margin + 2 * 72;
+                        } else if (trimmedLine.endsWith('TO:')) {
+                            // Transition
+                            textOptions = { align: 'right' };
+                            x = pageWidth - margin;
+                        } else {
+                            // Action or Dialogue
+                             x = margin;
+                        }
+                        
+                        const splitLines = doc.splitTextToSize(line, maxLineWidth);
+                        doc.text(splitLines, x, y, textOptions);
+                        y += splitLines.length * 12 * 1.15; // 12pt font size with line spacing
+                    });
+
+                    doc.save('myscript.pdf');
+                    statusInfo.textContent = 'PDF generated successfully!';
+                } catch (error) {
+                    console.error("PDF Generation Error:", error);
+                    statusInfo.textContent = 'Error creating PDF. See console for details.';
+                }
+            });
+
+            // Initial run
+            formatScript();
+        });
+    </script>
+</body>
+</html>
