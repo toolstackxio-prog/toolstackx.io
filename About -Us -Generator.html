@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us Generator | ToolStackX</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        :root {
+            --primary-blue: #4285F4;
+            --primary-red: #EA4335;
+            --primary-yellow: #FBBC05;
+            --primary-green: #34A853;
+            --light-bg: #ffffff;
+            --card-bg: #f8f9fa;
+            --text-primary: #202124;
+            --text-secondary: #5f6368;
+            --border-color: #dadce0;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-blue), #5E97F6);
+            padding: 20px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo i {
+            font-size: 28px;
+            color: white;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: white;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 40px 0 30px;
+        }
+
+        .hero h2 {
+            font-size: 36px;
+            margin-bottom: 16px;
+            background: linear-gradient(to right, var(--primary-blue), var(--primary-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .generator-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .generator-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .generator-card, .instructions-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+        }
+
+        .card-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary-blue);
+        }
+
+        .card-title i {
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: white;
+            color: var(--text-primary);
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+            font-family: inherit;
+            line-height: 1.6;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+        }
+
+        .team-members {
+            margin-top: 20px;
+        }
+
+        .team-member {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        .team-member-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .remove-member {
+            background: none;
+            border: none;
+            color: var(--primary-red);
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            border: none;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #3367D6;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background-color: var(--primary-green);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #2d9248;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .btn-outline:hover {
+            background-color: #f1f3f4;
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
+        .preview-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            min-height: 500px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .preview-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary-blue);
+        }
+
+        .preview-company {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+        }
+
+        .preview-tagline {
+            font-size: 18px;
+            color: var(--text-secondary);
+        }
+
+        .preview-section {
+            margin-bottom: 25px;
+        }
+
+        .preview-section h3 {
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .preview-team {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .team-member-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .member-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .member-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .member-role {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .instructions-list {
+            list-style-type: none;
+        }
+
+        .instructions-list li {
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .instructions-list li:before {
+            content: counter(step);
+            counter-increment: step;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background-color: var(--primary-blue);
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .instructions-list {
+            counter-reset: step;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .feature-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid var(--border-color);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 15px;
+            color: var(--primary-blue);
+        }
+
+        .feature-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .feature-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: var(--text-secondary);
+            font-size: 14px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav ul {
+                gap: 15px;
+            }
+
+            .hero h2 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fab fa-google"></i>
+                    <h1>About Us Generator</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Generator</a></li>
+                        <li><a href="#">Templates</a></li>
+                        <li><a href="#">Tools</a></li>
+                        <li><a href="#">About</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h2>Professional About Us Page Generator</h2>
+            <p>Create a beautiful, professional About Us page for your website in minutes. No coding required.</p>
+        </section>
+
+        <section class="generator-container">
+            <div class="generator-card">
+                <h3 class="card-title"><i class="fas fa-edit"></i> Company Information</h3>
+                
+                <div class="form-group">
+                    <label for="companyName">Company Name</label>
+                    <input type="text" id="companyName" class="form-control" placeholder="Enter your company name" value="ToolStackX">
+                </div>
+                
+                <div class="form-group">
+                    <label for="companyTagline">Company Tagline</label>
+                    <input type="text" id="companyTagline" class="form-control" placeholder="Enter your company tagline" value="Innovative Tools for Modern Problems">
+                </div>
+                
+                <div class="form-group">
+                    <label for="companyDescription">Company Description</label>
+                    <textarea id="companyDescription" class="form-control" placeholder="Describe what your company does">ToolStackX is a leading provider of innovative online tools designed to simplify everyday tasks. Our mission is to empower individuals and businesses with easy-to-use, powerful solutions that save time and enhance productivity.</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="companyMission">Mission Statement</label>
+                    <textarea id="companyMission" class="form-control" placeholder="Describe your company mission">Our mission is to create accessible, user-friendly tools that solve real-world problems. We believe in innovation, quality, and making technology work for everyone.</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="companyValues">Company Values</label>
+                    <textarea id="companyValues" class="form-control" placeholder="List your company values">• Innovation: We constantly explore new ideas and technologies
+• Quality: We deliver reliable, high-performance tools
+• Accessibility: We make our tools available to everyone
+• Customer Focus: We listen to our users and improve based on feedback</textarea>
+                </div>
+                
+                <h3 class="card-title"><i class="fas fa-users"></i> Team Members</h3>
+                
+                <div class="team-members" id="teamMembers">
+                    <!-- Team members will be added here -->
+                    <div class="team-member">
+                        <div class="team-member-header">
+                            <h4>Team Member #1</h4>
+                            <button class="remove-member"><i class="fas fa-times"></i></button>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control member-name" placeholder="Full Name" value="Sarah Johnson">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control member-role" placeholder="Role/Position" value="CEO & Founder">
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control member-bio" placeholder="Bio/Description">Sarah founded ToolStackX with a vision to create tools that make technology accessible to everyone. With 10+ years in software development, she leads our innovation efforts.</textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="team-member">
+                        <div class="team-member-header">
+                            <h4>Team Member #2</h4>
+                            <button class="remove-member"><i class="fas fa-times"></i></button>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control member-name" placeholder="Full Name" value="Michael Chen">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control member-role" placeholder="Role/Position" value="Lead Developer">
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control member-bio" placeholder="Bio/Description">Michael specializes in creating intuitive user experiences. He ensures all our tools are both powerful and easy to use.</textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <button class="btn btn-outline btn-small" id="addMemberBtn">
+                        <i class="fas fa-plus"></i>
+                        Add Team Member
+                    </button>
+                </div>
+                
+                <div class="form-group">
+                    <button class="btn btn-primary" id="generateBtn">
+                        <i class="fas fa-bolt"></i>
+                        Generate About Us Page
+                    </button>
+                </div>
+                
+                <div class="action-buttons" id="actionButtons" style="display: none;">
+                    <button class="btn btn-success" id="copyCodeBtn">
+                        <i class="fas fa-copy"></i>
+                        Copy HTML Code
+                    </button>
+                    <button class="btn btn-outline" id="downloadBtn">
+                        <i class="fas fa-download"></i>
+                        Download as HTML
+                    </button>
+                </div>
+            </div>
+            
+            <div class="instructions-card">
+                <h3 class="card-title"><i class="fas fa-info-circle"></i> How to Use</h3>
+                
+                <ol class="instructions-list">
+                    <li>Fill in your company information in the form on the left</li>
+                    <li>Add team members with their names, roles, and descriptions</li>
+                    <li>Click "Generate About Us Page" to create your page</li>
+                    <li>Preview your About Us page in real-time</li>
+                    <li>Copy the HTML code or download it as a file</li>
+                    <li>Add the generated code to your website</li>
+                </ol>
+                
+                <div class="preview-container" id="previewContainer">
+                    <div class="preview-header">
+                        <div class="preview-company" id="previewCompany">ToolStackX</div>
+                        <div class="preview-tagline" id="previewTagline">Innovative Tools for Modern Problems</div>
+                    </div>
+                    
+                    <div class="preview-section">
+                        <h3><i class="fas fa-building"></i> About Our Company</h3>
+                        <p id="previewDescription">ToolStackX is a leading provider of innovative online tools designed to simplify everyday tasks. Our mission is to empower individuals and businesses with easy-to-use, powerful solutions that save time and enhance productivity.</p>
+                    </div>
+                    
+                    <div class="preview-section">
+                        <h3><i class="fas fa-bullseye"></i> Our Mission</h3>
+                        <p id="previewMission">Our mission is to create accessible, user-friendly tools that solve real-world problems. We believe in innovation, quality, and making technology work for everyone.</p>
+                    </div>
+                    
+                    <div class="preview-section">
+                        <h3><i class="fas fa-star"></i> Our Values</h3>
+                        <div id="previewValues">
+                            • Innovation: We constantly explore new ideas and technologies<br>
+                            • Quality: We deliver reliable, high-performance tools<br>
+                            • Accessibility: We make our tools available to everyone<br>
+                            • Customer Focus: We listen to our users and improve based on feedback
+                        </div>
+                    </div>
+                    
+                    <div class="preview-section">
+                        <h3><i class="fas fa-users"></i> Our Team</h3>
+                        <div class="preview-team" id="previewTeam">
+                            <div class="team-member-card">
+                                <div class="member-avatar">SJ</div>
+                                <div class="member-name">Sarah Johnson</div>
+                                <div class="member-role">CEO & Founder</div>
+                                <p class="member-bio">Sarah founded ToolStackX with a vision to create tools that make technology accessible to everyone. With 10+ years in software development, she leads our innovation efforts.</p>
+                            </div>
+                            
+                            <div class="team-member-card">
+                                <div class="member-avatar">MC</div>
+                                <div class="member-name">Michael Chen</div>
+                                <div class="member-role">Lead Developer</div>
+                                <p class="member-bio">Michael specializes in creating intuitive user experiences. He ensures all our tools are both powerful and easy to use.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-paint-brush"></i>
+                        </div>
+                        <div class="feature-title">Professional Design</div>
+                        <div class="feature-description">Create beautiful, modern About Us pages that impress visitors</div>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="feature-title">Clean Code</div>
+                        <div class="feature-description">Get clean, well-structured HTML code ready for your website</div>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="feature-title">Save Time</div>
+                        <div class="feature-description">Create professional pages in minutes instead of hours</div>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="feature-title">Responsive</div>
+                        <div class="feature-description">Pages look great on all devices - desktop, tablet, and mobile</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="container">
+        <p>© 2025 ToolStackX About Us Generator. Create professional About Us pages for your website.</p>
+        <p>This tool generates HTML code that you can customize further to match your website's design.</p>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const companyName = document.getElementById('companyName');
+        const companyTagline = document.getElementById('companyTagline');
+        const companyDescription = document.getElementById('companyDescription');
+        const companyMission = document.getElementById('companyMission');
+        const companyValues = document.getElementById('companyValues');
+        const teamMembers = document.getElementById('teamMembers');
+        const addMemberBtn = document.getElementById('addMemberBtn');
+        const generateBtn = document.getElementById('generateBtn');
+        const actionButtons = document.getElementById('actionButtons');
+        const copyCodeBtn = document.getElementById('copyCodeBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        
+        // Preview elements
+        const previewCompany = document.getElementById('previewCompany');
+        const previewTagline = document.getElementById('previewTagline');
+        const previewDescription = document.getElementById('previewDescription');
+        const previewMission = document.getElementById('previewMission');
+        const previewValues = document.getElementById('previewValues');
+        const previewTeam = document.getElementById('previewTeam');
+        
+        // Add team member
+        addMemberBtn.addEventListener('click', function() {
+            const memberCount = teamMembers.children.length + 1;
+            const memberHTML = `
+                <div class="team-member">
+                    <div class="team-member-header">
+                        <h4>Team Member #${memberCount}</h4>
+                        <button class="remove-member"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control member-name" placeholder="Full Name">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control member-role" placeholder="Role/Position">
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control member-bio" placeholder="Bio/Description"></textarea>
+                    </div>
+                </div>
+            `;
+            teamMembers.insertAdjacentHTML('beforeend', memberHTML);
+            
+            // Add event listener to the new remove button
+            const newRemoveBtn = teamMembers.lastElementChild.querySelector('.remove-member');
+            newRemoveBtn.addEventListener('click', function() {
+                this.closest('.team-member').remove();
+            });
+        });
+        
+        // Remove team member event delegation
+        teamMembers.addEventListener('click', function(e) {
+            if (e.target.closest('.remove-member')) {
+                e.target.closest('.team-member').remove();
+            }
+        });
+        
+        // Generate About Us page
+        generateBtn.addEventListener('click', function() {
+            // Update preview with form data
+            previewCompany.textContent = companyName.value || 'Your Company';
+            previewTagline.textContent = companyTagline.value || 'Your Company Tagline';
+            previewDescription.textContent = companyDescription.value || 'Describe what your company does here.';
+            previewMission.textContent = companyMission.value || 'Describe your company mission here.';
+            previewValues.innerHTML = companyValues.value.replace(/\n/g, '<br>') || '• List your company values here';
+            
+            // Update team members in preview
+            previewTeam.innerHTML = '';
+            const memberElements = teamMembers.querySelectorAll('.team-member');
+            
+            memberElements.forEach(member => {
+                const name = member.querySelector('.member-name').value || 'Team Member';
+                const role = member.querySelector('.member-role').value || 'Role';
+                const bio = member.querySelector('.member-bio').value || 'Team member description.';
+                const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
+                
+                const memberHTML = `
+                    <div class="team-member-card">
+                        <div class="member-avatar">${initials}</div>
+                        <div class="member-name">${name}</div>
+                        <div class="member-role">${role}</div>
+                        <p class="member-bio">${bio}</p>
+                    </div>
+                `;
+                previewTeam.insertAdjacentHTML('beforeend', memberHTML);
+            });
+            
+            // Show action buttons
+            actionButtons.style.display = 'flex';
+            
+            // Scroll to preview
+            document.getElementById('previewContainer').scrollIntoView({ behavior: 'smooth' });
+            
+            // Show confirmation
+            const originalText = generateBtn.innerHTML;
+            generateBtn.innerHTML = '<i class="fas fa-check"></i> Page Generated!';
+            
+            setTimeout(() => {
+                generateBtn.innerHTML = originalText;
+            }, 3000);
+        });
+        
+        // Copy HTML code
+        copyCodeBtn.addEventListener('click', function() {
+            // Generate the HTML code for the About Us page
+            const htmlCode = generateHTMLCode();
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(htmlCode).then(() => {
+                const originalText = copyCodeBtn.innerHTML;
+                copyCodeBtn.innerHTML = '<i class="fas fa-check"></i> Code Copied!';
+                
+                setTimeout(() => {
+                    copyCodeBtn.innerHTML = originalText;
+                }, 2000);
+            });
+        });
+        
+        // Download HTML file
+        downloadBtn.addEventListener('click', function() {
+            const htmlCode = generateHTMLCode();
+            const blob = new Blob([htmlCode], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'about-us.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            const originalText = downloadBtn.innerHTML;
+            downloadBtn.innerHTML = '<i class="fas fa-check"></i> Downloaded!';
+            
+            setTimeout(() => {
+                downloadBtn.innerHTML = originalText;
+            }, 2000);
+        });
+        
+        // Function to generate HTML code
+        function generateHTMLCode() {
+            const company = companyName.value || 'Your Company';
+            const tagline = companyTagline.value || 'Your Company Tagline';
+            const description = companyDescription.value || 'Describe what your company does here.';
+            const mission = companyMission.value || 'Describe your company mission here.';
+            const values = companyValues.value || '• List your company values here';
+            
+            let teamHTML = '';
+            const memberElements = teamMembers.querySelectorAll('.team-member');
+            
+            memberElements.forEach(member => {
+                const name = member.querySelector('.member-name').value || 'Team Member';
+                const role = member.querySelector('.member-role').value || 'Role';
+                const bio = member.querySelector('.member-bio').value || 'Team member description.';
+                const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
+                
+                teamHTML += `
+                <div class="team-member-card">
+                    <div class="member-avatar">${initials}</div>
+                    <div class="member-name">${name}</div>
+                    <div class="member-role">${role}</div>
+                    <p class="member-bio">${bio}</p>
+                </div>
+                `;
+            });
+            
+            return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - ${company}</title>
+    <style>
+        /* Add your custom CSS here */
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #202124;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .preview-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #4285F4;
+        }
+        .preview-company {
+            font-size: 32px;
+            font-weight: 700;
+            color: #4285F4;
+            margin-bottom: 10px;
+        }
+        .preview-tagline {
+            font-size: 18px;
+            color: #5f6368;
+        }
+        .preview-section {
+            margin-bottom: 25px;
+        }
+        .preview-section h3 {
+            color: #4285F4;
+            margin-bottom: 15px;
+        }
+        .preview-team {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .team-member-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #dadce0;
+        }
+        .member-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4285F4, #34A853);
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+        }
+        .member-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .member-role {
+            color: #5f6368;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-header">
+        <div class="preview-company">${company}</div>
+        <div class="preview-tagline">${tagline}</div>
+    </div>
+    
+    <div class="preview-section">
+        <h3>About Our Company</h3>
+        <p>${description}</p>
+    </div>
+    
+    <div class="preview-section">
+        <h3>Our Mission</h3>
+        <p>${mission}</p>
+    </div>
+    
+    <div class="preview-section">
+        <h3>Our Values</h3>
+        <div>${values.replace(/\n/g, '<br>')}</div>
+    </div>
+    
+    <div class="preview-section">
+        <h3>Our Team</h3>
+        <div class="preview-team">
+            ${teamHTML}
+        </div>
+    </div>
+</body>
+</html>`;
+        }
+    </script>
+</body>
+</html>
