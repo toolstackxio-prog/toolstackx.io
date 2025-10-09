@@ -18,15 +18,15 @@
             --primary-red: #EA4335;
             --primary-yellow: #FBBC05;
             --primary-green: #34A853;
-            --dark-bg: #202124;
-            --card-bg: #292A2D;
-            --text-primary: #E8EAED;
-            --text-secondary: #9AA0A6;
-            --border-color: #5F6368;
+            --light-bg: #ffffff;
+            --card-bg: #f8f9fa;
+            --text-primary: #202124;
+            --text-secondary: #5f6368;
+            --border-color: #dadce0;
         }
 
         body {
-            background-color: var(--dark-bg);
+            background-color: var(--light-bg);
             color: var(--text-primary);
             line-height: 1.6;
             min-height: 100vh;
@@ -125,6 +125,7 @@
             border-radius: 12px;
             padding: 25px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
         }
 
         .card-title {
@@ -148,6 +149,7 @@
             display: block;
             margin-bottom: 8px;
             color: var(--text-secondary);
+            font-weight: 500;
         }
 
         .form-control {
@@ -155,7 +157,7 @@
             padding: 12px 15px;
             border-radius: 8px;
             border: 1px solid var(--border-color);
-            background-color: var(--dark-bg);
+            background-color: white;
             color: var(--text-primary);
             font-size: 16px;
             outline: none;
@@ -181,6 +183,7 @@
 
         .checkbox-group label {
             margin-bottom: 0;
+            color: var(--text-primary);
         }
 
         .btn {
@@ -223,7 +226,7 @@
         }
 
         .btn-outline:hover {
-            background-color: #333438;
+            background-color: #f1f3f4;
         }
 
         .result-container {
@@ -245,6 +248,7 @@
             font-weight: 600;
             word-break: break-all;
             margin-bottom: 15px;
+            color: var(--primary-blue);
         }
 
         .action-buttons {
@@ -293,16 +297,17 @@
         }
 
         .feature-card {
-            background-color: var(--card-bg);
+            background-color: white;
             border-radius: 8px;
             padding: 20px;
             text-align: center;
             transition: all 0.3s;
+            border: 1px solid var(--border-color);
         }
 
         .feature-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
 
         .feature-icon {
@@ -497,7 +502,7 @@
     </main>
 
     <footer class="container">
-        <p>© 2023 ToolStackX Email Generator. This tool generates email address formats for demonstration purposes.</p>
+        <p>© 2025 ToolStackX Email Generator. This tool generates email address formats for demonstration purposes.</p>
         <p>Generated emails are suggestions and availability is not guaranteed.</p>
     </footer>
 
