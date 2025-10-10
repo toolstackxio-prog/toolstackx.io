@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disclaimer Generator | ToolStackX - Create Professional Legal Disclaimers</title>
+    <meta name="description" content="Free online disclaimer generator tool. Create professional, legally-compliant disclaimers for your website, blog, or business in minutes.">
+    <meta name="keywords" content="disclaimer generator, legal disclaimer, website disclaimer, free disclaimer tool, privacy policy generator">
+    <meta name="author" content="ToolStackX">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        :root {
+            --primary-blue: #4285F4;
+            --primary-red: #EA4335;
+            --primary-yellow: #FBBC05;
+            --primary-green: #34A853;
+            --light-bg: #ffffff;
+            --card-bg: #f8f9fa;
+            --text-primary: #202124;
+            --text-secondary: #5f6368;
+            --border-color: #dadce0;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-blue), #5E97F6);
+            padding: 20px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo i {
+            font-size: 28px;
+            color: white;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: white;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 40px 0 30px;
+        }
+
+        .hero h2 {
+            font-size: 36px;
+            margin-bottom: 16px;
+            background: linear-gradient(to right, var(--primary-blue), var(--primary-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .generator-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .generator-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .generator-card, .instructions-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+        }
+
+        .card-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary-blue);
+        }
+
+        .card-title i {
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: white;
+            color: var(--text-primary);
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+            font-family: inherit;
+            line-height: 1.6;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .checkbox-group input {
+            width: 18px;
+            height: 18px;
+        }
+
+        .checkbox-group label {
+            margin-bottom: 0;
+            color: var(--text-primary);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            border: none;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #3367D6;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background-color: var(--primary-green);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #2d9248;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .btn-outline:hover {
+            background-color: #f1f3f4;
+        }
+
+        .preview-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            min-height: 500px;
+            max-height: 600px;
+            overflow-y: auto;
+            line-height: 1.7;
+        }
+
+        .preview-title {
+            text-align: center;
+            color: var(--primary-blue);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary-blue);
+        }
+
+        .preview-section {
+            margin-bottom: 20px;
+        }
+
+        .preview-section h3 {
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .instructions-list {
+            list-style-type: none;
+        }
+
+        .instructions-list li {
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .instructions-list li:before {
+            content: counter(step);
+            counter-increment: step;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background-color: var(--primary-blue);
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .instructions-list {
+            counter-reset: step;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .feature-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid var(--border-color);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 15px;
+            color: var(--primary-blue);
+        }
+
+        .feature-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .feature-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: var(--text-secondary);
+            font-size: 14px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 40px;
+        }
+
+        .seo-note {
+            background-color: rgba(66, 133, 244, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        .legal-warning {
+            background-color: rgba(234, 67, 53, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            border-left: 4px solid var(--primary-red);
+            color: #b71c1c;
+            font-weight: 500;
+        }
+
+        .legal-warning h4 {
+            color: #c62828;
+            margin-bottom: 8px;
+        }
+
+        .legal-warning p {
+            color: #b71c1c;
+        }
+
+        /* New styles for red and black sections */
+        .preview-legal-notice {
+            background-color: rgba(234, 67, 53, 0.05);
+            border: 1px solid var(--primary-red);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #b71c1c;
+            font-weight: 500;
+        }
+
+        .preview-legal-notice h3 {
+            color: #c62828 !important;
+            border-bottom: 1px solid #ffcdd2;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+        }
+
+        .preview-external-links {
+            background-color: rgba(0, 0, 0, 0.02);
+            border: 1px solid #000;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #000;
+        }
+
+        .preview-external-links h3 {
+            color: #000 !important;
+            border-bottom: 1px solid #666;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav ul {
+                gap: 15px;
+            }
+
+            .hero h2 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fab fa-google"></i>
+                    <h1>Disclaimer Generator</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Generator</a></li>
+                        <li><a href="#">Legal Tools</a></li>
+                        <li><a href="#">Resources</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h2>Professional Disclaimer Generator</h2>
+            <p>Create custom, legally-compliant disclaimers for your website, blog, or business in minutes. Protect yourself and your visitors with proper legal documentation.</p>
+        </section>
+
+        <section class="generator-container">
+            <div class="generator-card">
+                <h3 class="card-title"><i class="fas fa-edit"></i> Disclaimer Information</h3>
+                
+                <div class="form-group">
+                    <label for="websiteName">Website/Business Name</label>
+                    <input type="text" id="websiteName" class="form-control" placeholder="Enter your website or business name" value="ToolStackX">
+                </div>
+                
+                <div class="form-group">
+                    <label for="websiteUrl">Website URL</label>
+                    <input type="url" id="websiteUrl" class="form-control" placeholder="https://example.com" value="https://toolstackx.io">
+                </div>
+                
+                <div class="form-group">
+                    <label for="contactEmail">Contact Email</label>
+                    <input type="email" id="contactEmail" class="form-control" placeholder="contact@example.com" value="contact@toolstackx.io">
+                </div>
+                
+                <div class="form-group">
+                    <label>Disclaimer Types</label>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="typeGeneral" checked>
+                        <label for="typeGeneral">General Website Disclaimer</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="typeAffiliate">
+                        <label for="typeAffiliate">Affiliate Disclaimer</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="typeMedical">
+                        <label for="typeMedical">Medical/Health Disclaimer</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="typeFinancial">
+                        <label for="typeFinancial">Financial/Investment Disclaimer</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="typeLegal">
+                        <label for="typeLegal">Legal Advice Disclaimer</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="additionalInfo">Additional Information (Optional)</label>
+                    <textarea id="additionalInfo" class="form-control" placeholder="Add any specific details or custom clauses for your disclaimer"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="effectiveDate">Effective Date</label>
+                    <input type="date" id="effectiveDate" class="form-control" value="2025-01-01">
+                </div>
+                
+                <div class="form-group">
+                    <button class="btn btn-primary" id="generateBtn">
+                        <i class="fas fa-bolt"></i>
+                        Generate Disclaimer
+                    </button>
+                </div>
+                
+                <div class="action-buttons" id="actionButtons" style="display: none;">
+                    <button class="btn btn-success" id="copyCodeBtn">
+                        <i class="fas fa-copy"></i>
+                        Copy Disclaimer
+                    </button>
+                    <button class="btn btn-outline" id="downloadBtn">
+                        <i class="fas fa-download"></i>
+                        Download as HTML
+                    </button>
+                    <button class="btn btn-outline" id="resetBtn">
+                        <i class="fas fa-redo"></i>
+                        Start Over
+                    </button>
+                </div>
+
+                <div class="legal-warning">
+                    <h4><i class="fas fa-exclamation-triangle"></i> IMPORTANT LEGAL NOTICE</h4>
+                    <p>This tool generates template disclaimers. For specific legal advice, consult with a qualified attorney. We are not lawyers and this does not constitute legal advice. The generated content should be reviewed by a legal professional before use.</p>
+                </div>
+            </div>
+            
+            <div class="instructions-card">
+                <h3 class="card-title"><i class="fas fa-info-circle"></i> How to Use</h3>
+                
+                <ol class="instructions-list">
+                    <li>Fill in your website or business information</li>
+                    <li>Select the types of disclaimers you need</li>
+                    <li>Add any additional information or custom clauses</li>
+                    <li>Set the effective date for your disclaimer</li>
+                    <li>Click "Generate Disclaimer" to create your custom text</li>
+                    <li>Copy the disclaimer or download it as HTML</li>
+                    <li>Add the disclaimer to your website's footer or legal page</li>
+                </ol>
+                
+                <div class="preview-container" id="previewContainer">
+                    <h2 class="preview-title">Disclaimer</h2>
+                    
+                    <div class="preview-section">
+                        <h3>Website Disclaimer</h3>
+                        <p>The information provided by <strong id="previewWebsiteName">ToolStackX</strong> ("we," "us," or "our") on <strong id="previewWebsiteUrl">https://toolstackx.io</strong> (the "Site") is for general informational purposes only. All information on the Site is provided in good faith, however we make no representation or warranty of any kind, express or implied, regarding the accuracy, adequacy, validity, reliability, availability, or completeness of any information on the Site.</p>
+                    </div>
+                    
+                    <div class="preview-legal-notice" id="previewAffiliate" style="display: none;">
+                        <h3>Affiliate Disclaimer</h3>
+                        <p>The Site may contain links to affiliate websites, and we receive an affiliate commission for any purchases made by you on the affiliate website using such links. Our affiliates include [list any affiliate programs]. We are a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for us to earn advertising fees by linking to Amazon.com and affiliated websites.</p>
+                    </div>
+                    
+                    <div class="preview-legal-notice" id="previewMedical" style="display: none;">
+                        <h3>Medical/Health Disclaimer</h3>
+                        <p>The Site cannot and does not contain medical/health advice. The medical/health information is provided for general informational and educational purposes only and is not a substitute for professional advice. Accordingly, before taking any actions based upon such information, we encourage you to consult with the appropriate professionals. We do not provide any kind of medical/health advice. The use or reliance of any information contained on this site is solely at your own risk.</p>
+                    </div>
+                    
+                    <div class="preview-legal-notice" id="previewFinancial" style="display: none;">
+                        <h3>Financial Disclaimer</h3>
+                        <p>The Site cannot and does not contain financial advice. The financial information is provided for general informational and educational purposes only and is not a substitute for professional advice. Accordingly, before taking any actions based upon such information, we encourage you to consult with the appropriate professionals. We do not provide any kind of financial advice. The use or reliance of any information contained on this site is solely at your own risk.</p>
+                    </div>
+                    
+                    <div class="preview-legal-notice" id="previewLegal" style="display: none;">
+                        <h3>Legal Disclaimer</h3>
+                        <p>The Site cannot and does not contain legal advice. The information is provided for general informational and educational purposes only and is not a substitute for professional advice. Accordingly, before taking any actions based upon such information, we encourage you to consult with the appropriate professionals. We do not provide any kind of legal advice. The use or reliance of any information contained on this site is solely at your own risk.</p>
+                    </div>
+                    
+                    <div class="preview-external-links">
+                        <h3>External Links Disclaimer</h3>
+                        <p>The Site may contain (or you may be sent through the Site) links to other websites or content belonging to or originating from third parties or links to websites and features in banners or other advertising. Such external links are not investigated, monitored, or checked for accuracy, adequacy, validity, reliability, availability, or completeness by us. We do not warrant, endorse, guarantee, or assume responsibility for the accuracy or reliability of any information offered by third-party websites linked through the site or any website or feature linked in any banner or other advertising.</p>
+                    </div>
+                    
+                    <div class="preview-section">
+                        <h3>Contact Us</h3>
+                        <p>If you have any questions about this Disclaimer, you can contact us:</p>
+                        <ul>
+                            <li>By email: <strong id="previewContactEmail">contact@toolstackx.io</strong></li>
+                            <li>By visiting this page on our website: <strong id="previewContactUrl">https://toolstackx.io/contact</strong></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="preview-section">
+                        <p><strong>Last updated:</strong> <span id="previewEffectiveDate">January 01, 2025</span></p>
+                    </div>
+                </div>
+                
+                <div class="seo-note">
+                    <h4><i class="fas fa-search"></i> SEO Optimized</h4>
+                    <p>This disclaimer is structured with proper HTML headings and semantic markup to help search engines understand your legal content, improving your website's credibility and trustworthiness.</p>
+                </div>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="feature-title">Legal Protection</div>
+                        <div class="feature-description">Protect your website and business with proper legal disclaimers</div>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <div class="feature-title">Quick Generation</div>
+                        <div class="feature-description">Create professional disclaimers in minutes, not hours</div>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="feature-title">SEO Friendly</div>
+                        <div class="feature-description">Proper HTML structure for better search engine visibility</div>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="feature-title">Responsive Design</div>
+                        <div class="feature-description">Looks great on all devices - desktop, tablet, and mobile</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="container">
+        <p>© 2025 ToolStackX Disclaimer Generator. This tool provides template disclaimers for informational purposes.</p>
+        <p>For specific legal advice, please consult with a qualified attorney in your jurisdiction.</p>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const websiteName = document.getElementById('websiteName');
+        const websiteUrl = document.getElementById('websiteUrl');
+        const contactEmail = document.getElementById('contactEmail');
+        const typeGeneral = document.getElementById('typeGeneral');
+        const typeAffiliate = document.getElementById('typeAffiliate');
+        const typeMedical = document.getElementById('typeMedical');
+        const typeFinancial = document.getElementById('typeFinancial');
+        const typeLegal = document.getElementById('typeLegal');
+        const additionalInfo = document.getElementById('additionalInfo');
+        const effectiveDate = document.getElementById('effectiveDate');
+        const generateBtn = document.getElementById('generateBtn');
+        const actionButtons = document.getElementById('actionButtons');
+        const copyCodeBtn = document.getElementById('copyCodeBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        
+        // Preview elements
+        const previewWebsiteName = document.getElementById('previewWebsiteName');
+        const previewWebsiteUrl = document.getElementById('previewWebsiteUrl');
+        const previewContactEmail = document.getElementById('previewContactEmail');
+        const previewContactUrl = document.getElementById('previewContactUrl');
+        const previewEffectiveDate = document.getElementById('previewEffectiveDate');
+        const previewAffiliate = document.getElementById('previewAffiliate');
+        const previewMedical = document.getElementById('previewMedical');
+        const previewFinancial = document.getElementById('previewFinancial');
+        const previewLegal = document.getElementById('previewLegal');
+        
+        // Format date for display
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', options);
+        }
+        
+        // Generate disclaimer
+        generateBtn.addEventListener('click', function() {
+            // Update preview with form data
+            previewWebsiteName.textContent = websiteName.value || 'Your Website Name';
+            previewWebsiteUrl.textContent = websiteUrl.value || 'https://yourwebsite.com';
+            previewContactEmail.textContent = contactEmail.value || 'contact@yourwebsite.com';
+            previewContactUrl.textContent = websiteUrl.value ? `${websiteUrl.value}/contact` : 'https://yourwebsite.com/contact';
+            previewEffectiveDate.textContent = formatDate(effectiveDate.value) || 'January 01, 2025';
+            
+            // Show/hide disclaimer sections based on selections
+            previewAffiliate.style.display = typeAffiliate.checked ? 'block' : 'none';
+            previewMedical.style.display = typeMedical.checked ? 'block' : 'none';
+            previewFinancial.style.display = typeFinancial.checked ? 'block' : 'none';
+            previewLegal.style.display = typeLegal.checked ? 'block' : 'none';
+            
+            // Show action buttons
+            actionButtons.style.display = 'flex';
+            
+            // Scroll to preview
+            document.getElementById('previewContainer').scrollIntoView({ behavior: 'smooth' });
+            
+            // Show confirmation
+            const originalText = generateBtn.innerHTML;
+            generateBtn.innerHTML = '<i class="fas fa-check"></i> Disclaimer Generated!';
+            
+            setTimeout(() => {
+                generateBtn.innerHTML = originalText;
+            }, 3000);
+        });
+        
+        // Copy disclaimer text
+        copyCodeBtn.addEventListener('click', function() {
+            const disclaimerText = generateDisclaimerText();
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(disclaimerText).then(() => {
+                const originalText = copyCodeBtn.innerHTML;
+                copyCodeBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                
+                setTimeout(() => {
+                    copyCodeBtn.innerHTML = originalText;
+                }, 2000);
+            });
+        });
+        
+        // Download HTML file
+        downloadBtn.addEventListener('click', function() {
+            const htmlCode = generateHTMLCode();
+            const blob = new Blob([htmlCode], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'disclaimer.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            const originalText = downloadBtn.innerHTML;
+            downloadBtn.innerHTML = '<i class="fas fa-check"></i> Downloaded!';
+            
+            setTimeout(() => {
+                downloadBtn.innerHTML = originalText;
+            }, 2000);
+        });
+        
+        // Reset form
+        resetBtn.addEventListener('click', function() {
+            websiteName.value = '';
+            websiteUrl.value = '';
+            contactEmail.value = '';
+            typeGeneral.checked = true;
+            typeAffiliate.checked = false;
+            typeMedical.checked = false;
+            typeFinancial.checked = false;
+            typeLegal.checked = false;
+            additionalInfo.value = '';
+            effectiveDate.value = '2025-01-01';
+            actionButtons.style.display = 'none';
+            
+            // Reset preview
+            previewWebsiteName.textContent = 'Your Website Name';
+            previewWebsiteUrl.textContent = 'https://yourwebsite.com';
+            previewContactEmail.textContent = 'contact@yourwebsite.com';
+            previewContactUrl.textContent = 'https://yourwebsite.com/contact';
+            previewEffectiveDate.textContent = 'January 01, 2025';
+            previewAffiliate.style.display = 'none';
+            previewMedical.style.display = 'none';
+            previewFinancial.style.display = 'none';
+            previewLegal.style.display = 'none';
+        });
+        
+        // Function to generate plain text disclaimer
+        function generateDisclaimerText() {
+            const name = websiteName.value || 'Your Website Name';
+            const url = websiteUrl.value || 'https://yourwebsite.com';
+            const email = contactEmail.value || 'contact@yourwebsite.com';
+            const date = formatDate(effectiveDate.value) || 'January 01, 2025';
+            
+            let disclaimer = `DISCLAIMER\n\n`;
+            disclaimer += `Website Disclaimer\n\n`;
+            disclaimer += `The information provided by ${name} ("we," "us," or "our") on ${url} (the "Site") is for general informational purposes only. All information on the Site is provided in good faith, however we make no representation or warranty of any kind, express or implied, regarding the accuracy, adequacy, validity, reliability, availability, or completeness of any information on the Site.\n\n`;
+            
+            if (typeAffiliate.checked) {
+                disclaimer += `IMPORTANT: Affiliate Disclaimer\n\n`;
+                disclaimer += `The Site may contain links to affiliate websites, and we receive an affiliate commission for any purchases made by you on the affiliate website using such links. Our affiliates include [list any affiliate programs]. We are a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for us to earn advertising fees by linking to Amazon.com and affiliated websites.\n\n`;
+            }
+            
+            if (typeMedical.checked) {
+                disclaimer += `IMPORTANT: Medical/Health Disclaimer\n\n`;
+                disclaimer += `The Site cannot and does not contain medical/health advice. The medical/health information is provided for general informational and educational purposes only and is not a substitute for professional advice. Accordingly, before taking any actions based upon such information, we encourage you to consult with the appropriate professionals. We do not provide any kind of medical/health advice. The use or reliance of any information contained on this site is solely at your own risk.\n\n`;
+            }
+            
+            if (typeFinancial.checked) {
+                disclaimer += `IMPORTANT: Financial Disclaimer\n\n`;
+                disclaimer += `The Site cannot and does not contain financial advice. The financial information is provided for general informational and educational purposes only and is not a substitute for professional advice. Accordingly, before taking any actions based upon such information, we encourage you to consult with the appropriate professionals. We do not provide any kind of financial advice. The use or reliance of any information contained on this site is solely at your own risk.\n\n`;
+            }
+            
+            if (typeLegal.checked) {
+                disclaimer += `IMPORTANT: Legal Disclaimer\n\n`;
+                disclaimer += `The Site cannot and does not contain legal advice. The information is provided for general informational and educational purposes only and is not a substitute for professional advice. Accordingly, before taking any actions based upon such information, we encourage you to consult with the appropriate professionals. We do not provide any kind of legal advice. The use or reliance of any information contained on this site is solely at your own risk.\n\n`;
+            }
+            
+            disclaimer += `EXTERNAL LINKS DISCLAIMER\n\n`;
+            disclaimer += `The Site may contain (or you may be sent through the Site) links to other websites or content belonging to or originating from third parties or links to websites and features in banners or other advertising. Such external links are not investigated, monitored, or checked for accuracy, adequacy, validity, reliability, availability, or completeness by us. We do not warrant, endorse, guarantee, or assume responsibility for the accuracy or reliability of any information offered by third-party websites linked through the site or any website or feature linked in any banner or other advertising.\n\n`;
+            
+            disclaimer += `Contact Us\n\n`;
+            disclaimer += `If you have any questions about this Disclaimer, you can contact us:\n`;
+            disclaimer += `- By email: ${email}\n`;
+            disclaimer += `- By visiting this page on our website: ${url}/contact\n\n`;
+            
+            disclaimer += `Last updated: ${date}\n`;
+            
+            if (additionalInfo.value) {
+                disclaimer += `\nAdditional Information:\n${additionalInfo.value}\n`;
+            }
+            
+            return disclaimer;
+        }
+        
+        // Function to generate HTML code
+        function generateHTMLCode() {
+            const name = websiteName.value || 'Your Website Name';
+            const url = websiteUrl.value || 'https://yourwebsite.com';
+            const email = contactEmail.value || 'contact@yourwebsite.com';
+            const date = formatDate(effectiveDate.value) || 'January 01, 2025';
+            
+            let html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disclaimer - ${name}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: #202124;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #4285F4;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #4285F4;
+        }
+        h2 {
+            color: #4285F4;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+        .legal-notice {
+            background-color: rgba(234, 67, 53, 0.05);
+            border: 1px solid #EA4335;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #b71c1c;
+            font-weight: 500;
+        }
+        .legal-notice h3 {
+            color: #c62828;
+            border-bottom: 1px solid #ffcdd2;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+        }
+        .external-links {
+            background-color: rgba(0, 0, 0, 0.02);
+            border: 1px solid #000;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #000;
+        }
+        .external-links h3 {
+            color: #000;
+            border-bottom: 1px solid #666;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+        }
+        ul {
+            margin-left: 20px;
+        }
+        .last-updated {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #dadce0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Disclaimer</h1>
+    
+    <h2>Website Disclaimer</h2>
+    <p>The information provided by <strong>${name}</strong> ("we," "us," or "our") on <strong>${url}</strong> (the "Site") is for general informational purposes only. All information on the Site is provided in good faith, however we make no representation or warranty of any kind, express or implied, regarding the accuracy, adequacy, validity, reliability, availability, or completeness of any information on the Site.</p>`;
+            
+            if (typeAffiliate.checked) {
+                html += `
+    <div class="legal-notice">
+        <h3>Affiliate Disclaimer</h3>
+        <p>The Site may contain links to affiliate websites, and we receive an affiliate commission for any purchases made by you on the affiliate website using such links. Our affiliates include [list any affiliate programs]. We are a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for us to earn advertising fees by linking to Amazon.com and affiliated websites.</p>
+    </div>`;
+            }
+            
+            if (typeMedical.checked) {
+                html += `
+    <div class="legal-notice">
+        <h3>Medical/Health Disclaimer</h3>
+        <p>The Site cannot and does not contain medical/health advice. The medical/health information is provided for general informational and educational purposes only and is not a substitute for professional advice. Accordingly, before taking any actions based upon such information, we encourage you to consult with the appropriate professionals. We do not provide any kind of medical/health advice. The use or reliance of any information contained on this site is solely at your own risk.</p>
+    </div>`;
+            }
+            
+            if (typeFinancial.checked) {
+                html += `
+    <div class="legal-notice">
+        <h3>Financial Disclaimer</h3>
+        <p>The Site cannot and does not contain financial advice. The financial information is provided for general informational and educational purposes only and is not a substitute for professional advice. Accordingly, before taking any actions based upon such information, we encourage you to consult with the appropriate professionals. We do not provide any kind of financial advice. The use or reliance of any information contained on this site is solely at your own risk.</p>
+    </div>`;
+            }
+            
+            if (typeLegal.checked) {
+                html += `
+    <div class="legal-notice">
+        <h3>Legal Disclaimer</h3>
+        <p>The Site cannot and does not contain legal advice. The information is provided for general informational and educational purposes only and is not a substitute for professional advice. Accordingly, before taking any actions based upon such information, we encourage you to consult with the appropriate professionals. We do not provide any kind of legal advice. The use or reliance of any information contained on this site is solely at your own risk.</p>
+    </div>`;
+            }
+            
+            html += `
+    <div class="external-links">
+        <h3>External Links Disclaimer</h3>
+        <p>The Site may contain (or you may be sent through the Site) links to other websites or content belonging to or originating from third parties or links to websites and features in banners or other advertising. Such external links are not investigated, monitored, or checked for accuracy, adequacy, validity, reliability, availability, or completeness by us. We do not warrant, endorse, guarantee, or assume responsibility for the accuracy or reliability of any information offered by third-party websites linked through the site or any website or feature linked in any banner or other advertising.</p>
+    </div>
+    
+    <h2>Contact Us</h2>
+    <p>If you have any questions about this Disclaimer, you can contact us:</p>
+    <ul>
+        <li>By email: <strong>${email}</strong></li>
+        <li>By visiting this page on our website: <strong>${url}/contact</strong></li>
+    </ul>
+    
+    <div class="last-updated">
+        <p><strong>Last updated:</strong> ${date}</p>
+    </div>`;
+            
+            if (additionalInfo.value) {
+                html += `
+    <h2>Additional Information</h2>
+    <p>${additionalInfo.value}</p>`;
+            }
+            
+            html += `
+</body>
+</html>`;
+            
+            return html;
+        }
+    </script>
+</body>
+</html>
