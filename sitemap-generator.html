@@ -1,127 +1,295 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sitemap Generator - toolstackx.io</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    h1 {
-      background: #4285F4;
-      color: white;
-      width: 100%;
-      text-align: center;
-      padding: 15px 0;
-      margin: 0;
-    }
-    .container {
-      background: white;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      width: 90%;
-      max-width: 600px;
-      margin-top: 20px;
-      border-radius: 8px;
-    }
-    input, button, textarea {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-    button {
-      background: #4285F4;
-      color: white;
-      cursor: pointer;
-      border: none;
-      font-size: 16px;
-      transition: 0.3s;
-    }
-    button:hover {
-      background: #3367d6;
-      transform: scale(1.02);
-    }
-    textarea {
-      height: 150px;
-    }
-  </style>
-</head>
-<body>
-  <h1>Sitemap Generator (toolstackx.io)</h1>
-  <div class="container">
-    <label>Enter Your Website URL:</label>
-    <input type="text" id="websiteUrl" placeholder="https://toolstackxio-prog.github.io/toolstackx.io/" value="https://toolstackxio-prog.github.io/toolstackx.io/">
-
-    <button onclick="generateSitemap()">Generate Sitemap</button>
-    
-    <textarea id="sitemapOutput" placeholder="Generated sitemap will appear here..."></textarea>
-    
-    <button onclick="downloadSitemap()">Download sitemap.xml</button>
-  </div>
-
-  <script>
-    async function fetchLinks(url) {
-      try {
-        const response = await fetch(url);
-        const text = await response.text();
-
-        const regex = /href="([^"]+\.html)"/g;
-        let links = [];
-
-        let match;
-        while ((match = regex.exec(text)) !== null) {
-          let link = match[1];
-          if (!link.startsWith("http")) {
-            link = url + link;
-          }
-          links.push(link);
-        }
-
-        return [...new Set(links)];
-      } catch (error) {
-        return [];
-      }
-    }
-
-    async function generateSitemap() {
-      const baseUrl = document.getElementById("websiteUrl").value;
-      let pages = await fetchLinks(baseUrl);
-
-      let sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n`;
-      sitemap += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
-
-      pages.forEach(page => {
-        sitemap += `  <url>\n`;
-        sitemap += `    <loc>${page}</loc>\n`;
-        sitemap += `    <priority>0.8</priority>\n`;
-        sitemap += `  </url>\n`;
-      });
-
-      sitemap += `</urlset>`;
-
-      document.getElementById("sitemapOutput").value = sitemap;
-      alert("✅ Sitemap Generated Successfully!");
-    }
-
-    function downloadSitemap() {
-      const text = document.getElementById("sitemapOutput").value;
-      const blob = new Blob([text], { type: "text/xml" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = "sitemap.xml";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-  </script>
-</body>
-</html>
+ version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/image-converter.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/image-compressor.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/image-resizer.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/image-cropper.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Background-Image-Remover.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Image-rotator-flipper.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/image-to-text(OCR) .html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Upscale-Image-Editor.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Pixel-Art-Generator.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Internet-Speed-Test.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/YouTube-Thumbnail-Tool.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/html-viewer.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Emails-Extractor.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Script-Writing-Tool.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Language-Learning-Tool.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/AI-Story-Writing-Tool.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/URL-Shortener-Tool.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/AI-Content-Detector.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Graphic-Designer-Tool.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Signature-Generator.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Logo-Maker-Tool.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Modern-Digital-Diary.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Stock-Market-Simulator.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Crypto-Price-Tracker.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Crypto-Portfolio-Tracker.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Email-Gmail-Generator.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Grammar -Checker.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Plagiarism -Checker.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Video- Watermark- Blur -Tool.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/About -Us -Generator.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Disclaimer -Generator.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Privacy -Policy- Generator.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/terms-and-conditions-generator.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Language -Translator.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/pdf-word-converter.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/PDF-Compressor.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/PDF-Merger-Splitter.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Document-Converter.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/PDF-Lock-Unlock.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/eSign-PDF.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Scientific-Calculator.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Age-Calculator.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/BMI-Calculator.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Loan-EMI-Calculator.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/GST-Calculator.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Currency-Converter.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Text-Case-Converter.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Word-Character-Counter.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Remove-Duplicate-Lines.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Text-Sorter.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Text-Reverser.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/text-encryptor.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/html-css-js-minifier.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/json-formatter.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/base64-encoder.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/url-encoder.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/color-picker.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/regex-tester.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/color-picker-from-image.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/gradient-generator.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/contrast-checker.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/palette-generator.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/color-blindness-simulator.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/keyword-density-checker.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/meta-tag-analyzer.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/qr-code-generator-scanner.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/barcode-generator.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/uuid-generator.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/unit-converter.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/time-zone-converter.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/random-generator.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/privacy-policy.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/terms-of-use.html</loc>
+    <priority>0.8</priority>
+  </url>
+</urlset>
