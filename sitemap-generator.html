@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sitemap Generator - toolstackx.io</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      background: #4285F4;
+      color: white;
+      width: 100%;
+      text-align: center;
+      padding: 15px 0;
+      margin: 0;
+    }
+    .container {
+      background: white;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 600px;
+      margin-top: 20px;
+      border-radius: 8px;
+    }
+    input, button, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #4285F4;
+      color: white;
+      cursor: pointer;
+      border: none;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #3367d6;
+      transform: scale(1.02);
+    }
+    textarea {
+      height: 150px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Sitemap Generator (toolstackx.io)</h1>
+  <div class="container">
+    <label>Enter Your Website URL:</label>
+    <input type="text" id="websiteUrl" placeholder="https://toolstackxio-prog.github.io/toolstackx.io/" value="https://toolstackxio-prog.github.io/toolstackx.io/">
+
+    <button onclick="generateSitemap()">Generate Sitemap</button>
+    
+    <textarea id="sitemapOutput" placeholder="Generated sitemap will appear here..."></textarea>
+    
+    <button onclick="downloadSitemap()">Download sitemap.xml</button>
+  </div>
+
+  <script>
+    async function fetchLinks(url) {
+      try {
+        const response = await fetch(url);
+        const text = await response.text();
+
+        const regex = /href="([^"]+\.html)"/g;
+        let links = [];
+
+        let match;
+        while ((match = regex.exec(text)) !== null) {
+          let link = match[1];
+          if (!link.startsWith("http")) {
+            link = url + link;
+          }
+          links.push(link);
+        }
+
+        return [...new Set(links)];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    async function generateSitemap() {
+      const baseUrl = document.getElementById("websiteUrl").value;
+      let pages = await fetchLinks(baseUrl);
+
+      let sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+      sitemap += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+
+      pages.forEach(page => {
+        sitemap += `  <url>\n`;
+        sitemap += `    <loc>${page}</loc>\n`;
+        sitemap += `    <priority>0.8</priority>\n`;
+        sitemap += `  </url>\n`;
+      });
+
+      sitemap += `</urlset>`;
+
+      document.getElementById("sitemapOutput").value = sitemap;
+      alert("✅ Sitemap Generated Successfully!");
+    }
+
+    function downloadSitemap() {
+      const text = document.getElementById("sitemapOutput").value;
+      const blob = new Blob([text], { type: "text/xml" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "sitemap.xml";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
+</body>
+</html>
