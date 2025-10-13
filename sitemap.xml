@@ -1,128 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
-  <!-- Main Pages -->
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/</loc>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/about.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/contact.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/terms-and-conditions.html</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/privacy-policy.html</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/disclaimer.html</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/faq.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <!-- Tools Section -->
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/image-converter.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/image-compressor.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/image-resizer.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/image-cropper.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/image-to-text.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Image-rotator-flipper.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Upscale-Image-Editor.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Background-Image-Remover.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/pdf-word-converter.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/PDF-Compressor.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/PDF-Merger-Splitter.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Document-Converter.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/PDF-Lock-Unlock.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/eSign-PDF.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Scientific-Calculator.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Age-Calculator.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Grammar-Checker.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
+<!-- Main Pages -->
+<url>
+<loc>https://toolstackxio-prog.github.io/toolstackx.io</loc>
+<changefreq>daily</changefreq>
+<priority>1.0</priority>
+</url>
+<url>
+<loc>https://toolstackxio-prog.github.io/toolstackx.io/about</loc>
+<changefreq>monthly</changefreq>
+<priority>0.8</priority>
+</url>
+<url>
+<loc>https://toolstackxio-prog.github.io/toolstackx.io/containing</loc>
+<changefreq>monthly</changefreq>
+<priority>0.8</priority>
+</url>
+<url>
+<loc>https://toolstackxio-prog.github.io/toolstackx.io/terms</loc>
+<changefreq>yearly</changefreq>
+<priority>0.6</priority>
+</url>
+<url>
+<loc>https://toolstackxio-prog.github.io/toolstackx.io/private</loc>
+<changefreq>yearly</changefreq>
+<priority>0.6</priority>
+</url>
+<url>
+<loc>https://toolstackxio-prog.github.io/toolstackx.io/discussion</loc>
+<changefreq>yearly</changefreq>
+<priority>0.6</priority>
+</url>
+<url>
+<loc>https://toolstackxio-prog.github.io/toolstackx.io/faq.html</loc>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+<!-- Tools Section -->
+<url>
+<loc>https://toolstackxio-prog.github.io/toolstackx.io/imagery</loc>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
 </urlset>
