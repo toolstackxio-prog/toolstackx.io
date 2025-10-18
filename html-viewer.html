@@ -1,318 +1,381 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="html-root">
 <head>
-    <!-- SEO Meta Tags for Better Discoverability -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live HTML Viewer & Editor | Real-Time Code Preview | ToolStackX</title>
-    <meta name="description" content="A free, real-time HTML viewer and editor. Write or paste your HTML code and see the live preview instantly. Features a full-screen mode for an immersive experience.">
-    <meta name="keywords" content="html viewer, live html editor, html previewer, real-time html, code editor, html runner, toolstackx">
-    <link rel="canonical" href="https://toolstackxio-prog.github.io/toolstackx.io/HTML-Viewer.html">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Live HTML, CSS, and JavaScript Editor with Dark Mode, Auto-Save, Fullscreen Preview, and Templates – by ToolStackX." />
+  <meta name="keywords" content="HTML editor, live preview, code playground, dark mode, auto-save, ToolStackX, 2025" />
+  <meta name="author" content="ToolStackX" />
+  <title>Live Code Editor | ToolStackX</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --card: #f8f9fa;
+      --text: #202124;
+      --text-light: #5f6368;
+      --border: #dadce0;
+      --primary: #4285f4;
+      --success: #34a853;
+      --danger: #ea4335;
+      --warning: #fbbc05;
+      --shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+    [data-theme="dark"] {
+      --bg: #121212;
+      --card: #1e1e1e;
+      --text: #e8eaed;
+      --text-light: #9aa0a6;
+      --border: #3c4043;
+      --shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background-color 0.3s, color 0.3s;
+    }
+    header {
+      background: var(--primary);
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .container {
+      max-width: 1200px;
+      margin: 1.5rem auto;
+      padding: 0 1rem;
+    }
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .theme-toggle, .template-select {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--card);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .theme-toggle button, .template-select select {
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin: 1rem 0;
+    }
+    button {
+      padding: 0.75rem 1.25rem;
+      border: none;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+    .btn-run { background: var(--primary); color: white; }
+    .btn-run:hover { background: #3367d6; }
+    .btn-clear { background: var(--danger); color: white; }
+    .btn-clear:hover { background: #d33426; }
+    .btn-fullscreen { background: var(--success); color: white; }
+    .btn-fullscreen:hover { background: #2d8e49; }
+    .btn-dark { background: var(--warning); color: var(--text); }
+    .btn-dark:hover { opacity: 0.9; }
 
-    <!-- Google Fonts for a Modern Look -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
-
-    <style>
-        /* --- CSS Variables for a Modern & Customizable Google-Style Theme --- */
-        :root {
-            --google-blue: #4285F4;
-            --google-red: #DB4437;
-            --google-green: #0F9D58;
-            --background-color: #f8f9fa;
-            --editor-background: #282c34; /* Dark theme for the editor */
-            --preview-background: #ffffff;
-            --text-primary: #202124;
-            --text-on-dark: #abb2bf;
-            --border-color: #dadce0;
-            --shadow-color: rgba(0, 0, 0, 0.1);
-            --accent-color: var(--google-blue);
-        }
-
-        /* --- Global Styles & Resets --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            height: 100%;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-primary);
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden; /* Prevent body scroll */
-        }
-
-        /* --- Main Application Header --- */
-        .app-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid var(--border-color);
-            background-color: #fff;
-            flex-shrink: 0;
-        }
-
-        .app-header .icon {
-            color: var(--accent-color);
-        }
-
-        .app-header h1 {
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-        
-        /* --- Main Editor Layout (Split Screen) --- */
-        .editor-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            height: 100%;
-            flex-grow: 1;
-            overflow: hidden;
-            background-color: #3a4048; /* Gutter color */
-            gap: 1px; /* Creates the gutter line */
-        }
-        
-        .pane {
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .pane-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            font-weight: 500;
-            flex-shrink: 0;
-        }
-
-        /* --- Editor Pane Specific Styles --- */
-        .editor-pane {
-            background-color: var(--editor-background);
-            color: var(--text-on-dark);
-        }
-
-        #html-input {
-            flex-grow: 1;
-            width: 100%;
-            height: 100%;
-            padding: 1rem;
-            border: none;
-            background-color: transparent;
-            color: var(--text-on-dark);
-            font-family: 'Fira Code', monospace;
-            font-size: 16px;
-            line-height: 1.6;
-            resize: none;
-            outline: none;
-        }
-
-        /* Custom Scrollbar for a professional look */
-        #html-input::-webkit-scrollbar {
-            width: 10px;
-        }
-        #html-input::-webkit-scrollbar-track {
-            background: #21252b;
-        }
-        #html-input::-webkit-scrollbar-thumb {
-            background-color: #4f5661;
-            border-radius: 5px;
-        }
-
-        /* --- Preview Pane Specific Styles --- */
-        .preview-pane {
-            background-color: var(--preview-background);
-        }
-
-        #fullscreen-btn {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background-color: #fff;
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-
-        #fullscreen-btn:hover {
-            background-color: #f1f3f4;
-            border-color: #c6c6c6;
-        }
-
-        .preview-wrapper {
-            flex-grow: 1;
-            position: relative;
-            background-color: var(--preview-background);
-            border-top: 1px solid var(--border-color);
-        }
-        
-        #preview-output {
-            width: 100%;
-            height: 100%;
-            border: none;
-            background-color: transparent;
-        }
-
-        /* --- Responsive Design for Mobile Devices --- */
-        @media (max-width: 900px) {
-            .editor-layout {
-                grid-template-columns: 1fr;
-                grid-template-rows: 1fr 1fr; /* Stack panes vertically */
-                height: calc(100vh - 65px); /* Full viewport height minus header */
-            }
-            .app-header h1 {
-                font-size: 1.2rem;
-            }
-        }
-    </style>
-</head>
-<body role="application">
-
-    <header class="app-header" role="banner">
-        <div class="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" height="28" viewBox="0 -960 960 960" width="28" fill="currentColor"><path d="M320-240 80-480l240-240 57 56-184 184 184 184-57 56Zm320 0-57-56 184-184-184-184 57-56 240 240-240 240Z"/></svg>
-        </div>
-        <h1>Live HTML Viewer</h1>
-    </header>
-
-    <main class="editor-layout" aria-label="Editor Layout">
-        
-        <!-- Editor Pane (Left Side) -->
-        <section class="pane editor-pane" role="region" aria-labelledby="editor-heading">
-            <div class="pane-header">
-                <h2 id="editor-heading">HTML Code</h2>
-            </div>
-            <textarea id="html-input" spellcheck="false" aria-label="HTML Code Input"></textarea>
-        </section>
-
-        <!-- Preview Pane (Right Side) -->
-        <section class="pane preview-pane" role="region" aria-labelledby="preview-heading">
-            <div class="pane-header">
-                <h2 id="preview-heading">Live Preview</h2>
-                <button id="fullscreen-btn" aria-label="Toggle Fullscreen Preview">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20" fill="currentColor"><path d="M120-120v-320h80v240h240v80H120Zm560 0v-80h240v-240h80v320H680ZM120-520v-320h320v80H200v240h-80Zm640 0v-240H520v-80h320v320h-80Z"/></svg>
-                    Full Screen
-                </button>
-            </div>
-            <div class="preview-wrapper" id="preview-wrapper">
-                <iframe id="preview-output" title="Live HTML Preview" sandbox="allow-scripts allow-same-origin"></iframe>
-            </div>
-        </section>
-
-    </main>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Get references to DOM elements
-            const htmlInput = document.getElementById('html-input');
-            const previewOutput = document.getElementById('preview-output');
-            const fullscreenBtn = document.getElementById('fullscreen-btn');
-            const previewWrapper = document.getElementById('preview-wrapper');
-
-            // --- Initial Placeholder Code ---
-            const initialCode = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>My Awesome Page</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            background: linear-gradient(135deg, #72EDF2 10%, #5151E5 100%);
-            color: white;
-            text-align: center;
-            padding-top: 50px;
-        }
-        h1 {
-            font-size: 3rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
-        p {
-            font-size: 1.2rem;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 1rem;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-    </style>
+    label {
+      display: block;
+      margin: 1rem 0 0.5rem;
+      font-weight: 500;
+    }
+    textarea {
+      width: 100%;
+      height: 250px;
+      padding: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: 'Consolas', monospace;
+      font-size: 14px;
+      background: var(--card);
+      color: var(--text);
+      resize: vertical;
+    }
+    .preview-box {
+      width: 100%;
+      height: 400px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: auto;
+      background: white;
+      margin-top: 0.5rem;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      color: var(--text-light);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--border);
+      margin-top: 2rem;
+    }
+    @media (max-width: 768px) {
+      .controls {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .btn-group {
+        flex-direction: column;
+      }
+      button {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
 </head>
 <body>
+  <header>
+    <h1>Live Code Editor</h1>
+    <p>HTML, CSS & JavaScript — edit, preview, and run instantly</p>
+  </header>
 
-    <h1>Welcome to the Live HTML Viewer!</h1>
-    <p>Type your HTML code on the left, and see the result here on the right.</p>
-    <button onclick="alert('It works!')">Click Me</button>
+  <div class="container">
+    <div class="controls">
+      <div class="theme-toggle">
+        <button id="themeBtn" title="Toggle Dark/Light Mode">
+          <i class="fas fa-moon"></i>
+        </button>
+      </div>
+      <div class="template-select">
+        <label for="template">Template:</label>
+        <select id="template">
+          <option value="basic">Basic HTML</option>
+          <option value="responsive">Responsive Page</option>
+          <option value="interactive">Interactive Button</option>
+        </select>
+      </div>
+    </div>
 
+    <label for="code-editor">Your Code:</label>
+    <textarea id="code-editor" spellcheck="false"></textarea>
+
+    <div class="btn-group">
+      <button class="btn-run" id="runBtn">
+        <i class="fas fa-play"></i> Run
+      </button>
+      <button class="btn-clear" id="clearBtn">
+        <i class="fas fa-broom"></i> Clear
+      </button>
+      <button class="btn-fullscreen" id="fullscreenBtn">
+        <i class="fas fa-expand"></i> Full Screen
+      </button>
+    </div>
+
+    <label>Preview:</label>
+    <div class="preview-box" id="preview-box">
+      <iframe id="preview-frame"></iframe>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 ToolStackX – Your Daily Tools, All in One Place.
+  </footer>
+
+  <!-- Font Awesome Icons -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <script>
+    // DOM Elements
+    const htmlRoot = document.getElementById('html-root');
+    const codeEditor = document.getElementById('code-editor');
+    const previewFrame = document.getElementById('preview-frame');
+    const runBtn = document.getElementById('runBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    const themeBtn = document.getElementById('themeBtn');
+    const templateSelect = document.getElementById('template');
+    const previewBox = document.getElementById('preview-box');
+
+    // Templates
+    const templates = {
+      basic: `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>My Page</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+    h1 { color: #4285f4; }
+  </style>
+</head>
+<body>
+  <h1>Hello from ToolStackX!</h1>
+  <p>Edit this code and click "Run".</p>
 </body>
-</html>`;
+</html>`,
 
-            // Set the initial value and render it
-            htmlInput.value = initialCode;
+      responsive: `<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: sans-serif; margin: 0; background: #e0e0e0; }
+    .container { max-width: 800px; margin: 20px auto; padding: 20px; background: white; border-radius: 8px; }
+    @media (max-width: 600px) { .container { margin: 10px; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Responsive Design</h2>
+    <p>Resize your browser to see it adapt!</p>
+  </div>
+</body>
+</html>`,
 
-            /**
-             * Updates the iframe's content with the code from the textarea.
-             * Using srcdoc is safer and more reliable than document.write.
-             */
-            const updatePreview = () => {
-                const code = htmlInput.value;
-                // Add a small delay to prevent flickering on rapid typing
-                setTimeout(() => {
-                    previewOutput.srcdoc = code;
-                }, 150);
-            };
+      interactive: `<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { text-align: center; padding: 40px; font-family: sans-serif; }
+    button { padding: 12px 24px; font-size: 16px; background: #4285f4; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    button:hover { background: #3367d6; }
+  </style>
+</head>
+<body>
+  <h2>Click the Button!</h2>
+  <button onclick="alert('You clicked me! 🎉')">Click Me</button>
+</body>
+</html>`
+    };
 
-            // --- Event Listeners ---
+    // Auto-save & Load
+    const STORAGE_KEY = 'toolstackx_live_editor_code';
+    const THEME_KEY = 'toolstackx_theme';
 
-            // Update the preview in real-time as the user types
-            htmlInput.addEventListener('input', updatePreview);
-            htmlInput.addEventListener('keydown', (e) => {
-                // Enable Tab key functionality for better coding experience
-                if (e.key === 'Tab') {
-                    e.preventDefault();
-                    const start = e.target.selectionStart;
-                    const end = e.target.selectionEnd;
+    // Load saved code or template
+    function loadSavedCode() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        codeEditor.value = saved;
+      } else {
+        codeEditor.value = templates.basic;
+      }
+      runCode();
+    }
 
-                    // Insert a tab character at the cursor position
-                    e.target.value = e.target.value.substring(0, start) + '\\t' + e.target.value.substring(end);
-                    e.target.selectionStart = e.target.selectionEnd = start + 1;
-                }
-            });
+    // Load theme
+    function loadTheme() {
+      const savedTheme = localStorage.getItem(THEME_KEY) || 'light';
+      if (savedTheme === 'dark') {
+        htmlRoot.setAttribute('data-theme', 'dark');
+        themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+      } else {
+        htmlRoot.removeAttribute('data-theme');
+        themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
+      }
+    }
 
+    // Save code
+    function saveCode() {
+      localStorage.setItem(STORAGE_KEY, codeEditor.value);
+    }
 
-            // Handle the full-screen functionality
-            fullscreenBtn.addEventListener('click', () => {
-                // Check if the browser supports the Fullscreen API
-                if (previewWrapper.requestFullscreen) {
-                    previewWrapper.requestFullscreen();
-                } else if (previewWrapper.webkitRequestFullscreen) { /* Safari */
-                    previewWrapper.webkitRequestFullscreen();
-                } else if (previewWrapper.msRequestFullscreen) { /* IE11 */
-                    previewWrapper.msRequestFullscreen();
-                }
-            });
+    // Run code
+    function runCode() {
+      const code = codeEditor.value;
+      const blob = new Blob([code], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      previewFrame.src = url;
+      saveCode(); // Auto-save on run
+    }
 
-            // Initial render on page load
-            updatePreview();
-        });
-    </script>
+    // Clear code
+    function clearCode() {
+      if (confirm('Clear all code? This cannot be undone.')) {
+        codeEditor.value = '';
+        runCode();
+        localStorage.removeItem(STORAGE_KEY);
+      }
+    }
 
+    // Toggle theme
+    function toggleTheme() {
+      const isDark = htmlRoot.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        htmlRoot.removeAttribute('data-theme');
+        localStorage.setItem(THEME_KEY, 'light');
+        themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
+      } else {
+        htmlRoot.setAttribute('data-theme', 'dark');
+        localStorage.setItem(THEME_KEY, 'dark');
+        themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+      }
+    }
+
+    // Fullscreen
+    function toggleFullscreen() {
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        if (previewBox.requestFullscreen) {
+          previewBox.requestFullscreen();
+        } else if (previewBox.webkitRequestFullscreen) {
+          previewBox.webkitRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        }
+      }
+    }
+
+    // Template change
+    templateSelect.addEventListener('change', () => {
+      codeEditor.value = templates[templateSelect.value];
+      runCode();
+    });
+
+    // Event Listeners
+    runBtn.addEventListener('click', runCode);
+    clearBtn.addEventListener('click', clearCode);
+    fullscreenBtn.addEventListener('click', toggleFullscreen);
+    themeBtn.addEventListener('click', toggleTheme);
+    codeEditor.addEventListener('input', () => {
+      clearTimeout(window.saveTimer);
+      window.saveTimer = setTimeout(saveCode, 1000); // Save after 1s of inactivity
+    });
+
+    // Initialize
+    loadTheme();
+    loadSavedCode();
+
+    // Fullscreen icon update
+    document.addEventListener('fullscreenchange', () => {
+      const icon = fullscreenBtn.querySelector('i');
+      icon.className = document.fullscreenElement ? 'fas fa-compress' : 'fas fa-expand';
+    });
+  </script>
 </body>
 </html>
