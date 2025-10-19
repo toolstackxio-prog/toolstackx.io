@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text to Handwriting Converter - ToolStackX.io</title>
+    <!-- Include html2canvas library for download functionality -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Caveat&family=Dancing+Script&family=Kalam&family=Patrick+Hand&family=Roboto:wght@300;400;700&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #3c4043;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #34A853; /* Main theme color: Green */
+            color: white;
+            padding: 20px 40px;
+            text-align: center;
+            font-size: 2em;
+            font-weight: 700;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        .controls {
+            flex: 1;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            margin-right: 20px;
+            min-width: 300px;
+        }
+
+        .preview-container {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .preview {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            background-image: url('https://www.transparenttextures.com/patterns/lined-paper.png');
+            background-repeat: repeat;
+        }
+
+        h2 {
+            color: #1e8e3e; 
+            border-bottom: 2px solid #e8eaed;
+            padding-bottom: 10px;
+        }
+
+        .control-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #5f6368;
+        }
+
+        textarea, select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #dadce0;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            flex-grow: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1em;
+            font-weight: 500;
+            color: white;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        #copy-btn {
+            background-color: #34A853; /* Google Green */
+        }
+        
+        #copy-btn:hover {
+             background-color: #2c8b47;
+             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        #download-btn {
+            background-color: #EA4335; /* Google Red */
+        }
+        
+        #download-btn:hover {
+             background-color: #c5372c;
+             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .color-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .color-box {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.3s;
+        }
+
+        .color-box.selected {
+            border-color: #34A853; 
+        }
+
+        #handwriting-output {
+            width: 100%;
+            height: 100%;
+            font-size: 24px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            box-sizing: border-box;
+        }
+
+        footer {
+            background-color: #34A853; /* Footer background changed to Green */
+            color: white; /* Footer text changed to white */
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+        }
+
+        .how-to-use {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .how-to-use h3 {
+            text-align: center;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .how-to-use p {
+            line-height: 1.6;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .copyright {
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .controls {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        Text to Handwriting Converter
+    </header>
+
+    <div class="container">
+        <div class="controls">
+            <h2>Customize Your Text</h2>
+            <div class="control-group">
+                <label for="text-input">Enter Your Text:</label>
+                <textarea id="text-input" placeholder="Type or paste your text here..."></textarea>
+            </div>
+            <div class="control-group">
+                <label for="font-select">Choose Handwriting Font:</label>
+                <select id="font-select">
+                    <option value="'Caveat', cursive">Caveat</option>
+                    <option value="'Dancing Script', cursive">Dancing Script</option>
+                    <option value="'Kalam', cursive">Kalam</option>
+                    <option value="'Patrick Hand', cursive">Patrick Hand</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label>Select Ink Color:</label>
+                <div class="color-options">
+                    <div class="color-box selected" style="background-color: #000000;" data-color="#000000"></div>
+                    <div class="color-box" style="background-color: #4285F4;" data-color="#4285F4"></div>
+                    <div class="color-box" style="background-color: #DB4437;" data-color="#DB4437"></div>
+                    <div class="color-box" style="background-color: #0F9D58;" data-color="#0F9D58"></div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="paper-select">Select Paper Style:</label>
+                <select id="paper-select">
+                    <option value="https://www.transparenttextures.com/patterns/lined-paper.png">Lined Paper</option>
+                    <option value="https://www.transparenttextures.com/patterns/graph-paper.png">Graph Paper</option>
+                    <option value="https://www.transparenttextures.com/patterns/clean-gray-paper.png">Clean Gray Paper</option>
+                    <option value="">Plain White</option>
+                </select>
+            </div>
+        </div>
+        <div class="preview-container">
+            <div class="preview" id="preview-area">
+                <div id="handwriting-output">Your text will appear here...</div>
+            </div>
+            <div class="action-buttons">
+                 <button id="copy-btn" class="btn">Copy Text</button>
+                 <button id="download-btn" class="btn">Download as Image</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="how-to-use">
+            <h3>How to Use</h3>
+            <p><strong>1. Enter Text:</strong> Type or paste your desired text into the text box.</p>
+            <p><strong>2. Customize:</strong> Select your preferred handwriting font, ink color, and paper style from the available options.</p>
+            <p><strong>3. Preview:</strong> See a live preview of your text in the handwriting style on the right.</p>
+            <p><strong>4. Copy or Download:</strong> Use the "Copy Text" button to copy the plain text to your clipboard, or click "Download as Image" to save the handwritten note as a PNG file.</p>
+        </div>
+        <div class="copyright">
+            &copy; 2025 ToolStackX.io - All Rights Reserved.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const textInput = document.getElementById('text-input');
+            const fontSelect = document.getElementById('font-select');
+            const colorOptions = document.querySelectorAll('.color-box');
+            const paperSelect = document.getElementById('paper-select');
+            const handwritingOutput = document.getElementById('handwriting-output');
+            const previewArea = document.getElementById('preview-area');
+            const copyBtn = document.getElementById('copy-btn');
+            const downloadBtn = document.getElementById('download-btn');
+
+            function updatePreview() {
+                const text = textInput.value;
+                handwritingOutput.innerText = text ? text : 'Your text will appear here...';
+                handwritingOutput.style.fontFamily = fontSelect.value;
+                
+                const selectedColor = document.querySelector('.color-box.selected').dataset.color;
+                handwritingOutput.style.color = selectedColor;
+                
+                const paperUrl = paperSelect.value;
+                previewArea.style.backgroundImage = paperUrl ? `url('${paperUrl}')` : 'none';
+                previewArea.style.backgroundColor = paperUrl ? '#ffffff' : '#f8f9fa';
+            }
+
+            textInput.addEventListener('input', updatePreview);
+            fontSelect.addEventListener('change', updatePreview);
+            paperSelect.addEventListener('change', updatePreview);
+
+            colorOptions.forEach(box => {
+                box.addEventListener('click', () => {
+                    colorOptions.forEach(b => b.classList.remove('selected'));
+                    box.classList.add('selected');
+                    updatePreview();
+                });
+            });
+            
+            // --- UPDATED COPY FUNCTIONALITY ---
+            function fallbackCopyTextToClipboard(text) {
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                
+                // Avoid scrolling to bottom
+                textArea.style.top = "0";
+                textArea.style.left = "0";
+                textArea.style.position = "fixed";
+
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+
+                try {
+                    const successful = document.execCommand('copy');
+                    if (successful) {
+                        copyBtn.innerText = 'Copied!';
+                    } else {
+                        copyBtn.innerText = 'Copy Failed';
+                    }
+                } catch (err) {
+                    console.error('Fallback: Oops, unable to copy', err);
+                    copyBtn.innerText = 'Copy Failed';
+                }
+
+                document.body.removeChild(textArea);
+            }
+
+            copyBtn.addEventListener('click', () => {
+                const textToCopy = textInput.value;
+                if (!textToCopy) return;
+
+                if (!navigator.clipboard) {
+                    fallbackCopyTextToClipboard(textToCopy);
+                } else {
+                    navigator.clipboard.writeText(textToCopy).then(function() {
+                        copyBtn.innerText = 'Copied!';
+                    }, function(err) {
+                        console.error('Async: Could not copy text: ', err);
+                        fallbackCopyTextToClipboard(textToCopy); // Try fallback if modern method fails
+                    });
+                }
+
+                setTimeout(() => {
+                    copyBtn.innerText = 'Copy Text';
+                }, 2000);
+            });
+            
+            // Download button functionality
+            downloadBtn.addEventListener('click', () => {
+                downloadBtn.innerText = 'Downloading...';
+                downloadBtn.disabled = true;
+                
+                html2canvas(previewArea, {
+                    scale: 2 // Increase scale for better image quality
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = 'handwriting.png';
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                    
+                    downloadBtn.innerText = 'Download as Image';
+                    downloadBtn.disabled = false;
+                }).catch(err => {
+                    console.error('Failed to download image: ', err);
+                    downloadBtn.innerText = 'Download as Image';
+                    downloadBtn.disabled = false;
+                });
+            });
+
+            // Initial preview update
+            updatePreview();
+        });
+    </script>
+
+</body>
+</html>
