@@ -1,407 +1,449 @@
 <!doctype html>
 <html lang="en" dir="ltr">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="Content-Language" content="en">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Ultimate Online Tools Hub — toolstackx.io</title>
-  <meta name="description" content="Ultimate Online Tools Hub — Fast, free tools to convert, edit and generate images, PDFs, text, AI and utilities. No signup required.">
-  <meta name="keywords" content="online tools, image tools, pdf tools, qr generator, text tools, ai tools, free tools">
-  <meta name="theme-color" content="#1a73e8">
-  <meta name="robots" content="index,follow">
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Language" content="en" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ultimate Online Tools Hub – Everything You Need in One Place | toolstackx.io</title>
+  <meta name="description" content="toolstackx.io — Ultimate collection of free online tools: image, pdf, text, developer & AI utilities. Fast, mobile-friendly and no signup." />
+  <meta name="keywords" content="online tools, image tools, pdf tools, text tools, qr generator, website tools, free utilities" />
+  <meta name="theme-color" content="#16a34a" />
+  <meta name="robots" content="index,follow" />
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="sitemap.xml" />
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "url": "https://toolstackxio-prog.github.io/toolstackx.io/",
+    "name": "toolstackx.io",
+    "description": "Ultimate Online Tools Hub — images, PDFs, text, AI & utilities."
+  }
+  </script>
+
   <style>
-    /* ---------- Theme & base ---------- */
     :root{
-      --bg:#f6fbff; --card:#ffffff; --muted:#6b7280; --text:#072238;
-      --g-blue:#1a73e8; --g-green:#34a853; --g-red:#ea4335; --g-yellow:#fbbc05;
-      --glass: rgba(255,255,255,0.8);
-      --radius:14px; --container:1200px; --shadow: 0 12px 36px rgba(12,20,32,0.06);
-      --accent: var(--g-green);
-      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      --bg:#f6fbff; --card:#fff; --muted:#556; --text:#072238;
+      --accent:#16a34a; --accent2:#1a73e8; --accent3:#ea4335; --accent4:#fbbc05;
+      --radius:14px; --maxw:1200px; --shadow:0 12px 30px rgba(12,20,32,0.06);
+      --glass: rgba(255,255,255,0.75);
     }
-    [data-theme='dark']{ --bg:#061225; --card:#061827; --muted:#9aa6b2; --text:#e6eef8; --shadow: none; --glass: rgba(255,255,255,0.02); }
+    [data-theme="dark"]{
+      --bg: #061225; --card: #071226; --muted:#9aa6b2; --text:#e6eef8; --accent:#4ade80;
+      --glass: rgba(10,12,18,0.4);
+    }
     *{box-sizing:border-box}
-    html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg),#ffffff);color:var(--text);-webkit-font-smoothing:antialiased}
-    a{color:inherit}
-    .wrap{max-width:var(--container);margin:18px auto;padding:18px}
-    /* header */
-    header{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-    .logo{width:64px;height:64px;border-radius:12px;display:grid;place-items:center;color:#fff;font-weight:900;font-size:20px;background:linear-gradient(135deg,var(--g-blue),var(--g-green))}
-    .brand{display:flex;flex-direction:column}
-    .brand h1{margin:0;font-size:20px;color:var(--g-green);line-height:1.05}
-    .brand p{margin:6px 0 0;color:var(--muted);font-size:13px}
-    /* nav & drawer */
-    .nav-actions{margin-left:auto;display:flex;gap:10px;align-items:center}
-    .hambtn{display:inline-flex;align-items:center;gap:8px;padding:10px;border-radius:10px;border:1px solid rgba(10,20,40,0.05);background:transparent;cursor:pointer;font-weight:800}
-    .sitemap-btn{background:transparent;border:1px solid rgba(10,20,40,0.06);padding:10px;border-radius:10px;font-weight:700}
-    /* hero */
-    .hero{display:flex;gap:18px;align-items:flex-start;margin-top:12px;padding:18px;border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,0.92),var(--glass));box-shadow:var(--shadow)}
-    .hero-left{flex:1}
-    .hero-left .lead{color:var(--muted);margin-top:8px}
-    /* search */
-    .searchbar{display:flex;gap:8px;align-items:center;background:var(--card);padding:8px;border-radius:999px;box-shadow:0 8px 24px rgba(12,20,32,0.04);border:1px solid rgba(10,20,40,0.03);width:100%}
-    .searchbar input{flex:1;border:0;outline:none;padding:10px;border-radius:8px;font-size:15px;background:transparent}
-    .search-actions{display:flex;gap:8px}
-    /* tools grid */
-    .tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
-    @media (max-width:980px){.tools-grid{grid-template-columns:repeat(2,1fr)}}
-    @media (max-width:620px){.tools-grid{grid-template-columns:1fr}.hero{flex-direction:column}}
-    .tool-card{background:var(--card);padding:14px;border-radius:12px;display:flex;gap:12px;align-items:flex-start;box-shadow:var(--shadow);border:1px solid rgba(10,20,40,0.03);transition:transform .14s,box-shadow .14s;cursor:default}
-    .tool-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(12,20,32,0.08)}
-    .tool-ico{width:56px;height:56px;border-radius:10px;display:grid;place-items:center;font-weight:900;color:#fff;background:linear-gradient(135deg,var(--g-blue),var(--g-green));font-size:15px}
-    .tool-body h3{margin:0;font-size:15px}
-    .tool-body p{margin:6px 0 0;color:var(--muted);font-size:13px}
-    .tool-actions{margin-left:auto;display:flex;flex-direction:column;gap:8px}
-    .outline{padding:8px 12px;border-radius:10px;border:2px solid rgba(26,115,232,0.12);background:transparent;color:var(--g-blue);font-weight:800;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;transition:transform .12s}
-    .outline:active{transform:scale(.98)}
-    .primary{background:linear-gradient(90deg,var(--g-green),var(--g-blue));color:#fff;padding:9px 12px;border-radius:10px;border:none;font-weight:900}
-    .pill{font-size:12px;color:var(--muted);padding:6px;border-radius:999px;background:rgba(6,17,36,0.03);display:inline-block}
-    /* featured carousel */
-    .featured{display:flex;gap:12px;overflow:auto;padding:8px 0}
-    .feat{min-width:220px;background:linear-gradient(180deg,#fff,rgba(255,255,255,0.96));padding:12px;border-radius:12px;border:1px solid rgba(10,20,40,0.03);box-shadow:var(--shadow);display:flex;gap:12px;align-items:center}
-    .feat strong{display:block}
-    /* footer */
-    footer{margin-top:26px;text-align:center;color:var(--muted);font-size:13px}
-    footer a{color:var(--g-blue);text-decoration:none;margin:0 6px}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,var(--bg),#ffffff);color:var(--text);-webkit-font-smoothing:antialiased}
+    .wrap{max-width:1200px;margin:18px auto;padding:18px}
+    header{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+    .logo{width:68px;height:68px;border-radius:14px;background:linear-gradient(135deg,var(--accent2),var(--accent));display:grid;place-items:center;color:#fff;font-weight:900;font-size:22px}
+    h1{margin:0;font-size:30px;line-height:1.02;color:var(--accent);font-weight:900}
+    .hero-sub{color:var(--muted);margin-top:8px;font-size:15px}
+    .controls{margin-left:auto;display:flex;gap:10px;align-items:center}
+    .menu-btn{display:inline-grid;place-items:center;width:46px;height:46px;border-radius:10px;background:var(--card);box-shadow:var(--shadow);border:1px solid rgba(10,20,40,0.04);cursor:pointer}
+    .searchwrap{width:420px;max-width:55vw;background:var(--card);display:flex;gap:8px;align-items:center;padding:10px;border-radius:999px;box-shadow:var(--shadow);border:1px solid rgba(10,20,40,0.04)}
+    .searchwrap input{border:0;outline:none;padding:8px;font-size:15px;background:transparent;width:100%}
+    .search-btn{background:linear-gradient(90deg,var(--accent2),var(--accent));color:#fff;padding:9px 14px;border-radius:999px;border:0;font-weight:800;cursor:pointer}
+    .pill{background:var(--card);padding:8px 12px;border-radius:999px;border:1px solid rgba(10,20,40,0.04);font-weight:700;color:var(--muted)}
+    .featured{display:flex;gap:12px;overflow:auto;padding:12px 0 8px}
+    .feat-card{min-width:220px;background:linear-gradient(180deg,rgba(255,255,255,0.95),rgba(255,255,255,0.9));border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;border:1px solid rgba(10,20,40,0.04);box-shadow:var(--shadow)}
+    .feat-ico{width:44px;height:44px;border-radius:10px;display:grid;place-items:center;color:#fff;font-weight:900}
+    .feat-title{font-weight:800;margin:0;font-size:14px}
+    .feat-desc{color:var(--muted);font-size:13px}
+
+    /* category grid */
+    .category{margin-top:18px}
+    .category h2{margin:0 0 10px;font-size:20px;display:flex;align-items:center;gap:10px}
+    .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    @media (max-width:1100px){.grid{grid-template-columns:repeat(3,1fr)}}
+    @media (max-width:780px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:520px){.grid{grid-template-columns:1fr}.searchwrap{width:100%;max-width:unset}}
+
+    .card{background:var(--card);border-radius:12px;padding:12px;display:flex;gap:12px;align-items:flex-start;box-shadow:var(--shadow);border:1px solid rgba(10,20,40,0.03);transition:transform .12s}
+    .card:hover{transform:translateY(-6px)}
+    .ico{width:56px;height:56px;border-radius:10px;background:linear-gradient(180deg,rgba(26,115,232,0.08),rgba(52,168,83,0.04));display:grid;place-items:center;font-weight:900;color:var(--accent2);font-size:18px}
+    .card h3{margin:0;font-size:17px}
+    .card p{margin:6px 0 0;color:var(--muted);font-size:13px}
+    .actions{margin-left:auto;display:flex;flex-direction:column;gap:8px}
+    .actions a{display:inline-block;padding:8px 12px;border-radius:10px;text-decoration:none;font-weight:800;text-align:center}
+    .actions .preview{background:transparent;border:1px solid rgba(10,20,40,0.06);color:var(--muted)}
+    .actions .open{background:#16a34a;color:#fff}
+
+    .badge{display:inline-block;padding:6px 10px;border-radius:999px;font-weight:800;color:#fff;font-size:12px}
+    .b-blue{background:linear-gradient(90deg,var(--accent2),#5bb3ff)}
+    .b-green{background:linear-gradient(90deg,#34a853,var(--accent))}
+    .b-red{background:linear-gradient(90deg,#ff6b6b,#ea4335)}
+    .b-yellow{background:linear-gradient(90deg,#ffd66b,#fbbc05)}
+    .hide{display:none !important}
+
     /* drawer */
-    .drawer-back{position:fixed;inset:0;background:rgba(6,12,20,0.38);display:none;z-index:80}
-    .drawer{position:fixed;right:0;top:0;height:100%;width:320px;max-width:86vw;background:var(--card);box-shadow:-36px 0 60px rgba(12,20,32,0.12);padding:18px;border-radius:12px 0 0 12px;transform:translateX(110%);transition:transform .32s;z-index:81;overflow:auto}
+    .drawer{position:fixed;top:0;left:0;height:100vh;width:320px;max-width:85vw;background:var(--card);box-shadow:0 40px 80px rgba(12,20,32,0.25);transform:translateX(-120%);transition:transform .28s;border-radius:0 14px 14px 0;padding:18px;z-index:1200;overflow:auto}
     .drawer.open{transform:translateX(0)}
-    .drawer-back.open{display:block}
-    .drawer a{display:block;padding:10px 12px;border-radius:10px;text-decoration:none;color:var(--text);font-weight:700;margin-bottom:8px}
-    .drawer .small{color:var(--muted);font-size:13px}
-    /* focus outlines */
-    a:focus, button:focus, input:focus {outline:3px solid rgba(26,115,232,0.12);outline-offset:3px}
-    /* tiny helpers */
-    .center{display:grid;place-items:center}
-    .hidden-mobile{display:block}
-    @media (max-width:520px){ .hidden-mobile{display:none} }
-    /* ripple on click */
-    .ripple{position:relative;overflow:hidden}
-    .ripple:active::after{content:"";position:absolute;left:50%;top:50%;width:150%;height:150%;background:rgba(255,255,255,0.06);transform:translate(-50%,-50%) scale(0);border-radius:50%;animation:hit .45s linear}
-    @keyframes hit{to{transform:translate(-50%,-50%) scale(1);opacity:0}}
+    .drawer h3{margin-top:6px}
+    .close-drawer{float:right;cursor:pointer;padding:6px;border-radius:8px;background:rgba(0,0,0,0.04)}
+
+    /* footer */
+    footer{margin-top:28px;text-align:center;color:var(--muted);font-size:13px;padding-bottom:40px}
+    .contact-box{background:var(--card);padding:12px;border-radius:12px;border:1px solid rgba(10,20,40,0.04);box-shadow:var(--shadow);max-width:760px;margin:18px auto}
+
+    /* utility */
+    .small{font-size:13px;color:var(--muted)}
   </style>
 </head>
 <body>
-  <div class="wrap" id="app" itemscope itemtype="https://schema.org/WebSite">
-    <!-- Header -->
+  <div class="wrap" itemscope itemtype="https://schema.org/WebSite">
     <header>
-      <div style="display:flex;gap:12px;align-items:center">
+      <div style="display:flex;align-items:center;gap:12px">
         <div class="logo" aria-hidden>TS</div>
-        <div class="brand">
-          <h1>🌟 Ultimate Online Tools Hub – Everything You Need in One Place</h1>
-          <p class="lead">Fast, free tools to convert, edit & generate — images, PDFs, text, AI and utilities. No signup required.</p>
+        <div>
+          <h1>Ultimate Online Tools Hub – <span style="color:var(--accent2)">Everything You Need in One Place</span></h1>
+          <div class="hero-sub">Fast, free tools for images, PDF, text, AI & developer utilities. No signup — just open and use.</div>
         </div>
       </div>
 
-      <div class="nav-actions" role="navigation" aria-label="Main">
-        <div class="searchbar" style="min-width:260px;max-width:420px;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M21 21l-4.35-4.35" stroke="#667085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="11" r="6" stroke="#667085" stroke-width="2"/></svg>
-          <input id="search" placeholder="Search tools (e.g. QR, PDF, Image) — press / to focus" aria-label="Search tools" />
-          <button id="clear" class="pill" title="Clear search">Clear</button>
+      <div class="controls" role="region" aria-label="Top controls">
+        <div class="menu-btn" id="openDrawer" title="Open menu" aria-label="Open menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M4 6h16M4 12h16M4 18h16" stroke="#667085" stroke-width="2" stroke-linecap="round"/></svg>
         </div>
 
-        <button id="openDrawer" class="hambtn" aria-expanded="false" aria-controls="drawer" title="Open menu">☰ Menu</button>
-        <a class="sitemap-btn" href="sitemap.xml" title="Sitemap">Sitemap</a>
-        <button id="themeToggle" class="hambtn" title="Toggle theme">Dark / Light</button>
+        <div class="searchwrap" role="search" aria-label="Search tools">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M21 21l-4.35-4.35" stroke="#667085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="11" r="6" stroke="#667085" stroke-width="2"/></svg>
+          <input id="search" placeholder="Search tools... (try 'QR', 'PDF', 'Image')" aria-label="Search tools" />
+          <button id="searchBtn" class="search-btn" aria-label="Search">Search</button>
+        </div>
+
+        <button id="themeToggle" class="pill" title="Toggle theme">Dark / Light</button>
+        <a class="pill" href="sitemap.xml" title="Sitemap">Sitemap</a>
       </div>
     </header>
 
-    <!-- Hero / Featured -->
-    <section class="hero" aria-labelledby="hero-heading">
-      <div class="hero-left">
-        <div class="pill">All tools · Mobile-first · Privacy friendly</div>
-        <div id="hero-heading" style="margin-top:10px">
-          <strong style="font-size:15px;color:var(--muted)">Find a tool — type in search or open the menu. Everything loads fast on phones & desktops.</strong>
-        </div>
+    <div style="display:flex;gap:12px;align-items:center;margin-top:16px;">
+      <div class="pill">Total Tools: <strong id="totalCount">0</strong></div>
+      <div class="small">Featured shortcuts below — tap to open or use search to find any tool.</div>
+    </div>
 
-        <div style="margin-top:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-          <a href="#tools" class="primary ripple">Browse Tools</a>
-          <a href="all-tools.html" class="outline ripple">All Tools Page</a>
-          <div style="margin-left:6px;color:var(--muted);font-size:13px">Tip: press <strong>/</strong> to focus search</div>
-        </div>
-      </div>
-
-      <div style="min-width:220px;text-align:right">
-        <div class="pill">Total: <strong id="totalTools">0</strong></div>
-        <div style="margin-top:10px;color:var(--muted);font-size:13px">Dark/Light saved per device.</div>
-      </div>
-    </section>
-
-    <!-- Featured carousel -->
-    <section style="margin-top:14px">
-      <h2 style="margin:6px 0 10px">🛠️ Featured Tools</h2>
+    <!-- Featured tools -->
+    <section class="category" aria-labelledby="featured-heading">
+      <h2 id="featured-heading">🔹 Featured Tools</h2>
       <div class="featured" id="featuredRow" role="list"></div>
     </section>
 
-    <!-- Tools grid container -->
-    <main id="tools" style="margin-top:16px">
-      <h2 style="margin:0 0 12px;color:var(--g-blue)">Tools — Quick access</h2>
-      <div class="tools-grid" id="toolsGrid" role="list"></div>
-    </main>
+    <!-- Tools sections -->
+    <section class="category">
+      <h2>Image Tools</h2>
+      <div class="grid" id="image-tools"></div>
+    </section>
+
+    <section class="category">
+      <h2>PDF & Documents</h2>
+      <div class="grid" id="pdf-tools"></div>
+    </section>
+
+    <section class="category">
+      <h2>Text & Editor</h2>
+      <div class="grid" id="text-tools"></div>
+    </section>
+
+    <section class="category">
+      <h2>AI & Creative</h2>
+      <div class="grid" id="ai-tools"></div>
+    </section>
+
+    <section class="category">
+      <h2>Developer & SEO</h2>
+      <div class="grid" id="dev-tools"></div>
+    </section>
+
+    <section class="category">
+      <h2>Utilities & Calculators</h2>
+      <div class="grid" id="util-tools"></div>
+    </section>
+
+    <!-- Contact -->
+    <section style="margin-top:20px">
+      <div class="contact-box" aria-labelledby="contact-heading">
+        <h3 id="contact-heading">Contact</h3>
+        <p class="small">If someone reports an issue or wants to suggest a tool — use the button to email directly.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+          <a class="actions open" id="emailBtn" href="mailto:toolstackx.io@gmail.com?subject=Toolstackx.io%20Feedback" style="background:#0ea5a3;color:white;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:800">Email Us</a>
+          <a class="actions preview" href="contact.html" style="padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:800">Contact Page</a>
+        </div>
+      </div>
+    </section>
 
     <footer>
-      <div class="meta">toolstackx.io — Simplifying your digital life • © 2025</div>
-      <div style="margin-top:8px">
-        <a href="privacy-policy.html" rel="noopener">Privacy Policy</a> ·
-        <a href="terms-of-use.html" rel="noopener">Terms of Use</a> ·
-        <a href="contact.html" rel="noopener">Contact</a>
-      </div>
+      <div class="small">toolstackx.io — Simplifying your digital life • © 2025</div>
+      <div style="margin-top:8px" class="small"><a href="privacy-policy.html">Privacy Policy</a> · <a href="terms-of-use.html">Terms of Use</a></div>
     </footer>
   </div>
 
   <!-- Drawer -->
-  <div id="drawerBackdrop" class="drawer-back" tabindex="-1" aria-hidden="true"></div>
-  <aside id="drawer" class="drawer" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="drawerTitle">
-    <div style="display:flex;align-items:center;gap:12px;justify-content:space-between">
-      <div>
-        <h3 id="drawerTitle" style="margin:0">Menu</h3>
-        <div class="small" style="color:var(--muted);margin-top:6px">Quick navigation to tools & pages</div>
-      </div>
-      <button id="closeDrawer" class="hambtn" aria-label="Close menu">✕</button>
+  <nav id="drawer" class="drawer" aria-hidden="true">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="font-weight:900;font-size:18px">Toolstackx Menu</div>
+      <div class="close-drawer" id="closeDrawer" title="Close">✕</div>
     </div>
-
-    <nav style="margin-top:18px">
-      <a href="index.html">Home</a>
-      <a href="#tools">Tools</a>
-      <a href="all-tools.html">All Tools</a>
-      <a href="about-us-generator.html">About</a>
-      <a href="contact.html">Contact</a>
-      <hr style="margin:12px 0;border:none;border-top:1px solid rgba(10,20,40,0.04)">
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <a href="sitemap.xml">Sitemap</a>
-        <a href="privacy-policy.html">Privacy Policy</a>
-        <a href="terms-of-use.html">Terms of Use</a>
-      </div>
-    </nav>
-
-    <div style="margin-top:18px">
-      <div style="font-weight:800;margin-bottom:8px">Search inside tools</div>
-      <div class="searchbar" style="padding:6px">
-        <input id="drawerSearch" placeholder="Type to filter tools..." aria-label="Search tools in menu">
-      </div>
+    <hr style="margin:12px 0;border:none;border-top:1px solid rgba(10,20,40,0.06)" />
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <a href="#" style="padding:10px;border-radius:8px;text-decoration:none;color:var(--muted)">Home</a>
+      <a href="sitemap.xml" style="padding:10px;border-radius:8px;text-decoration:none;color:var(--muted)">Sitemap</a>
+      <a href="privacy-policy.html" style="padding:10px;border-radius:8px;text-decoration:none;color:var(--muted)">Privacy Policy</a>
+      <a href="terms-of-use.html" style="padding:10px;border-radius:8px;text-decoration:none;color:var(--muted)">Terms of Use</a>
+      <hr style="margin:8px 0;border:none;border-top:1px solid rgba(10,20,40,0.06)" />
+      <div style="font-weight:800">Categories</div>
+      <a href="#featured-heading" style="padding:8px;text-decoration:none;color:var(--muted)">Featured</a>
+      <a href="#image-tools" style="padding:8px;text-decoration:none;color:var(--muted)">Image Tools</a>
+      <a href="#pdf-tools" style="padding:8px;text-decoration:none;color:var(--muted)">PDF & Documents</a>
+      <a href="#text-tools" style="padding:8px;text-decoration:none;color:var(--muted)">Text & Editor</a>
+      <a href="#ai-tools" style="padding:8px;text-decoration:none;color:var(--muted)">AI & Creative</a>
+      <a href="#dev-tools" style="padding:8px;text-decoration:none;color:var(--muted)">Developer & SEO</a>
+      <a href="#util-tools" style="padding:8px;text-decoration:none;color:var(--muted)">Utilities</a>
     </div>
-  </aside>
+  </nav>
 
   <script>
-    /***********************
-     * Tools data (matches your sitemap)
-     * If a file shows 404, update the 'url' string to match the exact filename in your repo.
-     ***********************/
-    const tools = [
-      {title:'Image Converter', url:'image-converter.html', desc:'Convert images between PNG, JPG, WEBP, AVIF.'},
-      {title:'Image Compressor', url:'image-compressor.html', desc:'Reduce image file size.'},
-      {title:'Image Resizer', url:'image-resizer.html', desc:'Resize images to custom sizes.'},
-      {title:'Image Cropper', url:'image-cropper.html', desc:'Crop images quickly.'},
-      {title:'Background Image Remover', url:'Background-Image-Remover.html', desc:'Remove backgrounds automatically.'},
-      {title:'Image Rotator & Flipper', url:'Image-rotator-flipper.html', desc:'Rotate & flip images.'},
-      {title:'Image to Text (OCR)', url:'image-to-text(OCR) .html', desc:'Extract text from images.'},
-      {title:'Upscale Image Editor', url:'Upscale-Image-Editor.html', desc:'Upscale & enhance images.'},
-      {title:'Pixel Art Generator', url:'Pixel-Art-Generator.html', desc:'Create pixel art graphics.'},
-      {title:'Internet Speed Test', url:'Internet-Speed-Test.html', desc:'Test connection speed & latency.'},
-      {title:'YouTube Thumbnail Tool', url:'YouTube-Thumbnail-Tool.html', desc:'Design thumbnails.'},
-      {title:'HTML Viewer', url:'html-viewer.html', desc:'Preview HTML live.'},
-      {title:'Emails Extractor', url:'Emails-Extractor.html', desc:'Extract emails from text or files.'},
-      {title:'Script Writing Tool', url:'Script-Writing-Tool.html', desc:'Write screenplays & scripts.'},
-      {title:'Language Learning Tool', url:'Language-Learning-Tool.html', desc:'Practice languages.'},
-      {title:'AI Story Writing Tool', url:'AI-Story-Writing-Tool.html', desc:'Generate story drafts.'},
-      {title:'URL Shortener Tool', url:'URL-Shortener-Tool.html', desc:'Shorten links easily.'},
-      {title:'AI Content Detector', url:'AI-Content-Detector.html', desc:'Detect AI-written content.'},
-      {title:'Graphic Designer Tool', url:'Graphic-Designer-Tool.html', desc:'Design banners & graphics.'},
-      {title:'Signature Generator', url:'Signature-Generator.html', desc:'Create signatures.'},
-      {title:'Logo Maker Tool', url:'Logo-Maker-Tool.html', desc:'Generate logos.'},
-      {title:'Modern Digital Diary', url:'Modern-Digital-Diary.html', desc:'Private online journaling.'},
-      {title:'Stock Market Simulator', url:'Stock-Market-Simulator.html', desc:'Simulate stock trades.'},
-      {title:'Crypto Price Tracker', url:'Crypto-Price-Tracker.html', desc:'Track crypto prices.'},
-      {title:'Crypto Portfolio Tracker', url:'Crypto-Portfolio-Tracker.html', desc:'Manage crypto holdings.'},
-      {title:'Email / Gmail Generator', url:'Email-Gmail-Generator.html', desc:'Generate email drafts and addresses.'},
-      {title:'Grammar Checker', url:'Grammar -Checker.html', desc:'Check grammar & style.'},
-      {title:'Plagiarism Checker', url:'Plagiarism -Checker.html', desc:'Detect copied content.'},
-      {title:'Video Watermark & Blur Tool', url:'Video- Watermark- Blur -Tool.html', desc:'Blur or watermark videos.'},
-      {title:'About Us Generator', url:'About -Us -Generator.html', desc:'Generate About Us text.'},
-      {title:'Disclaimer Generator', url:'Disclaimer -Generator.html', desc:'Create disclaimers.'},
-      {title:'Privacy Policy Generator', url:'Privacy -Policy- Generator.html', desc:'Create privacy policies.'},
-      {title:'Terms & Conditions Generator', url:'terms-and-conditions-generator.html', desc:'Create terms & conditions.'},
-      {title:'Language Translator', url:'Language -Translator.html', desc:'Translate text.'},
-      {title:'PDF ↔ Word Converter', url:'pdf-word-converter.html', desc:'Convert PDF and Word.'},
-      {title:'PDF Compressor', url:'PDF-Compressor.html', desc:'Compress PDF files.'},
-      {title:'PDF Merger & Splitter', url:'PDF-Merger-Splitter.html', desc:'Merge & split PDFs.'},
-      {title:'Document Converter', url:'Document-Converter.html', desc:'Convert documents.'},
-      {title:'PDF Lock/Unlock', url:'PDF-Lock-Unlock.html', desc:'Add or remove PDF passwords.'},
-      {title:'eSign PDF', url:'eSign-PDF.html', desc:'Sign PDFs electronically.'},
-      {title:'Scientific Calculator', url:'Scientific-Calculator.html', desc:'Advanced calculations.'},
-      {title:'Age Calculator', url:'Age-Calculator.html', desc:'Calculate exact age.'},
-      {title:'BMI Calculator', url:'BMI-Calculator.html', desc:'Calculate body mass index.'},
-      {title:'Loan EMI Calculator', url:'Loan-EMI-Calculator.html', desc:'Monthly EMI & amortization.'},
-      {title:'GST Calculator', url:'GST-Calculator.html', desc:'Compute GST.'},
-      {title:'Currency Converter', url:'Currency-Converter.html', desc:'Convert currencies.'},
-      {title:'Text Case Converter', url:'Text-Case-Converter.html', desc:'Uppercase, lowercase, title case.'},
-      {title:'Word & Character Counter', url:'Word-Character-Counter.html', desc:'Count words & characters.'},
-      {title:'Remove Duplicate Lines', url:'Remove-Duplicate-Lines.html', desc:'Remove repeated lines.'},
-      {title:'Text Sorter', url:'Text-Sorter.html', desc:'Sort lines alphabetically.'},
-      {title:'Text Reverser', url:'Text-Reverser.html', desc:'Reverse text & lines.'},
-      {title:'Text Encryptor', url:'text-encryptor.html', desc:'Encrypt & decrypt text.'},
-      {title:'HTML/CSS/JS Minifier', url:'html-css-js-minifier.html', desc:'Minify front-end code.'},
-      {title:'JSON Formatter', url:'json-formatter.html', desc:'Format & validate JSON.'},
-      {title:'Base64 Encoder', url:'base64-encoder.html', desc:'Encode/decode Base64.'},
-      {title:'URL Encoder', url:'url-encoder.html', desc:'Encode/decode URLs.'},
-      {title:'Color Picker', url:'color-picker.html', desc:'Pick colors & copy HEX/RGB.'},
-      {title:'Regex Tester', url:'regex-tester.html', desc:'Test regular expressions.'},
-      {title:'Color Picker From Image', url:'color-picker-from-image.html', desc:'Sample colors from images.'},
-      {title:'Gradient Generator', url:'gradient-generator.html', desc:'Create CSS gradients.'},
-      {title:'Contrast Checker', url:'contrast-checker.html', desc:'Check accessibility contrast.'},
-      {title:'Palette Generator', url:'palette-generator.html', desc:'Generate color palettes.'},
-      {title:'Color Blindness Simulator', url:'color-blindness-simulator.html', desc:'Simulate color blindness.'},
-      {title:'Keyword Density Checker', url:'keyword-density-checker.html', desc:'Analyze keyword frequency.'},
-      {title:'Meta Tag Analyzer', url:'meta-tag-analyzer.html', desc:'Analyze page meta tags.'},
-      {title:'QR Code Generator & Scanner', url:'qr-code-generator-scanner.html', desc:'Create & scan QR codes.'},
-      {title:'Barcode Generator', url:'barcode-generator.html', desc:'Generate barcodes for labels.'},
-      {title:'UUID Generator', url:'uuid-generator.html', desc:'Create UUIDs.'},
-      {title:'Unit Converter', url:'unit-converter.html', desc:'Convert length, weight, temp & more.'},
-      {title:'Time Zone Converter', url:'time-zone-converter.html', desc:'Convert times across timezones.'},
-      {title:'Random Generator', url:'random-generator.html', desc:'Random numbers & passwords.'},
-      // newly requested tools
-      {title:'Text to Handwriting', url:'text-to-handwriting.html', desc:'Convert typed text to handwriting-style image.'},
-      {title:'Video to GIF Converter', url:'video-to-gif-converter.html', desc:'Convert short videos to animated GIFs.'}
-    ];
+  // ---------- Tools data (complete list from your sitemap + 2 new) ----------
+  const tools = [
+    /* Image Tools */
+    {title:'Image Converter', url:'image-converter.html', cat:'Image Tools', badge:'IC', color:'b-blue', desc:'Convert PNG, JPG, WEBP, AVIF.'},
+    {title:'Image Compressor', url:'image-compressor.html', cat:'Image Tools', badge:'CMP', color:'b-green', desc:'Reduce image file size.'},
+    {title:'Image Resizer', url:'image-resizer.html', cat:'Image Tools', badge:'RES', color:'b-blue', desc:'Resize images to presets or custom sizes.'},
+    {title:'Image Cropper', url:'image-cropper.html', cat:'Image Tools', badge:'CRP', color:'b-blue', desc:'Crop and focus on parts of images.'},
+    {title:'Background Image Remover', url:'Background-Image-Remover.html', cat:'Image Tools', badge:'BIR', color:'b-green', desc:'Auto remove backgrounds.'},
+    {title:'Image Rotator/Flipper', url:'Image-rotator-flipper.html', cat:'Image Tools', badge:'ROT', color:'b-blue', desc:'Rotate & flip images.'},
+    {title:'Image to Text (OCR)', url:'image-to-text(OCR) .html', cat:'Image Tools', badge:'OCR', color:'b-yellow', desc:'Extract text from images.'},
+    {title:'Upscale Image Editor', url:'Upscale-Image-Editor.html', cat:'Image Tools', badge:'UP', color:'b-green', desc:'Upscale & enhance images.'},
+    {title:'Pixel Art Generator', url:'Pixel-Art-Generator.html', cat:'Image Tools', badge:'PX', color:'b-yellow', desc:'Create pixel art.'},
+    {title:'Internet Speed Test', url:'Internet-Speed-Test.html', cat:'Image Tools', badge:'SPEED', color:'b-blue', desc:'Test connection speed.'},
+    {title:'YouTube Thumbnail Tool', url:'YouTube-Thumbnail-Tool.html', cat:'Image Tools', badge:'YT', color:'b-red', desc:'Create thumbnails.'},
+    {title:'Video Watermark Blur Tool', url:'Video- Watermark- Blur -Tool.html', cat:'Image Tools', badge:'VT', color:'b-red', desc:'Blur or watermark videos.'},
+    {title:'Video to GIF Converter', url:'video-to-gif-converter.html', cat:'Image Tools', badge:'GIF', color:'b-green', desc:'Convert videos to GIFs.'},
 
-    /* Featured carousel data */
-    const featured = [
-      {title:'Emails Extractor', url:'Emails-Extractor.html', color:'linear-gradient(135deg,#1a73e8,#34a853)', desc:'Extract emails fast.'},
-      {title:'Script Writing Tool', url:'Script-Writing-Tool.html', color:'linear-gradient(135deg,#34a853,#ea4335)', desc:'Write screenplays & scenes.'},
-      {title:'Language Learning Tool', url:'Language-Learning-Tool.html', color:'linear-gradient(135deg,#ea4335,#fbbc05)', desc:'Practice languages.'},
-      {title:'AI Story Writing Tool', url:'AI-Story-Writing-Tool.html', color:'linear-gradient(135deg,#fbbc05,#1a73e8)', desc:'Generate story ideas.'},
-      {title:'QR Code Generator & Scanner', url:'qr-code-generator-scanner.html', color:'linear-gradient(135deg,#34a853,#1a73e8)', desc:'Create & scan QR codes.'},
-      {title:'Text to Handwriting', url:'text-to-handwriting.html', color:'linear-gradient(135deg,#1a73e8,#34a853)', desc:'Handwritten images from text.'},
-      {title:'Video to GIF Converter', url:'video-to-gif-converter.html', color:'linear-gradient(135deg,#ea4335,#fbbc05)', desc:'Convert video to GIF.'}
-    ];
+    /* Developer & Preview */
+    {title:'HTML Viewer', url:'html-viewer.html', cat:'Developer & SEO', badge:'VIEW', color:'b-blue', desc:'Preview HTML live.'},
 
-    /* utilities to render UI */
-    const toolsGrid = document.getElementById('toolsGrid');
-    const featuredRow = document.getElementById('featuredRow');
-    const totalTools = document.getElementById('totalTools');
+    /* Utilities */
+    {title:'Emails Extractor', url:'Emails-Extractor.html', cat:'Utilities', badge:'EM', color:'b-green', desc:'Extract emails from text.'},
+    {title:'Script Writing Tool', url:'Script-Writing-Tool.html', cat:'AI & Creative', badge:'SW', color:'b-red', desc:'Write scripts & outlines.'},
+    {title:'Language Learning Tool', url:'Language-Learning-Tool.html', cat:'AI & Creative', badge:'LL', color:'b-yellow', desc:'Practice languages.'},
+    {title:'AI Story Writing Tool', url:'AI-Story-Writing-Tool.html', cat:'AI & Creative', badge:'AI', color:'b-green', desc:'Generate stories.'},
+    {title:'URL Shortener Tool', url:'URL-Shortener-Tool.html', cat:'Utilities', badge:'URL', color:'b-blue', desc:'Shorten URLs.'},
+    {title:'AI Content Detector', url:'AI-Content-Detector.html', cat:'AI & Creative', badge:'AID', color:'b-red', desc:'Detect AI-written text.'},
+    {title:'Graphic Designer Tool', url:'Graphic-Designer-Tool.html', cat:'AI & Creative', badge:'GD', color:'b-green', desc:'Design banners & images.'},
+    {title:'Signature Generator', url:'Signature-Generator.html', cat:'AI & Creative', badge:'SG', color:'b-yellow', desc:'Generate signatures.'},
+    {title:'Logo Maker Tool', url:'Logo-Maker-Tool.html', cat:'AI & Creative', badge:'LM', color:'b-blue', desc:'Create logos.'},
+    {title:'Modern Digital Diary', url:'Modern-Digital-Diary.html', cat:'Utilities', badge:'DIARY', color:'b-green', desc:'Notes & diary.'},
+    {title:'Stock Market Simulator', url:'Stock-Market-Simulator.html', cat:'Utilities', badge:'STK', color:'b-red', desc:'Simulate trading.'},
+    {title:'Crypto Price Tracker', url:'Crypto-Price-Tracker.html', cat:'Utilities', badge:'CRY', color:'b-blue', desc:'Track crypto prices.'},
+    {title:'Crypto Portfolio Tracker', url:'Crypto-Portfolio-Tracker.html', cat:'Utilities', badge:'CP', color:'b-green', desc:'Manage crypto holdings.'},
+    {title:'Email / Gmail Generator', url:'Email-Gmail-Generator.html', cat:'AI & Creative', badge:'EG', color:'b-yellow', desc:'Generate email drafts.'},
 
-    function makeToolCard(t){
-      const card = document.createElement('article');
-      card.className = 'tool-card ripple';
-      card.setAttribute('role','listitem');
-      card.setAttribute('data-title', t.title.toLowerCase());
-      card.innerHTML = `
-        <div class="tool-ico" aria-hidden>${(t.title.split(' ').slice(0,2).map(s=>s[0]||'').join('')||'TS').toUpperCase()}</div>
-        <div class="tool-body">
+    /* Content tools */
+    {title:'Grammar Checker', url:'Grammar -Checker.html', cat:'Developer & SEO', badge:'GRAM', color:'b-blue', desc:'Grammar & readability checks.'},
+    {title:'Plagiarism Checker', url:'Plagiarism -Checker.html', cat:'Developer & SEO', badge:'PLG', color:'b-red', desc:'Detect copied content.'},
+
+    /* Generators & Pages */
+    {title:'About Us Generator', url:'About -Us -Generator.html', cat:'Utilities', badge:'ABOUT', color:'b-green', desc:'Create About Us content.'},
+    {title:'Disclaimer Generator', url:'Disclaimer -Generator.html', cat:'Utilities', badge:'DISC', color:'b-yellow', desc:'Create disclaimers.'},
+    {title:'Privacy Policy Generator', url:'Privacy -Policy- Generator.html', cat:'Utilities', badge:'PRIV', color:'b-blue', desc:'Generate privacy policies.'},
+    {title:'Terms & Conditions Generator', url:'terms-and-conditions-generator.html', cat:'Utilities', badge:'T&C', color:'b-red', desc:'Generate T&C.'},
+    {title:'Language Translator', url:'Language -Translator.html', cat:'AI & Creative', badge:'TR', color:'b-green', desc:'Translate text.'},
+
+    /* PDF & Docs */
+    {title:'PDF ↔ Word Converter', url:'pdf-word-converter.html', cat:'PDF & Documents', badge:'PDF', color:'b-blue', desc:'Convert PDF & Word.'},
+    {title:'PDF Compressor', url:'PDF-Compressor.html', cat:'PDF & Documents', badge:'PC', color:'b-green', desc:'Compress PDFs.'},
+    {title:'PDF Merger & Splitter', url:'PDF-Merger-Splitter.html', cat:'PDF & Documents', badge:'MS', color:'b-red', desc:'Merge or split PDFs.'},
+    {title:'Document Converter', url:'Document-Converter.html', cat:'PDF & Documents', badge:'DOC', color:'b-yellow', desc:'Convert documents.'},
+    {title:'PDF Lock/Unlock', url:'PDF-Lock-Unlock.html', cat:'PDF & Documents', badge:'LOCK', color:'b-blue', desc:'Lock/unlock PDFs.'},
+    {title:'eSign PDF', url:'eSign-PDF.html', cat:'PDF & Documents', badge:'ES', color:'b-green', desc:'Sign PDFs.'},
+
+    /* Calculators & Utilities */
+    {title:'Scientific Calculator', url:'Scientific-Calculator.html', cat:'Utilities', badge:'CALC', color:'b-blue', desc:'Advanced calculations.'},
+    {title:'Age Calculator', url:'Age-Calculator.html', cat:'Utilities', badge:'AGE', color:'b-green', desc:'Calculate age.'},
+    {title:'BMI Calculator', url:'BMI-Calculator.html', cat:'Utilities', badge:'BMI', color:'b-yellow', desc:'Calculate BMI.'},
+    {title:'Loan EMI Calculator', url:'Loan-EMI-Calculator.html', cat:'Utilities', badge:'EMI', color:'b-red', desc:'Loan EMI calculations.'},
+    {title:'GST Calculator', url:'GST-Calculator.html', cat:'Utilities', badge:'GST', color:'b-blue', desc:'Compute GST.'},
+    {title:'Currency Converter', url:'Currency-Converter.html', cat:'Utilities', badge:'CUR', color:'b-green', desc:'Convert currencies.'},
+
+    /* Text & Editor */
+    {title:'Text Case Converter', url:'Text-Case-Converter.html', cat:'Text & Editor', badge:'CASE', color:'b-blue', desc:'Change text case.'},
+    {title:'Word & Character Counter', url:'Word-Character-Counter.html', cat:'Text & Editor', badge:'WC', color:'b-green', desc:'Count words & characters.'},
+    {title:'Remove Duplicate Lines', url:'Remove-Duplicate-Lines.html', cat:'Text & Editor', badge:'DUPE', color:'b-yellow', desc:'Remove duplicates.'},
+    {title:'Text Sorter', url:'Text-Sorter.html', cat:'Text & Editor', badge:'SORT', color:'b-red', desc:'Sort lines.'},
+    {title:'Text Reverser', url:'Text-Reverser.html', cat:'Text & Editor', badge:'REV', color:'b-blue', desc:'Reverse text.'},
+    {title:'Text Encryptor', url:'text-encryptor.html', cat:'Text & Editor', badge:'ENC', color:'b-green', desc:'Encrypt/decrypt text.'},
+    {title:'Text to Handwriting', url:'text-to-handwriting.html', cat:'Text & Editor', badge:'HW', color:'b-yellow', desc:'Convert typed text to handwriting images.'},
+
+    /* Dev & SEO Tools */
+    {title:'HTML/CSS/JS Minifier', url:'html-css-js-minifier.html', cat:'Developer & SEO', badge:'MIN', color:'b-blue', desc:'Minify code.'},
+    {title:'JSON Formatter', url:'json-formatter.html', cat:'Developer & SEO', badge:'JSON', color:'b-green', desc:'Format JSON.'},
+    {title:'Base64 Encoder', url:'base64-encoder.html', cat:'Developer & SEO', badge:'B64', color:'b-yellow', desc:'Base64 encode/decode.'},
+    {title:'URL Encoder', url:'url-encoder.html', cat:'Developer & SEO', badge:'URL', color:'b-red', desc:'Encode URLs.'},
+    {title:'Color Picker', url:'color-picker.html', cat:'Developer & SEO', badge:'CLR', color:'b-blue', desc:'Pick colors.'},
+    {title:'Regex Tester', url:'regex-tester.html', cat:'Developer & SEO', badge:'REG', color:'b-green', desc:'Test regex.'},
+    {title:'Color Picker From Image', url:'color-picker-from-image.html', cat:'Developer & SEO', badge:'CIMG', color:'b-yellow', desc:'Sample colors.'},
+    {title:'Gradient Generator', url:'gradient-generator.html', cat:'Developer & SEO', badge:'GRD', color:'b-red', desc:'Create gradients.'},
+    {title:'Contrast Checker', url:'contrast-checker.html', cat:'Developer & SEO', badge:'CC', color:'b-blue', desc:'Check contrast.'},
+    {title:'Palette Generator', url:'palette-generator.html', cat:'Developer & SEO', badge:'PAL', color:'b-green', desc:'Generate palettes.'},
+    {title:'Color Blindness Simulator', url:'color-blindness-simulator.html', cat:'Developer & SEO', badge:'CBS', color:'b-yellow', desc:'Simulate color blindness.'},
+    {title:'Keyword Density Checker', url:'keyword-density-checker.html', cat:'Developer & SEO', badge:'KW', color:'b-red', desc:'Analyze keywords.'},
+    {title:'Meta Tag Analyzer', url:'meta-tag-analyzer.html', cat:'Developer & SEO', badge:'META', color:'b-blue', desc:'Analyze meta tags.'},
+    {title:'QR Code Generator & Scanner', url:'qr-code-generator-scanner.html', cat:'Utilities', badge:'QR', color:'b-green', desc:'Create & scan QR codes.'},
+    {title:'Barcode Generator', url:'barcode-generator.html', cat:'Utilities', badge:'BAR', color:'b-yellow', desc:'Generate barcodes.'},
+    {title:'UUID Generator', url:'uuid-generator.html', cat:'Utilities', badge:'UUID', color:'b-red', desc:'Generate UUIDs.'},
+    {title:'Unit Converter', url:'unit-converter.html', cat:'Utilities', badge:'UNIT', color:'b-blue', desc:'Convert units.'},
+    {title:'Time Zone Converter', url:'time-zone-converter.html', cat:'Utilities', badge:'TZ', color:'b-green', desc:'Convert timezones.'},
+    {title:'Random Generator', url:'random-generator.html', cat:'Utilities', badge:'RND', color:'b-yellow', desc:'Random numbers & passwords.'},
+
+    /* Legal */
+    {title:'Privacy Policy', url:'privacy-policy.html', cat:'Legal', badge:'PRI', color:'b-blue', desc:'Privacy policy.'},
+    {title:'Terms of Use', url:'terms-of-use.html', cat:'Legal', badge:'TER', color:'b-green', desc:'Terms of use.'}
+  ];
+
+  // Featured (subset)
+  const featured = [
+    {title:'Emails Extractor', url:'Emails-Extractor.html', color:'#1a73e8', desc:'Extract emails from text or files.'},
+    {title:'AI Story Writing Tool', url:'AI-Story-Writing-Tool.html', color:'#34a853', desc:'Generate creative stories.'},
+    {title:'Upscale Image Editor', url:'Upscale-Image-Editor.html', color:'#ea4335', desc:'Enhance images.'},
+    {title:'Video to GIF Converter', url:'video-to-gif-converter.html', color:'#fbbc05', desc:'Convert videos to GIF.'},
+    {title:'QR Code Generator & Scanner', url:'qr-code-generator-scanner.html', color:'#1a73e8', desc:'Create & scan QR codes.'},
+    {title:'Internet Speed Test', url:'Internet-Speed-Test.html', color:'#34a853', desc:'Quick speed & latency check.'}
+  ];
+
+  // containers mapping
+  const containers = {
+    'Image Tools': document.getElementById('image-tools'),
+    'PDF & Documents': document.getElementById('pdf-tools'),
+    'Text & Editor': document.getElementById('text-tools'),
+    'AI & Creative': document.getElementById('ai-tools'),
+    'Developer & SEO': document.getElementById('dev-tools'),
+    'Utilities & Calculators': document.getElementById('util-tools'),
+    'Utilities': document.getElementById('util-tools'),
+    'PDF & Documents': document.getElementById('pdf-tools')
+  };
+
+  // Build card HTML
+  function cardHTML(t){
+    const badgeClass = t.color || 'b-blue';
+    return `
+      <article class="card" data-title="${t.title.toLowerCase()}">
+        <div class="ico"><span style="font-weight:900">${(t.badge||t.title.split(' ')[0]).slice(0,3)}</span></div>
+        <div style="flex:1">
           <h3>${t.title}</h3>
           <p>${t.desc || ''}</p>
         </div>
-        <div class="tool-actions">
-          <a class="outline" href="${t.url}" target="_self" rel="noopener">Preview</a>
-          <a class="primary" href="${t.url}" target="_self" rel="noopener">Open</a>
+        <div class="actions">
+          <a class="preview" href="${t.url}" rel="noopener">Preview</a>
+          <a class="open" href="${t.url}" rel="noopener">Open</a>
+        </div>
+      </article>
+    `;
+  }
+
+  // Render function
+  function renderAll(){
+    // Clear containers
+    const imgC = document.getElementById('image-tools');
+    const pdfC = document.getElementById('pdf-tools');
+    const textC = document.getElementById('text-tools');
+    const aiC = document.getElementById('ai-tools');
+    const devC = document.getElementById('dev-tools');
+    const utilC = document.getElementById('util-tools');
+    [imgC,pdfC,textC,aiC,devC,utilC].forEach(c => { if(c) c.innerHTML = '' });
+
+    tools.forEach(t=>{
+      const cat = t.cat || 'Utilities';
+      let container = utilC;
+      if(/image/i.test(cat)) container = imgC;
+      else if(/pdf|document/i.test(cat)) container = pdfC;
+      else if(/text/i.test(cat)) container = textC;
+      else if(/ai|creative/i.test(cat)) container = aiC;
+      else if(/dev|seo/i.test(cat)) container = devC;
+      container.insertAdjacentHTML('beforeend', cardHTML(t));
+    });
+
+    // Featured
+    const featuredRow = document.getElementById('featuredRow');
+    featuredRow.innerHTML = '';
+    featured.forEach(f=>{
+      const el = document.createElement('div');
+      el.className = 'feat-card';
+      el.innerHTML = `
+        <div class="feat-ico" style="background:${f.color}">${(f.title.split(' ')[0]||'T').slice(0,2).toUpperCase()}</div>
+        <div style="flex:1">
+          <div class="feat-title">${f.title}</div>
+          <div class="feat-desc">${f.desc}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <a class="preview" href="${f.url}" rel="noopener" style="padding:8px 10px;border-radius:8px;border:1px solid rgba(10,20,40,0.06);text-decoration:none;color:var(--muted)">Preview</a>
+          <a class="btn" href="${f.url}" rel="noopener" style="background:#16a34a;padding:8px 10px;color:white;border-radius:8px;text-decoration:none">Open</a>
         </div>
       `;
-      return card;
-    }
+      featuredRow.appendChild(el);
+    });
 
-    function renderTools(list){
-      toolsGrid.innerHTML = '';
-      list.forEach(t => toolsGrid.appendChild(makeToolCard(t)));
-      totalTools.textContent = list.length;
-    }
+    // Count
+    document.getElementById('totalCount').innerText = tools.length;
+  }
 
-    function renderFeatured(){
-      featuredRow.innerHTML = '';
-      featured.forEach(f=>{
-        const el = document.createElement('div');
-        el.className = 'feat';
-        el.innerHTML = `
-          <div style="width:44px;height:44px;border-radius:10px;display:grid;place-items:center;font-weight:900;color:#fff;background:${f.color}">${(f.title.split(' ')[0]||'T').slice(0,2).toUpperCase()}</div>
-          <div style="flex:1">
-            <strong>${f.title}</strong>
-            <div style="margin-top:6px;color:var(--muted);font-size:13px">${f.desc}</div>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:8px">
-            <a class="pill" href="${f.url}" target="_self" rel="noopener">Preview</a>
-            <a class="primary" href="${f.url}" target="_self" rel="noopener" style="background:#16a34a">Open</a>
-          </div>
-        `;
-        featuredRow.appendChild(el);
-      });
-    }
+  // Init render
+  renderAll();
 
-    // initial render
-    renderTools(tools);
-    renderFeatured();
-
-    /* Search: main input + drawer search */
+  // Search functionality
+  (function(){
     const input = document.getElementById('search');
-    const clearBtn = document.getElementById('clear');
-    const drawerSearch = document.getElementById('drawerSearch');
-
-    function filterTools(q){
-      q = (q || '').trim().toLowerCase();
-      if(!q){ renderTools(tools); return; }
-      const filtered = tools.filter(t => (t.title + ' ' + t.desc + ' ' + t.url).toLowerCase().includes(q));
-      renderTools(filtered);
-    }
-    input.addEventListener('input', e => filterTools(e.target.value));
-    clearBtn.addEventListener('click', ()=>{ input.value=''; input.focus(); filterTools(''); });
-
-    // focus search with "/"
-    window.addEventListener('keydown', (e)=>{
-      if(e.key === '/' && document.activeElement !== input){
-        e.preventDefault(); input.focus();
-      }
-    });
-
-    // drawer search mirrors main search
-    if(drawerSearch){
-      drawerSearch.addEventListener('input', e => {
-        input.value = e.target.value;
-        filterTools(input.value);
+    const searchBtn = document.getElementById('searchBtn');
+    function doSearch(){
+      const q = input.value.trim().toLowerCase();
+      const cards = document.querySelectorAll('.card');
+      let visible = 0;
+      cards.forEach(c=>{
+        const title = c.getAttribute('data-title') || '';
+        if(!q || title.includes(q)){
+          c.classList.remove('hide'); visible++;
+        } else c.classList.add('hide');
       });
+      document.getElementById('totalCount').innerText = visible || 0;
+      // if exact match single result, scroll into view
+      if(q && visible === 1){
+        const first = document.querySelector('.card:not(.hide)');
+        if(first) first.scrollIntoView({behavior:'smooth',block:'center'});
+      }
     }
+    input.addEventListener('input', doSearch);
+    searchBtn.addEventListener('click', doSearch);
+    input.addEventListener('keydown', function(e){ if(e.key === 'Enter') doSearch(); });
+  })();
 
-    /* Drawer open/close */
-    const openDrawerBtn = document.getElementById('openDrawer');
-    const closeDrawerBtn = document.getElementById('closeDrawer');
+  // Drawer controls
+  (function(){
     const drawer = document.getElementById('drawer');
-    const backdrop = document.getElementById('drawerBackdrop');
-
-    function openDrawer(){
-      drawer.classList.add('open');
-      backdrop.classList.add('open');
-      drawer.setAttribute('aria-hidden','false');
-      openDrawerBtn.setAttribute('aria-expanded','true');
-      backdrop.style.display = 'block';
-      // trap focus: focus first link
-      const firstLink = drawer.querySelector('a');
-      if(firstLink) firstLink.focus();
-    }
-    function closeDrawer(){
-      drawer.classList.remove('open');
-      backdrop.classList.remove('open');
-      drawer.setAttribute('aria-hidden','true');
-      openDrawerBtn.setAttribute('aria-expanded','false');
-      backdrop.style.display = 'none';
-      openDrawerBtn.focus();
-    }
-    openDrawerBtn.addEventListener('click', openDrawer);
-    closeDrawerBtn.addEventListener('click', closeDrawer);
-    backdrop.addEventListener('click', closeDrawer);
-    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeDrawer(); });
-
-    /* Theme toggle */
-    const themeToggle = document.getElementById('themeToggle');
-    const root = document.documentElement;
-    const savedTheme = localStorage.getItem('ts-theme');
-    if(savedTheme === 'dark'){ root.setAttribute('data-theme','dark'); }
-    themeToggle.addEventListener('click', ()=>{
-      if(root.getAttribute('data-theme') === 'dark'){ root.removeAttribute('data-theme'); localStorage.setItem('ts-theme','light'); }
-      else { root.setAttribute('data-theme','dark'); localStorage.setItem('ts-theme','dark'); }
+    const open = document.getElementById('openDrawer');
+    const close = document.getElementById('closeDrawer');
+    open.addEventListener('click', ()=>{ drawer.classList.add('open'); drawer.setAttribute('aria-hidden','false'); });
+    close.addEventListener('click', ()=>{ drawer.classList.remove('open'); drawer.setAttribute('aria-hidden','true'); });
+    // close on outside click
+    document.addEventListener('click', (e)=>{
+      if(!drawer.contains(e.target) && !open.contains(e.target)) drawer.classList.remove('open');
     });
+  })();
 
-    /* Accessibility: allow Enter key on preview/open links (they are <a>, so fine) */
+  // Theme toggle (persist)
+  (function(){
+    const btn = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    if(localStorage.getItem('ts-theme') === 'dark'){ html.setAttribute('data-theme','dark'); }
+    btn.addEventListener('click', function(){
+      if(html.getAttribute('data-theme') === 'dark'){ html.removeAttribute('data-theme'); localStorage.setItem('ts-theme','light'); btn.innerText = 'Dark / Light'; }
+      else { html.setAttribute('data-theme','dark'); localStorage.setItem('ts-theme','dark'); btn.innerText = 'Dark / Light'; }
+    });
+  })();
 
-    /* If you see 404 on any tool, check the exact filename in your repo and update the corresponding 'url' string in the tools array above. */
-
+  // Email button ensures contact works on mobile & desktop
+  document.getElementById('emailBtn').addEventListener('click', function(e){
+    // mailto already in href; no extra handling required
+  });
   </script>
 </body>
 </html>
