@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - ToolStackX | 70+ Developer Tools & Utilities</title>
+    <meta name="description" content="Learn about ToolStackX - your trusted platform for powerful developer tools and utilities. 70+ tools available for developers worldwide.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Google-inspired Color Palette */
+        :root {
+            --primary-blue: #4285F4;
+            --secondary-red: #EA4335;
+            --accent-yellow: #FBBC05;
+            --accent-green: #34A853;
+            --light-gray: #F8F9FA;
+            --medium-gray: #E8EAED;
+            --dark-gray: #3C4043;
+            --text-primary: #202124;
+            --text-secondary: #5F6368;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-gray);
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--secondary-red);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 32px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 8px 0;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-blue);
+        }
+
+        .nav-links a.active {
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+
+        .nav-links a.active:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary-blue);
+            border-radius: 2px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #1a73e8 100%);
+            color: white;
+            padding: 100px 0 80px;
+            text-align: center;
+            margin-bottom: 70px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none"><path d="M0,0 L1000,100 L0,100 Z" fill="rgba(255,255,255,0.05)"></path></svg>');
+            background-size: cover;
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            position: relative;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 750px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+            font-weight: 400;
+            position: relative;
+        }
+
+        /* Language Toggle */
+        .lang-toggle {
+            display: flex;
+            justify-content: center;
+            margin: 25px 0;
+            position: relative;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* Content Sections */
+        .section {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+            padding: 50px;
+            margin-bottom: 50px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .section-title {
+            font-size: 2.1rem;
+            margin-bottom: 30px;
+            color: var(--primary-blue);
+            position: relative;
+            padding-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 70px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-green));
+            border-radius: 2px;
+        }
+
+        .section p {
+            margin-bottom: 22px;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            text-align: justify;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-radius: 10px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            border-left: 5px solid var(--primary-blue);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 2.8rem;
+            color: var(--primary-blue);
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 0;
+        }
+
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .team-member {
+            text-align: center;
+            padding: 25px;
+            border-radius: 10px;
+            background-color: var(--light-gray);
+            transition: all 0.3s ease;
+        }
+
+        .team-member:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .member-avatar {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--accent-green) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.8rem;
+            box-shadow: 0 8px 20px rgba(66, 133, 244, 0.3);
+        }
+
+        .team-member h3 {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .team-member p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        /* Stats Section */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-number {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        /* Timeline Section */
+        .timeline {
+            position: relative;
+            max-width: 900px;
+            margin: 40px auto 0;
+        }
+
+        .timeline:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--primary-blue), var(--accent-green));
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 50px;
+            width: 50%;
+            padding: 0 40px;
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+
+        .timeline-content {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            position: relative;
+        }
+
+        .timeline-content:after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            transform: rotate(45deg);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content:after {
+            right: -10px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content:after {
+            left: -10px;
+        }
+
+        .timeline-year {
+            display: inline-block;
+            background: var(--primary-blue);
+            color: white;
+            padding: 6px 15px;
+            border-radius: 30px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .timeline-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #1a73e8 100%);
+            color: white;
+            text-align: center;
+            padding: 80px 40px;
+            border-radius: 12px;
+            margin: 70px 0 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none"><path d="M0,0 L1000,100 L0,100 Z" fill="rgba(255,255,255,0.1)"></path></svg>');
+            background-size: cover;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .cta-section p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 35px;
+            opacity: 0.9;
+            position: relative;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: white;
+            color: var(--primary-blue);
+            padding: 15px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-gray);
+            color: white;
+            padding: 70px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            color: white;
+            font-weight: 600;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+
+        .footer-links a {
+            color: #BDC1C6;
+            text-decoration: none;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-links a i {
+            margin-right: 10px;
+            width: 20px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #5F6368;
+            color: #BDC1C6;
+            font-size: 0.95rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .timeline:before {
+                left: 30px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 0;
+            }
+            
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+            
+            .timeline-item:nth-child(odd) .timeline-content:after {
+                left: -10px;
+                right: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 15px 0;
+            }
+
+            .nav-links {
+                margin-top: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .nav-links li {
+                margin: 0 10px 10px;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .section {
+                padding: 35px;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-section {
+                padding: 60px 25px;
+            }
+            
+            .cta-section h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 80px 0 60px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .section {
+                padding: 25px;
+            }
+            
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Urdu Text Style */
+        .urdu-text {
+            direction: rtl;
+            text-align: right;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="index.html" class="logo">Tool<span>StackX</span></a>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="tools.html">All Tools</a></li>
+                    <li><a href="about-us.html" class="active">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>About ToolStackX</h1>
+            <p>Your trusted platform for powerful developer tools and utilities designed to streamline your workflow and boost productivity.</p>
+            
+            <div class="lang-toggle">
+                <button class="lang-btn" id="englishBtn">English</button>
+                <button class="lang-btn" id="urduBtn">اردو</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Our Story Section -->
+        <section class="section">
+            <h2 class="section-title">Our Story</h2>
+            <div id="englishStory">
+                <p>ToolStackX was founded in 2025 with a simple yet powerful mission: to create an all-in-one platform that provides developers with the essential tools they need to work more efficiently. We understand the challenges developers face when switching between multiple applications and platforms to complete their daily tasks.</p>
+                <p>Our journey began when our founder, a seasoned developer, grew frustrated with the fragmented tool ecosystem. He envisioned a unified platform where developers could access all necessary utilities without the hassle of navigating between different websites and applications.</p>
+                <p>Today, ToolStackX has evolved into a comprehensive suite of 70+ tools that simplifies complex processes, saves valuable time, and enhances productivity for developers of all skill levels. From code formatters and validators to image optimizers and data converters, we've built solutions for the most common development challenges.</p>
+            </div>
+            <div id="urduStory" class="urdu-text hidden">
+                <p>ٹول اسٹیک ایکس کی بنیاد 2025 میں ایک سادہ مگر طاقتور مشن کے ساتھ رکھی گئی تھی: ایک ایسا آل ان ون پلیٹ فارم بنانا جو ڈویلپرز کو وہ ضروری ٹولز مہیا کرے جن کی انہیں زیادہ مؤثر طریقے سے کام کرنے کے لیے ضرورت ہے۔ ہم ان چیلنجز کو سمجھتے ہیں جو ڈویلپرز کو اپنے روزمرہ کے کاموں کو مکمل کرنے کے لیے متعدد ایپلیکیشنز اور پلیٹ فارمز کے درمیان سوئچ کرتے وقت درپیش آتے ہیں۔</p>
+                <p>ہمارا سفر اس وقت شروع ہوا جب ہمارے بانی، ایک تجربہ کار ڈویلپر، ٹول ایکو سسٹم کے منتشر ہونے سے مایوس ہو گئے۔ انہوں نے ایک متحد پلیٹ فارم کا تصور کیا جہاں ڈویلپرز مختلف ویب سائٹس اور ایپلیکیشنز کے درمیان نیویگیٹ کی پریشانی کے بغیر تمام ضروری یوٹیلٹیز تک رسائی حاصل کر سکیں۔</p>
+                <p>آج، ٹول اسٹیک ایکس 70 سے زیادہ ٹولز کے ایک جامع سوٹ میں تبدیل ہو چکا ہے جو پیچیدہ عملوں کو آسان بناتا ہے، قیمتی وقت بچاتا ہے، اور تمام مہارت کی سطحوں کے ڈویلپرز کے لیے پیداواریت کو بڑھاتا ہے۔ کوڈ فارمیٹرز اور والیڈیٹرز سے لے کر امیج آپٹیمائزرز اور ڈیٹا کنورٹرز تک، ہم نے سب سے عام ڈویلپمنٹ چیلنجز کے لیے حل بنائے ہیں۔</p>
+            </div>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number">50K+</div>
+                    <div class="stat-label">Active Users</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">70+</div>
+                    <div class="stat-label">Tools Available</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Satisfaction Rate</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">2025</div>
+                    <div class="stat-label">Founded</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Mission Section -->
+        <section class="section">
+            <h2 class="section-title">Our Mission & Vision</h2>
+            <div id="englishMission">
+                <p>At ToolStackX, we're committed to empowering developers by providing accessible, reliable, and powerful tools that simplify complex tasks. We believe that technology should work for you, not against you.</p>
+                <p>Our mission is to continuously innovate and expand our toolset to meet the evolving needs of the developer community while maintaining the highest standards of quality, security, and user experience.</p>
+                <p>We envision a future where developers can focus on creativity and problem-solving rather than getting bogged down by repetitive tasks and tool management. By providing a comprehensive, integrated platform, we aim to eliminate the friction in development workflows and accelerate innovation across the tech industry.</p>
+            </div>
+            <div id="urduMission" class="urdu-text hidden">
+                <p>ٹول اسٹیک ایکس میں، ہم ڈویلپرز کو بااختیار بنانے کے لیے پرعزم ہیں جو پیچیدہ کاموں کو آسان بنانے کے لیے قابل رسائی، قابل اعتماد، اور طاقتور ٹولز مہیا کرتے ہیں۔ ہمارا ماننا ہے کہ ٹیکنالوجی کو آپ کے لیے کام کرنا چاہیے، آپ کے خلاف نہیں۔</p>
+                <p>ہمارا مشن معیار، سیکورٹی، اور صارف کے تجربے کے اعلی معیارات کو برقرار رکھتے ہوئے ڈویلپر کمیونٹی کی بدلتی ہوئی ضروریات کو پورا کرنے کے لیے مسلسل جدت اور اپنے ٹول سیٹ کو وسعت دینا ہے۔</p>
+                <p>ہم ایک ایسے مستقیل کا تصور کرتے ہیں جہاں ڈویلپرز تخلیقی صلاحیتوں اور مسئلہ حل کرنے پر توجہ مرکوز کر سکیں بجائے اس کے کہ وہ بار بار کیے جانے والے کاموں اور ٹول مینجمنٹ میں پھنس جائیں۔ ایک جامع، مربوط پلیٹ فارم مہیا کرکے، ہم ڈویلپمنٹ ورک فلو میں رگڑ کو ختم کرنے اور ٹیک انڈسٹری میں جدت کو تیز کرنے کا ارادہ رکھتے ہیں۔</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Speed & Efficiency</h3>
+                    <p>Our tools are optimized for performance, helping you accomplish tasks faster without compromising on quality.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Security First</h3>
+                    <p>We prioritize the security of your data and implement robust measures to protect your information.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>User-Centric Design</h3>
+                    <p>Every tool is designed with the user in mind, ensuring intuitive interfaces and seamless experiences.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Journey Section -->
+        <section class="section">
+            <h2 class="section-title">Our Journey</h2>
+            <div id="englishJourney">
+                <p>From a simple idea to a platform serving thousands of developers worldwide, our journey has been marked by continuous improvement and user-focused innovation.</p>
+            </div>
+            <div id="urduJourney" class="urdu-text hidden">
+                <p>ایک سادہ خیال سے لے کر دنیا بھر میں ہزاروں ڈویلپرز کی خدمت کرنے والے پلیٹ فارم تک، ہمارا سفر مسلسل بہتری اور صارف پر مرکوز جدت طرازی سے نشان زد ہے۔</p>
+            </div>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="timeline-year">2025</span>
+                        <h3>Foundation</h3>
+                        <p>ToolStackX was founded with a vision to simplify developer workflows. Launched with 15 essential tools.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="timeline-year">2026</span>
+                        <h3>Rapid Growth</h3>
+                        <p>Expanded to 40+ tools and reached 10,000 active users. Introduced advanced features and API access.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="timeline-year">2027</span>
+                        <h3>Global Expansion</h3>
+                        <p>Reached 50,000+ users worldwide. Added multi-language support and mobile-responsive design.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="timeline-year">Future</span>
+                        <h3>Innovation Continues</h3>
+                        <p>Planning AI-powered tools, collaborative features, and expanded integrations with popular development platforms.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section class="section">
+            <h2 class="section-title">Meet Our Team</h2>
+            <div id="englishTeam">
+                <p>ToolStackX is powered by a diverse team of passionate developers, designers, and technology enthusiasts dedicated to creating the best possible experience for our users.</p>
+            </div>
+            <div id="urduTeam" class="urdu-text hidden">
+                <p>ٹول اسٹیک ایکس پرجوش ڈویلپرز، ڈیزائنرز، اور ٹیکنالوجی کے شوقین افراد کے ایک متنوع ٹیم کے ذریعے چلایا جاتا ہے جو اپنے صارفین کے لیے بہترین ممکنہ تجربہ تخلیق کرنے کے لیے وقف ہیں۔</p>
+            </div>
+            
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3>Alex Johnson</h3>
+                    <p>Founder & CEO</p>
+                    <p>10+ years in software development</p>
+                </div>
+                <div class="team-member">
+                    <div class="member-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3>Sarah Chen</h3>
+                    <p>Lead Developer</p>
+                    <p>Full-stack development expert</p>
+                </div>
+                <div class="team-member">
+                    <div class="member-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3>Michael Rodriguez</h3>
+                    <p>UI/UX Designer</p>
+                    <p>Creating intuitive user experiences</p>
+                </div>
+                <div class="team-member">
+                    <div class="member-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3>Emily Watson</h3>
+                    <p>Product Manager</p>
+                    <p>Driving product innovation</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <h2>Ready to Boost Your Productivity?</h2>
+            <p>Join thousands of developers who are already using ToolStackX to streamline their workflow and accomplish more in less time.</p>
+            <a href="tools.html" class="cta-button">Explore Our Tools</a>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>ToolStackX</h3>
+                    <p>Your all-in-one platform for developer tools and utilities designed to enhance productivity and streamline workflows.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="tools.html"><i class="fas fa-tools"></i> All Tools</a></li>
+                        <li><a href="about-us.html"><i class="fas fa-info-circle"></i> About Us</a></li>
+                        <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Tools</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-code"></i> Code Tools</a></li>
+                        <li><a href="#"><i class="fas fa-font"></i> Text Tools</a></li>
+                        <li><a href="#"><i class="fas fa-image"></i> Image Tools</a></li>
+                        <li><a href="#"><i class="fas fa-database"></i> Data Tools</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Connect With Us</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                        <li><a href="#"><i class="fab fa-github"></i> GitHub</a></li>
+                        <li><a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+                        <li><a href="#"><i class="fab fa-dev"></i> Dev.to</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 ToolStackX. All rights reserved. | Empowering developers worldwide</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Language toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const englishBtn = document.getElementById('englishBtn');
+            const urduBtn = document.getElementById('urduBtn');
+            
+            // English content elements
+            const englishStory = document.getElementById('englishStory');
+            const englishMission = document.getElementById('englishMission');
+            const englishJourney = document.getElementById('englishJourney');
+            const englishTeam = document.getElementById('englishTeam');
+            
+            // Urdu content elements
+            const urduStory = document.getElementById('urduStory');
+            const urduMission = document.getElementById('urduMission');
+            const urduJourney = document.getElementById('urduJourney');
+            const urduTeam = document.getElementById('urduTeam');
+            
+            // Set English as default
+            showEnglish();
+            
+            // Button event listeners
+            englishBtn.addEventListener('click', showEnglish);
+            urduBtn.addEventListener('click', showUrdu);
+            
+            function showEnglish() {
+                // Show English content
+                englishStory.classList.remove('hidden');
+                englishMission.classList.remove('hidden');
+                englishJourney.classList.remove('hidden');
+                englishTeam.classList.remove('hidden');
+                
+                // Hide Urdu content
+                urduStory.classList.add('hidden');
+                urduMission.classList.add('hidden');
+                urduJourney.classList.add('hidden');
+                urduTeam.classList.add('hidden');
+                
+                // Update button styles
+                englishBtn.style.background = 'rgba(255, 255, 255, 0.3)';
+                urduBtn.style.background = 'rgba(255, 255, 255, 0.15)';
+            }
+            
+            function showUrdu() {
+                // Show Urdu content
+                urduStory.classList.remove('hidden');
+                urduMission.classList.remove('hidden');
+                urduJourney.classList.remove('hidden');
+                urduTeam.classList.remove('hidden');
+                
+                // Hide English content
+                englishStory.classList.add('hidden');
+                englishMission.classList.add('hidden');
+                englishJourney.classList.add('hidden');
+                englishTeam.classList.add('hidden');
+                
+                // Update button styles
+                urduBtn.style.background = 'rgba(255, 255, 255, 0.3)';
+                englishBtn.style.background = 'rgba(255, 255, 255, 0.15)';
+            }
+        });
+    </script>
+</body>
+</html>
