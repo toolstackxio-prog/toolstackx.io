@@ -1,295 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/image-converter.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/image-compressor.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/image-resizer.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/image-cropper.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Background-Image-Remover.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Image-rotator-flipper.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/image-to-text(OCR) .html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Upscale-Image-Editor.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Pixel-Art-Generator.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Internet-Speed-Test.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/YouTube-Thumbnail-Tool.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/html-viewer.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Emails-Extractor.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Script-Writing-Tool.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Language-Learning-Tool.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/AI-Story-Writing-Tool.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/URL-Shortener-Tool.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/AI-Content-Detector.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Graphic-Designer-Tool.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Signature-Generator.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Logo-Maker-Tool.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Modern-Digital-Diary.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Stock-Market-Simulator.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Crypto-Price-Tracker.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Crypto-Portfolio-Tracker.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Email-Gmail-Generator.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Grammar -Checker.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Plagiarism -Checker.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Video- Watermark- Blur -Tool.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/About -Us -Generator.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Disclaimer -Generator.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Privacy -Policy- Generator.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/terms-and-conditions-generator.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Language -Translator.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/pdf-word-converter.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/PDF-Compressor.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/PDF-Merger-Splitter.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Document-Converter.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/PDF-Lock-Unlock.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/eSign-PDF.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Scientific-Calculator.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Age-Calculator.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/BMI-Calculator.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Loan-EMI-Calculator.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/GST-Calculator.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Currency-Converter.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Text-Case-Converter.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Word-Character-Counter.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Remove-Duplicate-Lines.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Text-Sorter.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/Text-Reverser.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/text-encryptor.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/html-css-js-minifier.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/json-formatter.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/base64-encoder.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/url-encoder.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/color-picker.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/regex-tester.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/color-picker-from-image.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/gradient-generator.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/contrast-checker.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/palette-generator.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/color-blindness-simulator.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/keyword-density-checker.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/meta-tag-analyzer.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/qr-code-generator-scanner.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/barcode-generator.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/uuid-generator.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/unit-converter.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/time-zone-converter.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/random-generator.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/privacy-policy.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://toolstackxio-prog.github.io/toolstackx.io/terms-of-use.html</loc>
-    <priority>0.8</priority>
-  </url>
+<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- 🏠 Homepage -->
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/</loc>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- 🖼️ Image Tools -->
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/image-converter.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/image-compressor.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/image-resizer.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/image-cropper.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Background-Image-Remover.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Image-rotator-flipper.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/image-to-text(OCR)%20.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Upscale-Image-Editor.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Pixel-Art-Generator.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/YouTube-Thumbnail-Tool.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Video-%20Watermark-%20Blur%20-Tool.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/video-to-gif-converter.html</loc></url>
+
+  <!-- 🧠 Viewer / Extractor / Creative Tools -->
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/html-viewer.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Emails-Extractor.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Script-Writing-Tool.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Language-Learning-Tool.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/AI-Story-Writing-Tool.html</loc></url>
+
+  <!-- 🔗 URL / AI / Graphic Tools -->
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/URL-Shortener-Tool.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/AI-Content-Detector.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Graphic-Designer-Tool.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Signature-Generator.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Logo-Maker-Tool.html</loc></url>
+
+  <!-- 💼 Diary / Finance Tools -->
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Modern-Digital-Diary.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Stock-Market-Simulator.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Crypto-Price-Tracker.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Crypto-Portfolio-Tracker.html</loc></url>
+
+  <!-- 📧 Email / Grammar / Plagiarism -->
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Email-Gmail-Generator.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Grammar%20-Checker.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Plagiarism%20-Checker.html</loc></url>
+
+  <!-- 📜 Generators & Legal Pages -->
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/About%20-Us%20-Generator.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Disclaimer%20-Generator.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Privacy%20-Policy-%20Generator.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/terms-and-conditions-generator.html</loc></url>
+
+  <!-- 🌐 Language / Document Tools -->
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Language%20-Translator.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/pdf-word-converter.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/PDF-Compressor.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/PDF-Merger-Splitter.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Document-Converter.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/PDF-Lock-Unlock.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/eSign-PDF.html</loc></url>
+
+  <!-- 🧮 Calculators -->
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Scientific-Calculator.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Age-Calculator.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/BMI-Calculator.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Loan-EMI-Calculator.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/GST-Calculator.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Currency-Converter.html</loc></url>
+
+  <!-- ✍️ Text Tools -->
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Text-Case-Converter.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Word-Character-Counter.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Remove-Duplicate-Lines.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Text-Sorter.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Text-Reverser.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/text-encryptor.html</loc></url>
+
+  <!-- 👨‍💻 Developer & SEO Tools -->
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/html-css-js-minifier.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/json-formatter.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/base64-encoder.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/url-encoder.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/color-picker.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/regex-tester.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/color-picker-from-image.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/gradient-generator.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/contrast-checker.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/palette-generator.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/color-blindness-simulator.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/keyword-density-checker.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/meta-tag-analyzer.html</loc></url>
+
+  <!-- 🧰 Utility Tools -->
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/qr-code-generator-scanner.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/barcode-generator.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/uuid-generator.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/unit-converter.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/time-zone-converter.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/random-generator.html</loc></url>
+
+  <!-- ⚙️ Legal & Site Pages -->
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/privacy-policy.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/terms-of-use.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/about-us.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/contact-us.html</loc></url>
+
+  <!-- 🆕 New Tools -->
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/text-to-handwriting.html</loc></url>
+  <url><loc>https://toolstackxio-prog.github.io/toolstackx.io/Website-checker.html</loc></url>
+
+  <!-- 🌐 Internet Tool -->
+  <url>
+    <loc>https://toolstackxio-prog.github.io/toolstackx.io/internet-speed-test.html</loc>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>
