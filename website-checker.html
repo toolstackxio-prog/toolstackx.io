@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Checker Tool - Analyze Any Website | ToolStackX</title>
+    <meta name="description" content="Free Website Checker Tool - Analyze any website for SEO, performance, security, and technical issues. Get detailed reports and optimization suggestions.">
+    <meta name="keywords" content="website checker, website analyzer, SEO analysis, website performance, security check, website audit">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Google-inspired Color Palette */
+        :root {
+            --primary-blue: #4285F4;
+            --secondary-red: #EA4335;
+            --accent-yellow: #FBBC05;
+            --accent-green: #34A853;
+            --light-gray: #F8F9FA;
+            --medium-gray: #E8EAED;
+            --dark-gray: #3C4043;
+            --text-primary: #202124;
+            --text-secondary: #5F6368;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-gray);
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--secondary-red);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 32px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 8px 0;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-blue);
+        }
+
+        .nav-links a.active {
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+
+        .nav-links a.active:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary-blue);
+            border-radius: 2px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #1a73e8 100%);
+            color: white;
+            padding: 100px 0 80px;
+            text-align: center;
+            margin-bottom: 70px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none"><path d="M0,0 L1000,100 L0,100 Z" fill="rgba(255,255,255,0.05)"></path></svg>');
+            background-size: cover;
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            position: relative;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 750px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+            font-weight: 400;
+            position: relative;
+        }
+
+        /* Checker Section */
+        .checker-section {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+            padding: 50px;
+            margin-bottom: 50px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .checker-section:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 2.1rem;
+            margin-bottom: 30px;
+            color: var(--primary-blue);
+            position: relative;
+            padding-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 70px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-green));
+            border-radius: 2px;
+        }
+
+        .checker-form {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .url-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid var(--medium-gray);
+            border-radius: 8px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .url-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.2);
+        }
+
+        .check-btn {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .check-btn:hover {
+            background: #1a73e8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(66, 133, 244, 0.3);
+        }
+
+        .check-btn:disabled {
+            background: var(--medium-gray);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .example-text {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-top: 10px;
+        }
+
+        /* Results Section */
+        .results-section {
+            display: none;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+            padding: 50px;
+            margin-bottom: 50px;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .website-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .website-favicon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background-color: var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--primary-blue);
+        }
+
+        .website-details h3 {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+
+        .website-details p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .score-container {
+            text-align: center;
+        }
+
+        .score-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: conic-gradient(var(--accent-green) 0% 78%, var(--medium-gray) 78% 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            position: relative;
+        }
+
+        .score-circle:before {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .score-value {
+            position: relative;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .score-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .metric-card {
+            background: var(--light-gray);
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .metric-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .metric-icon.seo {
+            color: var(--primary-blue);
+        }
+
+        .metric-icon.performance {
+            color: var(--accent-green);
+        }
+
+        .metric-icon.security {
+            color: var(--secondary-red);
+        }
+
+        .metric-icon.mobile {
+            color: var(--accent-yellow);
+        }
+
+        .metric-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .metric-status {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-good {
+            background: rgba(52, 168, 83, 0.15);
+            color: var(--accent-green);
+        }
+
+        .status-average {
+            background: rgba(251, 188, 5, 0.15);
+            color: var(--accent-yellow);
+        }
+
+        .status-poor {
+            background: rgba(234, 67, 53, 0.15);
+            color: var(--secondary-red);
+        }
+
+        /* Issues Section */
+        .issues-section {
+            margin-bottom: 40px;
+        }
+
+        .issues-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .issue-category {
+            background: var(--light-gray);
+            border-radius: 10px;
+            padding: 25px;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .category-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .category-icon.critical {
+            background: rgba(234, 67, 53, 0.15);
+            color: var(--secondary-red);
+        }
+
+        .category-icon.warning {
+            background: rgba(251, 188, 5, 0.15);
+            color: var(--accent-yellow);
+        }
+
+        .category-icon.info {
+            background: rgba(66, 133, 244, 0.15);
+            color: var(--primary-blue);
+        }
+
+        .category-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .issues-list {
+            list-style: none;
+        }
+
+        .issue-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .issue-item:last-child {
+            border-bottom: none;
+        }
+
+        .issue-icon {
+            color: var(--secondary-red);
+            font-size: 1rem;
+            margin-top: 2px;
+        }
+
+        .issue-content h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .issue-content p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Recommendations Section */
+        .recommendations-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .recommendations-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--primary-blue);
+        }
+
+        .recommendations-list {
+            list-style: none;
+        }
+
+        .recommendation-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .recommendation-item:last-child {
+            border-bottom: none;
+        }
+
+        .recommendation-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .recommendation-content h4 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .recommendation-content p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        /* How to Use Section */
+        .how-to-use {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+            padding: 50px;
+            margin-bottom: 50px;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .step {
+            text-align: center;
+            padding: 30px 20px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary-blue);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 0 auto 20px;
+        }
+
+        .step h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .step p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #1a73e8 100%);
+            color: white;
+            text-align: center;
+            padding: 80px 40px;
+            border-radius: 12px;
+            margin: 70px 0 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none"><path d="M0,0 L1000,100 L0,100 Z" fill="rgba(255,255,255,0.1)"></path></svg>');
+            background-size: cover;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .cta-section p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 35px;
+            opacity: 0.9;
+            position: relative;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: white;
+            color: var(--primary-blue);
+            padding: 15px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-gray);
+            color: white;
+            padding: 70px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            color: white;
+            font-weight: 600;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+
+        .footer-links a {
+            color: #BDC1C6;
+            text-decoration: none;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-links a i {
+            margin-right: 10px;
+            width: 20px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #5F6368;
+            color: #BDC1C6;
+            font-size: 0.95rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 15px 0;
+            }
+
+            .nav-links {
+                margin-top: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .nav-links li {
+                margin: 0 10px 10px;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .checker-section, .results-section, .how-to-use {
+                padding: 35px;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .checker-form {
+                flex-direction: column;
+            }
+
+            .results-header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-section {
+                padding: 60px 25px;
+            }
+            
+            .cta-section h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 80px 0 60px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .checker-section, .results-section, .how-to-use {
+                padding: 25px;
+            }
+            
+            .steps {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Loading Animation */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--medium-gray);
+            border-top: 5px solid var(--primary-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="index.html" class="logo">Tool<span>StackX</span></a>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="tools.html">All Tools</a></li>
+                    <li><a href="website-checker-tool.html" class="active">Website Checker</a></li>
+                    <li><a href="about-us.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Website Checker Tool</h1>
+            <p>Comprehensive website analysis tool to check SEO, performance, security, and technical issues. Get detailed reports and optimization suggestions.</p>
+        </div>
+    </section>
+
+    <!-- Checker Section -->
+    <section class="checker-section container">
+        <h2 class="section-title">Analyze Any Website</h2>
+        <p>Enter a website URL to get a comprehensive analysis of its performance, SEO, security, and technical health.</p>
+        
+        <div class="checker-form">
+            <input type="url" class="url-input" id="websiteUrl" placeholder="https://example.com" required>
+            <button class="check-btn" id="checkButton">
+                <i class="fas fa-search"></i> Check Website
+            </button>
+        </div>
+        <p class="example-text">Example: https://www.example.com or example.com</p>
+        
+        <div class="loading" id="loadingIndicator">
+            <div class="spinner"></div>
+            <p>Analyzing website. This may take a few seconds...</p>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="results-section container" id="resultsSection">
+        <div class="results-header">
+            <div class="website-info">
+                <div class="website-favicon">
+                    <i class="fas fa-globe"></i>
+                </div>
+                <div class="website-details">
+                    <h3 id="resultDomain">example.com</h3>
+                    <p id="resultUrl">https://example.com</p>
+                </div>
+            </div>
+            <div class="score-container">
+                <div class="score-circle">
+                    <div class="score-value" id="overallScore">78</div>
+                </div>
+                <div class="score-label">Overall Score</div>
+            </div>
+        </div>
+        
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-icon seo">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3>SEO</h3>
+                <div class="metric-value" id="seoScore">85%</div>
+                <span class="metric-status status-good">Good</span>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon performance">
+                    <i class="fas fa-tachometer-alt"></i>
+                </div>
+                <h3>Performance</h3>
+                <div class="metric-value" id="performanceScore">72%</div>
+                <span class="metric-status status-average">Average</span>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon security">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Security</h3>
+                <div class="metric-value" id="securityScore">90%</div>
+                <span class="metric-status status-good">Excellent</span>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon mobile">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3>Mobile</h3>
+                <div class="metric-value" id="mobileScore">68%</div>
+                <span class="metric-status status-average">Needs Work</span>
+            </div>
+        </div>
+        
+        <div class="issues-section">
+            <h3>Issues Found</h3>
+            <div class="issues-categories">
+                <div class="issue-category">
+                    <div class="category-header">
+                        <div class="category-icon critical">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div class="category-title">Critical Issues</div>
+                    </div>
+                    <ul class="issues-list" id="criticalIssues">
+                        <li class="issue-item">
+                            <div class="issue-icon">
+                                <i class="fas fa-times-circle"></i>
+                            </div>
+                            <div class="issue-content">
+                                <h4>No SSL Certificate</h4>
+                                <p>Website is not using HTTPS, which affects security and SEO.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="issue-category">
+                    <div class="category-header">
+                        <div class="category-icon warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="category-title">Warnings</div>
+                    </div>
+                    <ul class="issues-list" id="warningIssues">
+                        <li class="issue-item">
+                            <div class="issue-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="issue-content">
+                                <h4>Large Image Files</h4>
+                                <p>Some images are not optimized, affecting page load times.</p>
+                            </div>
+                        </li>
+                        <li class="issue-item">
+                            <div class="issue-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="issue-content">
+                                <h4>Missing Meta Description</h4>
+                                <p>Some pages are missing meta descriptions for SEO.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="issue-category">
+                    <div class="category-header">
+                        <div class="category-icon info">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <div class="category-title">Suggestions</div>
+                    </div>
+                    <ul class="issues-list" id="suggestionIssues">
+                        <li class="issue-item">
+                            <div class="issue-icon">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <div class="issue-content">
+                                <h4>Improve Caching</h4>
+                                <p>Implement browser caching to improve load times for returning visitors.</p>
+                            </div>
+                        </li>
+                        <li class="issue-item">
+                            <div class="issue-icon">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <div class="issue-content">
+                                <h4>Add Structured Data</h4>
+                                <p>Implement schema markup to enhance search engine visibility.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="recommendations-section">
+            <h3>Optimization Recommendations</h3>
+            <ul class="recommendations-list">
+                <li class="recommendation-item">
+                    <div class="recommendation-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="recommendation-content">
+                        <h4>Enable HTTPS</h4>
+                        <p>Install an SSL certificate to secure your website and improve SEO rankings.</p>
+                    </div>
+                </li>
+                <li class="recommendation-item">
+                    <div class="recommendation-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="recommendation-content">
+                        <h4>Optimize Images</h4>
+                        <p>Compress and resize images to reduce page load times.</p>
+                    </div>
+                </li>
+                <li class="recommendation-item">
+                    <div class="recommendation-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="recommendation-content">
+                        <h4>Improve Mobile Experience</h4>
+                        <p>Ensure your website is fully responsive and mobile-friendly.</p>
+                    </div>
+                </li>
+                <li class="recommendation-item">
+                    <div class="recommendation-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="recommendation-content">
+                        <h4>Add Meta Descriptions</h4>
+                        <p>Write compelling meta descriptions for all pages to improve click-through rates.</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- How to Use Section -->
+    <section class="how-to-use container">
+        <h2 class="section-title">How to Use This Tool</h2>
+        <p>Follow these simple steps to analyze any website and get comprehensive insights:</p>
+        
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Enter Website URL</h3>
+                <p>Type or paste the complete website URL you want to analyze in the input field above.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Click Check Website</h3>
+                <p>Press the "Check Website" button to start the comprehensive analysis process.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Review Results</h3>
+                <p>Examine the detailed report with scores, issues, and optimization recommendations.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <h3>Implement Changes</h3>
+                <p>Use the suggestions to improve your website's performance, SEO, and security.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Improve Your Website?</h2>
+            <p>Use our detailed analysis to identify issues and implement solutions that will boost your website's performance and visibility.</p>
+            <a href="tools.html" class="cta-button">Explore All Tools</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>ToolStackX</h3>
+                    <p>Your all-in-one platform for developer tools and utilities designed to enhance productivity and streamline workflows.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="tools.html"><i class="fas fa-tools"></i> All Tools</a></li>
+                        <li><a href="website-checker-tool.html"><i class="fas fa-search"></i> Website Checker</a></li>
+                        <li><a href="about-us.html"><i class="fas fa-info-circle"></i> About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Tools</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-code"></i> Code Tools</a></li>
+                        <li><a href="#"><i class="fas fa-font"></i> Text Tools</a></li>
+                        <li><a href="#"><i class="fas fa-image"></i> Image Tools</a></li>
+                        <li><a href="#"><i class="fas fa-database"></i> Data Tools</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Connect With Us</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                        <li><a href="#"><i class="fab fa-github"></i> GitHub</a></li>
+                        <li><a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+                        <li><a href="#"><i class="fab fa-dev"></i> Dev.to</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 ToolStackX. All rights reserved. | Empowering developers worldwide</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkButton = document.getElementById('checkButton');
+            const websiteUrl = document.getElementById('websiteUrl');
+            const resultsSection = document.getElementById('resultsSection');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            
+            // Result elements
+            const resultDomain = document.getElementById('resultDomain');
+            const resultUrl = document.getElementById('resultUrl');
+            const overallScore = document.getElementById('overallScore');
+            const seoScore = document.getElementById('seoScore');
+            const performanceScore = document.getElementById('performanceScore');
+            const securityScore = document.getElementById('securityScore');
+            const mobileScore = document.getElementById('mobileScore');
+            
+            checkButton.addEventListener('click', function() {
+                const url = websiteUrl.value.trim();
+                
+                if (!url) {
+                    alert('Please enter a website URL');
+                    return;
+                }
+                
+                // Validate URL format
+                let formattedUrl = url;
+                if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                    formattedUrl = 'https://' + url;
+                }
+                
+                // Show loading indicator
+                loadingIndicator.style.display = 'block';
+                checkButton.disabled = true;
+                
+                // Simulate analysis process (in a real tool, this would be an API call)
+                setTimeout(function() {
+                    // Hide loading indicator
+                    loadingIndicator.style.display = 'none';
+                    checkButton.disabled = false;
+                    
+                    // Update results with the entered URL
+                    const domain = new URL(formattedUrl).hostname;
+                    resultDomain.textContent = domain;
+                    resultUrl.textContent = formattedUrl;
+                    
+                    // Show results section
+                    resultsSection.style.display = 'block';
+                    
+                    // Scroll to results
+                    resultsSection.scrollIntoView({ behavior: 'smooth' });
+                }, 2500);
+            });
+            
+            // Allow Enter key to trigger analysis
+            websiteUrl.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkButton.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
