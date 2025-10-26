@@ -1,0 +1,11 @@
+# robots.txt for ToolstackX.io
+User-agent: *
+Allow: /
+
+# Block unnecessary files/folders
+Disallow: /private/
+Disallow: /temp/
+Disallow: /drafts/
+
+# Sitemap location
+Sitemap: https://toolstackxio-prog.github.io/toolstackx.io/sitemap.xml
