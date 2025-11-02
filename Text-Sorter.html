@@ -1,782 +1,301 @@
+<script async="async" data-cfasync="false" src="//pl26214913.effectivegatecpm.com/1e63b33e8ffd34aa5e1cf609325269ab/invoke.js"></script>
+<div id="container-1e63b33e8ffd34aa5e1cf609325269ab"></div>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/toolstackxio-prog/toolstackx.io/main/favicon.png">
-<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/toolstackxio-prog/toolstackx.io/main/favicon.png"> 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text Sorter - Sort Lines Alphabetically & Numerically | ToolStackX</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #333;
-            min-height: 100vh;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .container {
-            max-width: 1200px;
-            width: 100%;
-        }
-        
-        .tool-card {
-            background-color: white;
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
-            padding: 40px;
-            margin-top: 20px;
-            transition: transform 0.3s ease;
-        }
-        
-        .tool-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        header {
-            text-align: center;
-            padding: 20px 0;
-            color: white;
-        }
-        
-        h1 {
-            font-size: 2.8rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .tool-content {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
-        
-        .text-areas {
-            display: flex;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-        
-        .input-section, .output-section {
-            flex: 1;
-            min-width: 300px;
-        }
-        
-        .section-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #764ba2;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .text-area-container {
-            position: relative;
-        }
-        
-        .text-area {
-            width: 100%;
-            height: 300px;
-            padding: 20px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            resize: vertical;
-            transition: all 0.3s;
-            line-height: 1.6;
-            font-family: monospace;
-        }
-        
-        .text-area:focus {
-            border-color: #764ba2;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.2);
-        }
-        
-        .line-count {
-            position: absolute;
-            bottom: 10px;
-            right: 15px;
-            color: #666;
-            font-size: 0.9rem;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 2px 8px;
-            border-radius: 10px;
-        }
-        
-        .sorting-options {
-            background-color: #f8f9ff;
-            border-radius: 15px;
-            padding: 25px;
-        }
-        
-        .options-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #764ba2;
-            text-align: center;
-        }
-        
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-        
-        .option-group {
-            margin-bottom: 15px;
-        }
-        
-        .option-label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #333;
-        }
-        
-        .option-select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-            background-color: white;
-        }
-        
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-        
-        .checkbox-group input {
-            width: 18px;
-            height: 18px;
-        }
-        
-        .action-buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .action-btn {
-            flex: 1;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            min-width: 150px;
-        }
-        
-        .primary-btn {
-            background: linear-gradient(to right, #667eea, #764ba2);
-            color: white;
-            box-shadow: 0 4px 10px rgba(118, 75, 162, 0.3);
-        }
-        
-        .primary-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(118, 75, 162, 0.4);
-        }
-        
-        .secondary-btn {
-            background: #f8f9ff;
-            color: #333;
-            border: 2px solid #e0e0e0;
-        }
-        
-        .secondary-btn:hover {
-            background: #eef1ff;
-            border-color: #764ba2;
-        }
-        
-        .copy-btn {
-            background: #4CAF50;
-            color: white;
-            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
-        }
-        
-        .copy-btn:hover {
-            background: #45a049;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(76, 175, 80, 0.4);
-        }
-        
-        .stats-section {
-            display: flex;
-            justify-content: space-between;
-            background-color: #f8f9ff;
-            border-radius: 15px;
-            padding: 20px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        
-        .stat-item {
-            text-align: center;
-            flex: 1;
-            min-width: 120px;
-        }
-        
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #764ba2;
-            margin-bottom: 5px;
-        }
-        
-        .stat-label {
-            font-size: 0.9rem;
-            color: #666;
-            font-weight: 600;
-        }
-        
-        .additional-tools {
-            margin-top: 30px;
-            background-color: #f8f9ff;
-            border-radius: 15px;
-            padding: 25px;
-        }
-        
-        .tools-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #764ba2;
-            text-align: center;
-        }
-        
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
-        
-        .tool-item {
-            background: white;
-            border-radius: 10px;
-            padding: 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-        }
-        
-        .tool-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
-        }
-        
-        .tool-icon {
-            font-size: 1.5rem;
-            margin-bottom: 8px;
-            color: #764ba2;
-        }
-        
-        .tool-name {
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-        
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #4CAF50;
-            color: white;
-            padding: 15px 25px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transform: translateX(150%);
-            transition: transform 0.3s ease;
-            z-index: 1000;
-        }
-        
-        .notification.show {
-            transform: translateX(0);
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            color: white;
-            padding: 20px;
-            font-size: 0.9rem;
-        }
-        
-        .website-link {
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        
-        .website-link:hover {
-            text-decoration: underline;
-            color: #eef1ff;
-        }
-        
-        @media (max-width: 768px) {
-            .text-areas {
-                flex-direction: column;
-            }
-            
-            .action-buttons {
-                flex-direction: column;
-            }
-            
-            .stats-section {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            h1 {
-                font-size: 2.2rem;
-            }
-            
-            .stat-value {
-                font-size: 1.8rem;
-            }
-        }
-    </style>
+<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/toolstackxio-prog/toolstackx.io/main/favicon.png">
+<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/toolstackxio-prog/toolstackx.io/main/favicon.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Text Sorter — ToolstackX</title>
+  <meta name="description" content="Sort your text alphabetically, numerically, or uniquely. Fast, mobile-friendly, and SEO-optimized text sorter tool for 2025." />
+  <meta name="keywords" content="text sorter, sort text online, alphabetical sorter, ToolstackX, remove duplicates, online tools" />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="ToolstackX" />
+  <style>
+    :root {
+      --blue: #1a73e8;
+      --green: #34a853;
+      --yellow: #fbbc05;
+      --red: #ea4335;
+      --bg: #f6f9ff;
+      --card: #ffffff;
+      --shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+
+    body {
+      background: linear-gradient(180deg, var(--bg) 0%, #fff 100%);
+      color: #202124;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    header {
+      width: 100%;
+      max-width: 1100px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      background: linear-gradient(90deg, var(--blue), var(--green), var(--yellow));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    header p {
+      font-size: 15px;
+      color: #5f6368;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+      border-radius: 14px;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .container { grid-template-columns: 1fr; }
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 300px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 15px;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    textarea:focus { border-color: var(--blue); }
+
+    .options {
+      margin: 10px 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .options label { font-size: 14px; color: #5f6368; }
+
+    .buttons {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    button {
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: 2px solid var(--blue);
+      background: transparent;
+      color: var(--blue);
+      font-weight: 600;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: var(--blue);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    button:active { transform: scale(0.97); }
+
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      background: rgba(255,255,255,0.5);
+      pointer-events: none;
+    }
+
+    @keyframes ripple {
+      to { transform: scale(4); opacity: 0; }
+    }
+
+    #result {
+      background: #fafafa;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 10px;
+      min-height: 200px;
+      font-family: monospace;
+      white-space: pre-wrap;
+      font-size: 14px;
+      overflow-y: auto;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #5f6368;
+    }
+
+    .footer strong { color: var(--blue); }
+
+    .howto {
+      grid-column: 1 / -1;
+      background: #f9fbff;
+      border-radius: 10px;
+      padding: 16px;
+      margin-top: 16px;
+    }
+
+    .howto h3 {
+      color: var(--blue);
+      margin-bottom: 8px;
+    }
+
+    .howto p {
+      font-size: 14px;
+      color: #5f6368;
+      line-height: 1.5;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Text Sorter</h1>
-            <p class="subtitle">Sort your text lines alphabetically, numerically, or by length with advanced options</p>
-        </header>
-        
-        <div class="tool-card">
-            <div class="tool-content">
-                <div class="text-areas">
-                    <div class="input-section">
-                        <div class="section-title">
-                            <span>Input Text</span>
-                            <span id="inputLineCount">0 lines</span>
-                        </div>
-                        <div class="text-area-container">
-                            <textarea class="text-area" id="inputText" placeholder="Enter your text lines here...">Apple
-Banana
-Orange
-Grapes
-Mango
-Pineapple
-Strawberry
-Blueberry
-Raspberry
-Blackberry</textarea>
-                            <div class="line-count" id="inputLineCountDisplay">0</div>
-                        </div>
-                    </div>
-                    
-                    <div class="output-section">
-                        <div class="section-title">
-                            <span>Sorted Text</span>
-                            <span id="outputLineCount">0 lines</span>
-                        </div>
-                        <div class="text-area-container">
-                            <textarea class="text-area" id="outputText" placeholder="Sorted lines will appear here..." readonly></textarea>
-                            <div class="line-count" id="outputLineCountDisplay">0</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="sorting-options">
-                    <div class="options-title">Sorting Options</div>
-                    <div class="options-grid">
-                        <div class="option-group">
-                            <label class="option-label">Sort Type</label>
-                            <select class="option-select" id="sortType">
-                                <option value="alphabetical">Alphabetical</option>
-                                <option value="reverse">Reverse Alphabetical</option>
-                                <option value="length">By Length (Shortest First)</option>
-                                <option value="reverse-length">By Length (Longest First)</option>
-                                <option value="numeric">Numeric</option>
-                                <option value="reverse-numeric">Reverse Numeric</option>
-                            </select>
-                        </div>
-                        
-                        <div class="option-group">
-                            <label class="option-label">Case Sensitivity</label>
-                            <select class="option-select" id="caseSensitivity">
-                                <option value="insensitive">Case Insensitive</option>
-                                <option value="sensitive">Case Sensitive</option>
-                            </select>
-                        </div>
-                        
-                        <div class="option-group">
-                            <label class="option-label">Remove Duplicates</label>
-                            <select class="option-select" id="removeDuplicates">
-                                <option value="no">Keep All Lines</option>
-                                <option value="yes">Remove Duplicate Lines</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="options-grid" style="margin-top: 15px;">
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="trimLines" checked>
-                            <label for="trimLines">Trim whitespace from lines</label>
-                        </div>
-                        
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="ignoreEmpty">
-                            <label for="ignoreEmpty">Ignore empty lines</label>
-                        </div>
-                        
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="naturalSort">
-                            <label for="naturalSort">Use natural sorting (for numbers)</label>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="action-buttons">
-                    <button class="action-btn primary-btn" id="sortBtn">Sort Text</button>
-                    <button class="action-btn secondary-btn" id="clearBtn">Clear Text</button>
-                    <button class="action-btn copy-btn" id="copyBtn">Copy Result</button>
-                </div>
-                
-                <div class="stats-section">
-                    <div class="stat-item">
-                        <div class="stat-value" id="originalLines">0</div>
-                        <div class="stat-label">Original Lines</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="sortedLines">0</div>
-                        <div class="stat-label">Sorted Lines</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="duplicateLines">0</div>
-                        <div class="stat-label">Duplicates Removed</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="emptyLines">0</div>
-                        <div class="stat-label">Empty Lines</div>
-                    </div>
-                </div>
-                
-                <div class="additional-tools">
-                    <div class="tools-title">Additional Text Tools</div>
-                    <div class="tools-grid">
-                        <div class="tool-item" data-tool="reverse">
-                            <div class="tool-icon">🔄</div>
-                            <div class="tool-name">Reverse Lines</div>
-                        </div>
-                        <div class="tool-item" data-tool="shuffle">
-                            <div class="tool-icon">🎲</div>
-                            <div class="tool-name">Shuffle Lines</div>
-                        </div>
-                        <div class="tool-item" data-tool="unique">
-                            <div class="tool-icon">✨</div>
-                            <div class="tool-name">Remove Duplicates</div>
-                        </div>
-                        <div class="tool-item" data-tool="trim">
-                            <div class="tool-icon">✂️</div>
-                            <div class="tool-name">Trim All Lines</div>
-                        </div>
-                        <div class="tool-item" data-tool="uppercase">
-                            <div class="tool-icon">🔠</div>
-                            <div class="tool-name">Uppercase All</div>
-                        </div>
-                        <div class="tool-item" data-tool="lowercase">
-                            <div class="tool-icon">🔡</div>
-                            <div class="tool-name">Lowercase All</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <footer>
-            <p>Text Sorter Tool | Part of <a href="https://toolstackxio-prog.github.io/toolstackx.io/" class="website-link">ToolStackX.io</a> | &copy; 2023 All Rights Reserved</p>
-        </footer>
-    </div>
+  <header>
+    <h1>Text Sorter</h1>
+    <p>Sort your text alphabetically, numerically, or remove duplicates — quick, easy, and private.</p>
+  </header>
 
-    <div class="notification" id="notification">
-        Text copied to clipboard!
-    </div>
+  <div class="container">
+    <section>
+      <textarea id="inputText" placeholder="Paste or type your text here..."></textarea>
 
-    <script>
-        // DOM Elements
-        const inputText = document.getElementById('inputText');
-        const outputText = document.getElementById('outputText');
-        const inputLineCount = document.getElementById('inputLineCount');
-        const outputLineCount = document.getElementById('outputLineCount');
-        const inputLineCountDisplay = document.getElementById('inputLineCountDisplay');
-        const outputLineCountDisplay = document.getElementById('outputLineCountDisplay');
-        const sortType = document.getElementById('sortType');
-        const caseSensitivity = document.getElementById('caseSensitivity');
-        const removeDuplicates = document.getElementById('removeDuplicates');
-        const trimLines = document.getElementById('trimLines');
-        const ignoreEmpty = document.getElementById('ignoreEmpty');
-        const naturalSort = document.getElementById('naturalSort');
-        const sortBtn = document.getElementById('sortBtn');
-        const clearBtn = document.getElementById('clearBtn');
-        const copyBtn = document.getElementById('copyBtn');
-        const originalLines = document.getElementById('originalLines');
-        const sortedLines = document.getElementById('sortedLines');
-        const duplicateLines = document.getElementById('duplicateLines');
-        const emptyLines = document.getElementById('emptyLines');
-        const toolItems = document.querySelectorAll('.tool-item');
-        const notification = document.getElementById('notification');
-        
-        // Event Listeners
-        inputText.addEventListener('input', updateLineCounts);
-        sortBtn.addEventListener('click', sortText);
-        clearBtn.addEventListener('click', clearText);
-        copyBtn.addEventListener('click', copyToClipboard);
-        
-        // Add event listeners to options for real-time processing
-        [sortType, caseSensitivity, removeDuplicates, trimLines, ignoreEmpty, naturalSort].forEach(option => {
-            option.addEventListener('change', sortText);
-        });
-        
-        toolItems.forEach(tool => {
-            tool.addEventListener('click', () => {
-                const toolType = tool.getAttribute('data-tool');
-                applyTool(toolType);
-            });
-        });
-        
-        // Functions
-        function updateLineCounts() {
-            const inputLines = inputText.value.split('\n').length;
-            const outputLines = outputText.value.split('\n').length;
-            
-            inputLineCount.textContent = `${inputLines} lines`;
-            outputLineCount.textContent = `${outputLines} lines`;
-            inputLineCountDisplay.textContent = inputLines;
-            outputLineCountDisplay.textContent = outputLines;
-        }
-        
-        function sortText() {
-            const text = inputText.value;
-            const lines = text.split('\n');
-            
-            // Update original lines count
-            originalLines.textContent = lines.length;
-            
-            // Process lines based on options
-            let processedLines = [...lines];
-            
-            // Count empty lines
-            const emptyCount = processedLines.filter(line => line.trim() === '').length;
-            emptyLines.textContent = emptyCount;
-            
-            // Trim lines if option is checked
-            if (trimLines.checked) {
-                processedLines = processedLines.map(line => line.trim());
-            }
-            
-            // Ignore empty lines if option is checked
-            if (ignoreEmpty.checked) {
-                processedLines = processedLines.filter(line => line !== '');
-            }
-            
-            // Remove duplicates if option is selected
-            let duplicatesRemoved = 0;
-            if (removeDuplicates.value === 'yes') {
-                const uniqueLines = [];
-                const seen = new Set();
-                
-                for (const line of processedLines) {
-                    const key = caseSensitivity.value === 'sensitive' ? line : line.toLowerCase();
-                    if (!seen.has(key)) {
-                        seen.add(key);
-                        uniqueLines.push(line);
-                    } else {
-                        duplicatesRemoved++;
-                    }
-                }
-                processedLines = uniqueLines;
-            }
-            
-            duplicateLines.textContent = duplicatesRemoved;
-            
-            // Sort lines based on selected type
-            let sortedLinesArray = [...processedLines];
-            
-            switch(sortType.value) {
-                case 'alphabetical':
-                    sortedLinesArray = sortAlphabetically(processedLines, 'asc');
-                    break;
-                case 'reverse':
-                    sortedLinesArray = sortAlphabetically(processedLines, 'desc');
-                    break;
-                case 'length':
-                    sortedLinesArray = sortByLength(processedLines, 'asc');
-                    break;
-                case 'reverse-length':
-                    sortedLinesArray = sortByLength(processedLines, 'desc');
-                    break;
-                case 'numeric':
-                    sortedLinesArray = sortNumerically(processedLines, 'asc');
-                    break;
-                case 'reverse-numeric':
-                    sortedLinesArray = sortNumerically(processedLines, 'desc');
-                    break;
-            }
-            
-            // Update output
-            outputText.value = sortedLinesArray.join('\n');
-            
-            // Update stats
-            sortedLines.textContent = sortedLinesArray.length;
-            
-            updateLineCounts();
-        }
-        
-        function sortAlphabetically(lines, order) {
-            return [...lines].sort((a, b) => {
-                const aComp = caseSensitivity.value === 'sensitive' ? a : a.toLowerCase();
-                const bComp = caseSensitivity.value === 'sensitive' ? b : b.toLowerCase();
-                
-                if (order === 'asc') {
-                    return aComp.localeCompare(bComp);
-                } else {
-                    return bComp.localeCompare(aComp);
-                }
-            });
-        }
-        
-        function sortByLength(lines, order) {
-            return [...lines].sort((a, b) => {
-                if (order === 'asc') {
-                    return a.length - b.length;
-                } else {
-                    return b.length - a.length;
-                }
-            });
-        }
-        
-        function sortNumerically(lines, order) {
-            return [...lines].sort((a, b) => {
-                // Extract numbers from strings for natural sorting
-                const aNum = naturalSort.checked ? extractNumber(a) : parseFloat(a) || 0;
-                const bNum = naturalSort.checked ? extractNumber(b) : parseFloat(b) || 0;
-                
-                if (order === 'asc') {
-                    return aNum - bNum;
-                } else {
-                    return bNum - aNum;
-                }
-            });
-        }
-        
-        function extractNumber(str) {
-            // Extract the first number found in the string
-            const match = str.match(/-?\d+(\.\d+)?/);
-            return match ? parseFloat(match[0]) : 0;
-        }
-        
-        function applyTool(toolType) {
-            let text = inputText.value;
-            let lines = text.split('\n');
-            let result = [];
-            
-            switch(toolType) {
-                case 'reverse':
-                    result = lines.reverse();
-                    break;
-                case 'shuffle':
-                    result = [...lines];
-                    for (let i = result.length - 1; i > 0; i--) {
-                        const j = Math.floor(Math.random() * (i + 1));
-                        [result[i], result[j]] = [result[j], result[i]];
-                    }
-                    break;
-                case 'unique':
-                    const seen = new Set();
-                    result = lines.filter(line => {
-                        const key = caseSensitivity.value === 'sensitive' ? line : line.toLowerCase();
-                        if (!seen.has(key)) {
-                            seen.add(key);
-                            return true;
-                        }
-                        return false;
-                    });
-                    break;
-                case 'trim':
-                    result = lines.map(line => line.trim());
-                    break;
-                case 'uppercase':
-                    result = lines.map(line => line.toUpperCase());
-                    break;
-                case 'lowercase':
-                    result = lines.map(line => line.toLowerCase());
-                    break;
-                default:
-                    result = lines;
-            }
-            
-            inputText.value = result.join('\n');
-            sortText();
-        }
-        
-        function clearText() {
-            inputText.value = '';
-            outputText.value = '';
-            updateLineCounts();
-            
-            // Reset stats
-            originalLines.textContent = '0';
-            sortedLines.textContent = '0';
-            duplicateLines.textContent = '0';
-            emptyLines.textContent = '0';
-        }
-        
-        function copyToClipboard() {
-            if (outputText.value) {
-                outputText.select();
-                document.execCommand('copy');
-                showNotification('Text copied to clipboard!');
-            } else {
-                showNotification('No text to copy!');
-            }
-        }
-        
-        function showNotification(message) {
-            notification.textContent = message;
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-        
-        // Initialize
-        window.onload = function() {
-            sortText();
-            updateLineCounts();
-        };
-    </script>
+      <div class="options">
+        <label><input type="checkbox" id="removeDup"> Remove Duplicates</label>
+        <label><input type="checkbox" id="caseIgnore" checked> Case Insensitive</label>
+        <label><input type="checkbox" id="numericSort"> Numeric Sort</label>
+        <label>Order:
+          <select id="sortOrder">
+            <option value="asc">Ascending (A → Z)</option>
+            <option value="desc">Descending (Z → A)</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="buttons">
+        <button id="sortBtn">Sort Text</button>
+        <button id="copyBtn">Copy Result</button>
+        <button id="clearBtn">Clear</button>
+        <button id="downloadBtn">Download</button>
+      </div>
+    </section>
+
+    <aside>
+      <h3 style="color:var(--blue);margin-bottom:8px;">Sorted Result</h3>
+      <div id="result"></div>
+    </aside>
+
+    <div class="howto">
+      <h3>How to Use</h3>
+      <p>1️⃣ Paste or type text in the box.<br>
+         2️⃣ Choose sorting options (ascending/descending, numeric, case-insensitive).<br>
+         3️⃣ Click <strong>Sort Text</strong> to see the sorted output instantly.<br>
+         4️⃣ Use <strong>Copy</strong> or <strong>Download</strong> to save results.<br>
+         5️⃣ Works 100% offline — all processing happens in your browser.</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    © 2025 <strong>ToolstackX</strong> • All Rights Reserved.
+  </div>
+
+  <script>
+    const input = document.getElementById("inputText");
+    const result = document.getElementById("result");
+
+    function addRipple(e) {
+      const button = e.currentTarget;
+      const circle = document.createElement("span");
+      const diameter = Math.max(button.clientWidth, button.clientHeight);
+      const rect = button.getBoundingClientRect();
+      circle.style.width = circle.style.height = `${diameter}px`;
+      circle.style.left = `${e.clientX - rect.left - diameter / 2}px`;
+      circle.style.top = `${e.clientY - rect.top - diameter / 2}px`;
+      circle.classList.add("ripple");
+      const ripple = button.getElementsByClassName("ripple")[0];
+      if (ripple) ripple.remove();
+      button.appendChild(circle);
+    }
+
+    document.querySelectorAll("button").forEach(btn =>
+      btn.addEventListener("click", addRipple)
+    );
+
+    function sortText() {
+      const lines = input.value.split(/\n/);
+      const removeDup = document.getElementById("removeDup").checked;
+      const caseIgnore = document.getElementById("caseIgnore").checked;
+      const numericSort = document.getElementById("numericSort").checked;
+      const order = document.getElementById("sortOrder").value;
+
+      let sorted = [...lines];
+      if (removeDup)
+        sorted = [...new Set(sorted.map(l => (caseIgnore ? l.toLowerCase() : l)))];
+
+      sorted.sort((a, b) => {
+        if (numericSort && !isNaN(a) && !isNaN(b))
+          return (order === "asc" ? 1 : -1) * (parseFloat(a) - parseFloat(b));
+
+        const aVal = caseIgnore ? a.toLowerCase() : a;
+        const bVal = caseIgnore ? b.toLowerCase() : b;
+
+        if (aVal < bVal) return order === "asc" ? -1 : 1;
+        if (aVal > bVal) return order === "asc" ? 1 : -1;
+        return 0;
+      });
+
+      result.textContent = sorted.join("\n");
+    }
+
+    document.getElementById("sortBtn").addEventListener("click", sortText);
+    document.getElementById("clearBtn").addEventListener("click", () => {
+      input.value = "";
+      result.textContent = "";
+    });
+
+    document.getElementById("copyBtn").addEventListener("click", () => {
+      navigator.clipboard.writeText(result.textContent);
+      alert("Result copied!");
+    });
+
+    document.getElementById("downloadBtn").addEventListener("click", () => {
+      const blob = new Blob([result.textContent], { type: "text/plain" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "sorted-text.txt";
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+  </script>
+<script async="async" data-cfasync="false" src="//pl26214913.effectivegatecpm.com/1e63b33e8ffd34aa5e1cf609325269ab/invoke.js"></script>
+<div id="container-1e63b33e8ffd34aa5e1cf609325269ab"></div>
 </body>
 </html>
